@@ -18,14 +18,14 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $short_desc;
+    private $short_description;
 
     /**
      * @ORM\Column(type="text")
@@ -59,14 +59,14 @@ class Trick
         return $this;
     }
 
-    public function getShortDesc(): ?string
+    public function getShortDescription(): ?string
     {
-        return $this->short_desc;
+        return $this->short_description;
     }
 
-    public function setShortDesc(string $short_desc): self
+    public function setShortDescription(string $short_description): self
     {
-        $this->short_desc = $short_desc;
+        $this->short_description = $short_description;
 
         return $this;
     }
