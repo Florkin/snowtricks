@@ -9,14 +9,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class LoginController extends AbstractController
 {
     /**
+     * @var string
+     *
+     * Titre de la page
+     */
+    private $pageTitle = "Login page";
+
+    /**
+     * @var string
+     *
+     * Use to check active link on menu
+     */
+    private $currentMenu = "login";
+
+
+    /**
      * @return Response
      * @Route("/login")
      */
-    public function displayLoginPage() : Response
+    public function index() : Response
     {
         return $this->render("pages/login.html.twig", [
+            "current_menu" => $this->currentMenu,
             "page" => [
-                "title" => "Login page"
+                "title" => $this->pageTitle,
             ]
         ]);
     }

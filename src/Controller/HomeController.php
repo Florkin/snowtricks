@@ -9,14 +9,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
+     * @var string
+     *
+     * Titre de la page
+     */
+    private $pageTitle = "Accueil SnowTricks";
+
+    /**
+     * @var string
+     *
+     * Use to check active link on menu
+     */
+    private $currentMenu = "home";
+
+
+    /**
      * @return Response
      * @Route("/")
      */
-    public function displayHomePage() : Response
+    public function index() : Response
     {
         return $this->render("pages/home.html.twig", [
+            "current_menu" => $this->currentMenu,
             "page" => [
-                "title" => "Accueil SnowTricks"
+                "title" => $this->pageTitle,
             ]
         ]);
     }

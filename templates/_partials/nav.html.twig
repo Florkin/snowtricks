@@ -1,0 +1,31 @@
+{% block nav %}
+    <nav class="main-navbar navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">SnowTricks</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item{% if current_menu is defined and current_menu == "home" %} active{% endif %}">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item{% if current_menu is defined and current_menu == "tricks_list" %} active{% endif %}">
+                    <a class="nav-link" href="/tricks">Tricks</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav right-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-user"></span>
+                    </a>
+                    <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "login" %} active{% endif %}" href="/login"><span class="fa fa-user"></span> Se connecter</a>
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "registration" %} active{% endif %}" href="/inscription"><span class="fa fa-user-plus"></span> S'inscrire</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
