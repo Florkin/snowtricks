@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -132,13 +133,18 @@ class Trick
         return $this;
     }
 
+    public function getSlug(): string
+    {
+        return (new Slugify())->slugify($this->id . ' - ' . $this->title);
+    }
+
     /**
      * @return string
      * Return date_add or date_update if exist, string formated
      */
-    public function getStringedDatetime() : string
+    public function getStringedDatetime(): string
     {
-        if (isset($this->date_update)){
+        if (isset($this->date_update)) {
             return $this->date_update->format("yy-m-d h:m:s");
         };
 

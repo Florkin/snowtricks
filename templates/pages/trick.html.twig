@@ -1,9 +1,14 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    {{ page.title }}
+    {{ trick.title }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ page.title }}</h1>
+    <h1>{{ trick.title }}</h1>
+
+    <p>{{ trick.id }}</p>
+    <p>{{ trick.title }}</p>
+    <p>{{ trick.shortDescription }}</p>
+    <p>{{ trick.description }}</p>
 {% endblock %}

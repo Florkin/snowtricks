@@ -17,7 +17,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <a href="#">{{ trick.title }}</a>
+                                <a href="tricks/{{ trick.slug }}">{{ trick.title }}</a>
                             </h5>
                             <p>{{ trick.shortDescription }}</p>
                             <p class="text-muted">{{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}</p>
