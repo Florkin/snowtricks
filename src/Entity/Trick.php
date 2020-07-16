@@ -43,6 +43,11 @@ class Trick
     private $date_update;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $visible = false;
+
+    /**
      * Trick constructor.
      */
     public function __construct()
@@ -113,5 +118,30 @@ class Trick
         $this->date_update = $date_update;
 
         return $this;
+    }
+
+    public function getVisible(): ?bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(bool $visible): self
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     * Return date_add or date_update if exist, string formated
+     */
+    public function getStringedDatetime() : string
+    {
+        if (isset($this->date_update)){
+            return $this->date_update->format("yy-m-d h:m:s");
+        };
+
+        return $this->date_add->format("yy-m-d h:m:s");
     }
 }
