@@ -42,6 +42,14 @@ class Trick
      */
     private $date_update;
 
+    /**
+     * Trick constructor.
+     */
+    public function __construct()
+    {
+        $this->date_add = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
