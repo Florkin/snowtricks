@@ -13,22 +13,10 @@
         <h2>Derniers Tricks Ajoutés</h2>
         <div class="row">
             {% for trick in tricks %}
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="tricks/{{ trick.slug }}">{{ trick.title }}</a>
-                            </h5>
-                            <p>{{ trick.shortDescription }}</p>
-                            <p class="text-muted">{{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}</p>
-                        </div>
-                    </div>
-                </div>
+                {% include "_partials/trick-miniature.html.twig" %}
             {% endfor %}
         </div>
     </div>
-
-
 
 
 {% endblock %}

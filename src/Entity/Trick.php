@@ -135,7 +135,7 @@ class Trick
 
     public function getSlug(): string
     {
-        return (new Slugify())->slugify($this->id . ' - ' . $this->title);
+        return (new Slugify())->slugify($this->title);
     }
 
     /**

@@ -45,7 +45,7 @@ class TricksListController extends AbstractController
 
     /**
      * @return Response
-     * @Route("/tricks")
+     * @Route("/tricks", name="tricks.list")
      */
     public function index(): Response
     {

@@ -1,0 +1,11 @@
+<div class="col-12 col-sm-6 col-lg-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>
+            </h5>
+            <p>{{ trick.shortDescription }}</p>
+            <p class="text-muted">{{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}</p>
+        </div>
+    </div>
+</div>

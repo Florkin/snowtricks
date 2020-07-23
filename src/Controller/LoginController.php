@@ -25,7 +25,7 @@ class LoginController extends AbstractController
 
     /**
      * @return Response
-     * @Route("/login")
+     * @Route("/login", name="login")
      */
     public function index() : Response
     {

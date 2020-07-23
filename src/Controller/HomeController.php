@@ -27,9 +27,9 @@ class HomeController extends AbstractController
     /**
      * @param TrickRepository $trickRepository
      * @return Response
-     * @Route("/")
+     * @Route("/", name="home")
      */
-    public function index(TrickRepository $trickRepository) : Response
+    public function show(TrickRepository $trickRepository) : Response
     {
         $tricks = $trickRepository->findVisibleLatest(3);
 

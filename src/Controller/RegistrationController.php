@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
 
     /**
      * @return Response
-     * @Route("/inscription")
+     * @Route("/inscription", name="registration")
      */
     public function index() : Response
     {
