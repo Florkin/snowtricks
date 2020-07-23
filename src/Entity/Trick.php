@@ -5,19 +5,21 @@ namespace App\Entity;
 use App\Repository\TrickRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraint as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity("title")
  */
 class Trick
 {
     const DIFFICULTIES = [
-        "Very easy",
-        "Easy",
-        "Intermediate",
-        "Hard",
-        "Very hard"
+        1 => "Very easy",
+        2 => "Easy",
+        3 => "Intermediate",
+        4 => "Hard",
+        5 => "Very hard"
     ];
 
     /**
@@ -28,12 +30,26 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100)
+     * * @Assert\Length(
+     *    min = 5,
+     *    max = 100,
+     *    minMessage = "Le titre doit contenir au moins {{ limit }} caractères",
+     *    maxMessage = "Le titre doit contenir au maximum {{ limit }} caractères",
+     *    allowEmptyString = false
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *    min = 100,
+     *    max = 10000,
+     *    minMessage = "La description doit contenir au moins {{ limit }} caractères",
+     *    maxMessage = "La description doit contenir au maximum {{ limit }} caractères",
+     *    allowEmptyString = false
+     * )
      */
     private $description;
 
