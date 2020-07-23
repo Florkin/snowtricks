@@ -5,12 +5,23 @@ namespace App\Entity;
 use App\Repository\TrickRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity("title")
  */
 class Trick
 {
+    const DIFFICULTIES = [
+        1 => "Very easy",
+        2 => "Easy",
+        3 => "Intermediate",
+        4 => "Hard",
+        5 => "Very hard"
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -19,17 +30,26 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100)
+     * * @Assert\Length(
+     *    min = 5,
+     *    max = 100,
+     *    minMessage = "Le titre doit contenir au moins {{ limit }} caractères",
+     *    maxMessage = "Le titre doit contenir au maximum {{ limit }} caractères",
+     *    allowEmptyString = false
+     * )
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $short_description;
-
-    /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *    min = 100,
+     *    max = 10000,
+     *    minMessage = "La description doit contenir au moins {{ limit }} caractères",
+     *    maxMessage = "La description doit contenir au maximum {{ limit }} caractères",
+     *    allowEmptyString = false
+     * )
      */
     private $description;
 
@@ -47,6 +67,11 @@ class Trick
      * @ORM\Column(type="boolean")
      */
     private $visible = false;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $difficulty;
 
     /**
      * Trick constructor.
@@ -69,18 +94,6 @@ class Trick
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getShortDescription(): ?string
-    {
-        return $this->short_description;
-    }
-
-    public function setShortDescription(string $short_description): self
-    {
-        $this->short_description = $short_description;
 
         return $this;
     }
@@ -150,4 +163,17 @@ class Trick
 
         return $this->date_add->format("yy-m-d h:m:s");
     }
+
+    public function getDifficulty(): ?int
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(int $difficulty): self
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
 }

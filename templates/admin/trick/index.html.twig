@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ page.title }}
+{% endblock %}
+
+{% block messages %}
+    {% include "_partials/messages.html.twig" %}
+{% endblock %}
+
+{% block body %}
+    <div class="container py-3">
+        <h1>{{ page.title }}</h1>
+    </div>
+
+    <div class="container py-3">
+        <a href="{{ path("admin.trick.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Créer un
+            nouveau Trick</a>
+
+        <div class="row">
+            {% for trick in tricks %}
+                {% include "admin/_admin-partials/trick-miniature.html.twig" %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
