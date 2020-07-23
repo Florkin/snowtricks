@@ -4,6 +4,10 @@
     {{ page.title }}
 {% endblock %}
 
+{% block messages %}
+    {% include "_partials/messages.html.twig" %}
+{% endblock %}
+
 {% block body %}
     <div class="container py-3">
         <h1>{{ page.title }}</h1>
@@ -18,8 +22,5 @@
                 {% include "admin/_admin-partials/trick-miniature.html.twig" %}
             {% endfor %}
         </div>
-
     </div>
-
-
 {% endblock %}

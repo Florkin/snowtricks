@@ -77,6 +77,7 @@ class AdminTrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($trick);
             $this->em->flush();
+            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été ajouté");
             return $this->redirectToRoute("admin.trick.index");
         }
 
@@ -97,9 +98,9 @@ class AdminTrickController extends AbstractController
      * @param Trick $trick
      * @param Request $request
      * @return Response
-     * @Route("/admin/edit/trick/{id}-{slug}", name="admin.trick.edit", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"})
+     * @Route("/admin/trick/{id}-{slug}", name="admin.trick.edit", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"}, methods="GET|POST")
      */
-    public function edit(int $id, string $slug, Trick $trick, Request $request): Response
+    public function edit(string $slug, Trick $trick, Request $request): Response
     {
         $trickSlug = $trick->getSlug();
 
@@ -115,6 +116,7 @@ class AdminTrickController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
+            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été modifié");
             return $this->redirectToRoute("admin.trick.index");
         }
 
@@ -126,5 +128,24 @@ class AdminTrickController extends AbstractController
             "trick" => $trick,
             "btn_label" => "Modifier"
         ]);
+    }
+
+    /**
+     * @param int $id
+     * @param string $slug
+     * @param Trick $trick
+     * @param Request $request
+     * @return Response
+     * @Route("/admin/trick/{id}", name="admin.trick.delete", requirements={"id": "[0-9]*"}, methods="DELETE")
+     */
+    public function delete(Trick $trick, Request $request): Response
+    {
+        if ($this->isCsrfTokenValid("delete". $trick->getId(), $request->get("_token"))){
+            $this->em->remove($trick);
+            $this->em->flush();
+            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été supprimé");
+        }
+
+        return $this->redirectToRoute("admin.trick.index");
     }
 }

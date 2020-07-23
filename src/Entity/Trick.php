@@ -32,11 +32,6 @@ class Trick
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $short_description;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $description;
@@ -82,18 +77,6 @@ class Trick
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getShortDescription(): ?string
-    {
-        return $this->short_description;
-    }
-
-    public function setShortDescription(string $short_description): self
-    {
-        $this->short_description = $short_description;
 
         return $this;
     }

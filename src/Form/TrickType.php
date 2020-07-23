@@ -14,7 +14,6 @@ class TrickType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('short_description')
             ->add('description')
             ->add('difficulty', ChoiceType::class, [
                 'choices' => $this->getDifficulties()

@@ -5,7 +5,7 @@
                 <h5 class="card-title">
                     <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>
                 </h5>
-                <p>{{ trick.shortDescription|u.truncate(50, "...") }}</p>
+                <p>{{ trick.description|u.truncate(50, "...") }}</p>
             </div>
 
             <div class="col-md-3 text-center">
@@ -17,9 +17,14 @@
                 <a href="{{ path("admin.trick.edit", {id: trick.id, slug: trick.slug}) }}" class="btn btn-primary">
                     <span class="fa fa-edit"></span>
                 </a>
-                <a href="#" class="btn btn-danger">
-                    <span class="fa fa-eraser"></span>
-                </a>
+                <form method="post" class="d-inline-block" action="{{ path("admin.trick.delete", {id: trick.id}) }}"
+                onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce bien?')">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
+                    <button type="submit" href="#" class="btn btn-danger">
+                        <span class="fa fa-eraser"></span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
