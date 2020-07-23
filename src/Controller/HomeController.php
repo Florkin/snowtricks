@@ -22,16 +22,28 @@ class HomeController extends AbstractController
      * Use to check active link on menu
      */
     private $currentMenu = "home";
+    /**
+     * @var TrickRepository
+     */
+    private $trickRepository;
+
+    /**
+     * HomeController constructor.
+     * @param TrickRepository $trickRepository
+     */
+    public function __construct(TrickRepository $trickRepository)
+    {
+        $this->trickRepository = $trickRepository;
+    }
 
 
     /**
-     * @param TrickRepository $trickRepository
      * @return Response
      * @Route("/", name="home")
      */
-    public function show(TrickRepository $trickRepository) : Response
+    public function show() : Response
     {
-        $tricks = $trickRepository->findVisibleLatest(3);
+        $tricks = $this->trickRepository->findVisibleLatest(3);
 
         return $this->render("pages/home.html.twig", [
             "current_menu" => $this->currentMenu,

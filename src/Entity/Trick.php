@@ -11,6 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Trick
 {
+    const DIFFICULTIES = [
+        "Very easy",
+        "Easy",
+        "Intermediate",
+        "Hard",
+        "Very hard"
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -47,6 +55,11 @@ class Trick
      * @ORM\Column(type="boolean")
      */
     private $visible = false;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $difficulty;
 
     /**
      * Trick constructor.
@@ -150,4 +163,17 @@ class Trick
 
         return $this->date_add->format("yy-m-d h:m:s");
     }
+
+    public function getDifficulty(): ?int
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(int $difficulty): self
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
 }

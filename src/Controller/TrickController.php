@@ -22,7 +22,7 @@ class TrickController extends AbstractController
      *
      * Use to check active link on menu
      */
-    private $currentMenu = "trick";
+    private $currentMenu = "trick.show";
     /**
      * @var TrickRepository
      */

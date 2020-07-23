@@ -10,21 +10,33 @@
                 <li class="nav-item{% if current_menu is defined and current_menu == "home" %} active{% endif %}">
                     <a class="nav-link" href="{{ path("home") }}">Home</a>
                 </li>
-                <li class="nav-item{% if current_menu is defined and current_menu == "tricks_list" %} active{% endif %}">
-                    <a class="nav-link" href="{{ path("tricks.list") }}">Tricks</a>
-                </li>
+{#                <li class="nav-item{% if current_menu is defined and current_menu == "tricks_list" %} active{% endif %}">#}
+{#                    <a class="nav-link" href="{{ path("tricks.list") }}">Tricks</a>#}
+{#                </li>#}
             </ul>
             <ul class="navbar-nav right-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-user"></span>
+                        <span class="fa fa-edit"></span>
                     </a>
                     <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item{% if current_menu is defined and current_menu == "login" %} active{% endif %}" href="{{ path("login") }}"><span class="fa fa-user"></span> Se connecter</a>
-                        <a class="dropdown-item{% if current_menu is defined and current_menu == "registration" %} active{% endif %}" href="{{ path("registration") }}"><span class="fa fa-user-plus"></span> S'inscrire</a>
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "admin.trick.index" %} active{% endif %}"
+                           href="{{ path("admin.trick.index") }}"><span class="fa fa-user"></span> Gérer des Tricks</a>
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "admin.trick.new" %} active{% endif %}"
+                           href="{{ path("admin.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
                     </div>
                 </li>
+{#                <li class="nav-item dropdown">#}
+{#                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+{#                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                        <span class="fa fa-user"></span>#}
+{#                    </a>#}
+{#                    <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">#}
+{#                        <a class="dropdown-item{% if current_menu is defined and current_menu == "login" %} active{% endif %}" href="{{ path("login") }}"><span class="fa fa-user"></span> Se connecter</a>#}
+{#                        <a class="dropdown-item{% if current_menu is defined and current_menu == "registration" %} active{% endif %}" href="{{ path("registration") }}"><span class="fa fa-user-plus"></span> S'inscrire</a>#}
+{#                    </div>#}
+{#                </li>#}
             </ul>
         </div>
     </nav>
