@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TrickRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraint as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)

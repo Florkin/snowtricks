@@ -93,7 +93,6 @@ class AdminTrickController extends AbstractController
     }
 
     /**
-     * @param int $id
      * @param string $slug
      * @param Trick $trick
      * @param Request $request
@@ -115,6 +114,10 @@ class AdminTrickController extends AbstractController
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // Set update date
+            $date = new \DateTime();
+            $trick->setDateUpdate($date);
+
             $this->em->flush();
             $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été modifié");
             return $this->redirectToRoute("admin.trick.index");
@@ -131,8 +134,6 @@ class AdminTrickController extends AbstractController
     }
 
     /**
-     * @param int $id
-     * @param string $slug
      * @param Trick $trick
      * @param Request $request
      * @return Response
