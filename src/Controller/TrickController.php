@@ -45,7 +45,7 @@ class TrickController extends AbstractController
      * @return Response
      * @Route("/tricks/{id}-{slug}", name="trick.show", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"})
      */
-    public function show(int $id, string $slug, Trick $trick) : Response
+    public function show(string $slug, Trick $trick) : Response
     {
         $trickSlug = $trick->getSlug();
 

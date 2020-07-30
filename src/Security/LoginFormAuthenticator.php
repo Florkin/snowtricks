@@ -117,7 +117,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @param Request $request
      * @param TokenInterface $token
      * @param string $providerKey
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
+     * @return RedirectResponse
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
@@ -127,7 +127,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         $successLoginMessage = $this->translator->trans('You have been logged in', [], 'security');
         $this->flashBag->add('success', $successLoginMessage);
-        return new RedirectResponse($this->urlGenerator->generate('home'));
+        return new RedirectResponse($this->urlGenerator->generate('admin.trick.index'));
     }
 
     protected function getLoginUrl()

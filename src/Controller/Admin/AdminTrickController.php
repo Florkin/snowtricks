@@ -34,17 +34,17 @@ class AdminTrickController extends AbstractController
     /**
      * @var EntityManager
      */
-    private $em;
+    private $entityManager;
 
     /**
      * AdminTrickController constructor.
      * @param TrickRepository $repository
-     * @param EntityManagerInterface $em
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TrickRepository $repository, EntityManagerInterface $em)
+    public function __construct(TrickRepository $repository, EntityManagerInterface $entityManager)
     {
         $this->repository = $repository;
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -75,8 +75,8 @@ class AdminTrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($trick);
-            $this->em->flush();
+            $this->entityManager->persist($trick);
+            $this->entityManager->flush();
             $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été ajouté");
             return $this->redirectToRoute("admin.trick.index");
         }
@@ -118,7 +118,7 @@ class AdminTrickController extends AbstractController
             $date = new \DateTime();
             $trick->setDateUpdate($date);
 
-            $this->em->flush();
+            $this->entityManager->flush();
             $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été modifié");
             return $this->redirectToRoute("admin.trick.index");
         }
@@ -142,8 +142,8 @@ class AdminTrickController extends AbstractController
     public function delete(Trick $trick, Request $request): Response
     {
         if ($this->isCsrfTokenValid("delete". $trick->getId(), $request->get("_token"))){
-            $this->em->remove($trick);
-            $this->em->flush();
+            $this->entityManager->remove($trick);
+            $this->entityManager->flush();
             $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été supprimé");
         }
 
