@@ -27,17 +27,23 @@
                            href="{{ path("admin.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
                     </div>
                 </li>
-{#                <li class="nav-item dropdown">#}
-{#                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
-{#                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-{#                        <span class="fa fa-user"></span>#}
-{#                    </a>#}
-{#                    <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">#}
-{#                        <a class="dropdown-item{% if current_menu is defined and current_menu == "login" %} active{% endif %}" href="{{ path("login") }}"><span class="fa fa-user"></span> Se connecter</a>#}
-{#                        <a class="dropdown-item{% if current_menu is defined and current_menu == "registration" %} active{% endif %}" href="{{ path("registration") }}"><span class="fa fa-user-plus"></span> S'inscrire</a>#}
-{#                    </div>#}
-{#                </li>#}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-user"></span>
+                    </a>
+                    <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
+                        {% if app.user.username is defined %}
+                            <a class="dropdown-item" href="#"><span class="fa fa-user"></span> {{ app.user.username }}</a>
+                            <a class="dropdown-item" href="{{ path("app_logout") }}"><span class="fa fa-sign-out"></span> Logout</a>
+                        {% else %}
+                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_login" %} active{% endif %}" href="{{ path("app_login") }}"><span class="fa fa-sign-in"></span> Se connecter</a>
+                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_register" %} active{% endif %}" href="{{ path("app_register") }}"><span class="fa fa-user-plus"></span> S'inscrire</a>
+                        {% endif %}
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
+
 {% endblock %}
