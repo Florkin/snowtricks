@@ -54,7 +54,7 @@ class AdminTrickController extends AbstractController
     public function index(): Response
     {
         $tricks = $this->repository->findAll();
-        return $this->render("admin/trick/index.html.twig", [
+        return $this->render("admin/admin-trick/index.html.twig", [
             "current_menu" => $this->currentMenu,
             "page" => [
                 "title" => $this->pageTitle,
@@ -81,7 +81,7 @@ class AdminTrickController extends AbstractController
             return $this->redirectToRoute("admin.trick.index");
         }
 
-        return $this->render("admin/trick/form.html.twig", [
+        return $this->render("admin/admin-trick/form.html.twig", [
             "current_menu" => "admin.trick.new",
             "page" => [
                 "title" => "Nouveau Trick",
@@ -123,7 +123,7 @@ class AdminTrickController extends AbstractController
             return $this->redirectToRoute("admin.trick.index");
         }
 
-        return $this->render("admin/trick/form.html.twig", [
+        return $this->render("admin/admin-trick/form.html.twig", [
             "page" => [
                 "title" => $trick->getTitle() . ' - Edition',
             ],
