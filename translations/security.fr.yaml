@@ -3,3 +3,6 @@ Email could not be found.: Cet email n'existe pas.
 You should agree to our terms.: Vous devez acceper nos conditions d'utilisation.
 Please enter a password: Veuillez entrer un mot de passe
 Your password should be at least {{ limit }} characters: Votre mot de passe doit avoir au moins {{ limit }} caractères
+Your password have been reset: Votre mot de passe a été réinitialisé
+You have been logged in: Vous êtes maintenant connecté à votre compte
+You have been logged out: Vous êtes déconnecté de votre compte

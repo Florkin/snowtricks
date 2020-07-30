@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -38,5 +39,16 @@ class SecurityController extends AbstractController
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    /**
+     * @Route("/logout-success", name="logout.success")
+     * @param TranslatorInterface $translator
+     */
+    public function logoutSuccess(TranslatorInterface $translator): Response
+    {
+        $successLogoutMessage = $translator->trans('You have been logged out', [], 'security');
+        $this->addFlash('success', $successLogoutMessage);
+        return $this->redirectToRoute('home');
     }
 }

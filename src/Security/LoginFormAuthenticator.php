@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
@@ -31,6 +33,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
+    /**
+     * @var FlashBagInterface
+     */
+    private $flashBag;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
 
     /**
@@ -39,13 +49,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @param UrlGeneratorInterface $urlGenerator
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param FlashBagInterface $flashBag
+     * @param TranslatorInterface $translator
      */
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, FlashBagInterface $flashBag, TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->flashBag = $flashBag;
+        $this->translator = $translator;
     }
 
     public function supports(Request $request)
@@ -99,12 +113,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $credentials['password'];
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
 
+        $successLoginMessage = $this->translator->trans('You have been logged in', [], 'security');
+        $this->flashBag->add('success', $successLoginMessage);
         return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
