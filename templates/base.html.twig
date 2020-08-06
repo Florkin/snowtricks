@@ -20,6 +20,11 @@
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
+
+
+    {% if enableListingJS is defined and enableListingJS == true %}
+        {{ encore_entry_script_tags('listing') }}
+    {% endif %}
 {% endblock %}
 </body>
 </html>

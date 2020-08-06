@@ -25,21 +25,21 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/liste/{page}", name="trick.index", requirements={"page" = "\d+"})
+     * @Route("/tricks/liste", name="trick.index", requirements={"page" = "\d+"})
      * @param $page
      * @return Response
      */
-    public function index($page)
+    public function index()
     {
-        $tricks = $this->trickRepository->findAllVisiblePaginate($page, 12);
-        dd($tricks);
+        $tricks = $this->trickRepository->findAllVisible();
 
         return $this->render("trick/index.html.twig", [
-            "current_menu" => "trick.index",
-            "page" => [
-                "title" => "Liste des tricks",
+            'current_menu' => 'trick.index',
+            'page' => [
+                'title' => 'Liste des tricks',
             ],
-            "tricks" => $tricks
+            'tricks' => $tricks,
+            'enableListingJS' => true
         ]);
     }
 
