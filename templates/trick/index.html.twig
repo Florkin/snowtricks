@@ -13,6 +13,10 @@
                 {% include "_partials/trick-miniature.html.twig" %}
             {% endfor %}
         </div>
+
+        <div class="navigation">
+            {{ knp_pagination_render(tricks) }}
+        </div>
     </div>
 
 

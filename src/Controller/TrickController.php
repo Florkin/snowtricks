@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Repository\TrickRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,12 +28,17 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/tricks/liste", name="trick.index", requirements={"page" = "\d+"})
-     * @param $page
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(PaginatorInterface $paginator, Request $request)
     {
-        $tricks = $this->trickRepository->findAllVisible();
+        $tricks = $paginator->paginate(
+            $this->trickRepository->findAllVisibleQuery(),
+            $request->query->getInt('page', 1),
+            12
+        );
 
         return $this->render("trick/index.html.twig", [
             'current_menu' => 'trick.index',
@@ -39,7 +46,6 @@ class TrickController extends AbstractController
                 'title' => 'Liste des tricks',
             ],
             'tricks' => $tricks,
-            'enableListingJS' => true
         ]);
     }
 
