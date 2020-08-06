@@ -11,56 +11,60 @@ use Symfony\Component\Routing\Annotation\Route;
 class TrickController extends AbstractController
 {
     /**
-     * @var string
-     *
-     * Titre de la page
-     */
-    private $pageTitle = "Trick";
-
-    /**
-     * @var string
-     *
-     * Use to check active link on menu
-     */
-    private $currentMenu = "trick.show";
-    /**
      * @var TrickRepository
      */
-    private $repository;
+    private $trickRepository;
 
     /**
      * TrickController constructor.
-     * @param TrickRepository $repository
+     * @param TrickRepository $trickRepository
      */
-    public function __construct(TrickRepository $repository)
+    public function __construct(TrickRepository $trickRepository)
     {
-        $this->repository = $repository;
+        $this->trickRepository = $trickRepository;
     }
 
+    /**
+     * @Route("/tricks/liste", name="trick.index", requirements={"page" = "\d+"})
+     * @param $page
+     * @return Response
+     */
+    public function index()
+    {
+        $tricks = $this->trickRepository->findAllVisible();
+
+        return $this->render("trick/index.html.twig", [
+            'current_menu' => 'trick.index',
+            'page' => [
+                'title' => 'Liste des tricks',
+            ],
+            'tricks' => $tricks,
+            'enableListingJS' => true
+        ]);
+    }
 
     /**
-     * @param int $id
      * @param string $slug
      * @param Trick $trick
      * @return Response
      * @Route("/tricks/{id}-{slug}", name="trick.show", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"})
      */
-    public function show(string $slug, Trick $trick) : Response
+    public function show(string $slug, Trick $trick): Response
     {
         $trickSlug = $trick->getSlug();
 
         // If slug is wrong, use id to get it and redirect to the right trick
-        if ($trickSlug !== $slug){
+        if ($trickSlug !== $slug) {
             return $this->redirectToRoute("trick.show", [
                 "id" => $trick->getId(),
                 "slug" => $trickSlug
             ], 301);
         }
 
-        return $this->render("pages/trick.html.twig", [
-            "current_menu" => $this->currentMenu,
+        return $this->render("trick/show.html.twig", [
+            "current_menu" => "trick.show",
             "page" => [
-                "title" => $slug . " - " . $this->pageTitle,
+                "title" => $trick->getTitle(),
             ],
             "trick" => $trick,
         ]);
