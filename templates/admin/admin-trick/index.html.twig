@@ -20,5 +20,9 @@
                 {% include "admin/_admin-partials/trick-miniature.html.twig" %}
             {% endfor %}
         </div>
+
+        <div class="navigation">
+            {{ knp_pagination_render(tricks) }}
+        </div>
     </div>
 {% endblock %}
