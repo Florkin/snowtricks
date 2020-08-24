@@ -82,7 +82,8 @@ class AdminTrickController extends AbstractController
             ],
             "trick" => $trick,
             "form" => $form->createView(),
-            "btn_label" => "Créer"
+            "btn_label" => "Créer",
+            'enableFormsJS' => true
         ]);
     }
 
@@ -123,7 +124,8 @@ class AdminTrickController extends AbstractController
             ],
             "form" => $form->createView(),
             "trick" => $trick,
-            "btn_label" => "Modifier"
+            "btn_label" => "Modifier",
+            'enableFormsJS' => true
         ]);
     }
 

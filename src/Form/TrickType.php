@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Trick;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,7 +25,16 @@ class TrickType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'title',
                 'multiple' => true,
-                'expanded' => true
+                'query_builder' => function (CategoryRepository $categoryRepository) {
+                    return $categoryRepository->createQueryBuilder("p")
+                        ->where("p.parentCategory IS NOT NULL");
+                },
+                'group_by' => function (Category $category) {
+                    if (!is_null($category->getParentCategory())) {
+                        return $category->getParentCategory()->getTitle();
+                    }
+                    return null;
+                }
             ])
             ->add('visible');
     }
