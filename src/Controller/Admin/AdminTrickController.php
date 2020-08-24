@@ -15,20 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminTrickController extends AbstractController
 {
     /**
-     * @var string
-     *
-     * Titre de la page
-     */
-    private $pageTitle = "Gestion des tricks";
-
-    /**
-     * @var string
-     *
-     * Use to check active link on menu
-     */
-    private $currentMenu = "admin.trick.index";
-
-    /**
      * @var TrickRepository
      */
     private $trickRepository;
@@ -62,12 +48,12 @@ class AdminTrickController extends AbstractController
             12
         );
 
-        return $this->render("admin/admin-trick/index.html.twig", [
-            "current_menu" => $this->currentMenu,
-            "page" => [
-                "title" => $this->pageTitle,
+        return $this->render("admin/trick/index.html.twig", [
+            'current_menu' => 'admin.trick.index',
+            'page' => [
+                "title" => 'Gestion des tricks',
             ],
-            "tricks" => $tricks
+            'tricks' => $tricks
         ]);
     }
 
@@ -89,7 +75,7 @@ class AdminTrickController extends AbstractController
             return $this->redirectToRoute("admin.trick.index");
         }
 
-        return $this->render("admin/admin-trick/form.html.twig", [
+        return $this->render("admin/trick/form.html.twig", [
             "current_menu" => "admin.trick.new",
             "page" => [
                 "title" => "Nouveau Trick",
@@ -131,7 +117,7 @@ class AdminTrickController extends AbstractController
             return $this->redirectToRoute("admin.trick.index");
         }
 
-        return $this->render("admin/admin-trick/form.html.twig", [
+        return $this->render("admin/trick/form.html.twig", [
             "page" => [
                 "title" => $trick->getTitle() . ' - Edition',
             ],

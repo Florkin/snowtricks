@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ page.title }}
+{% endblock %}
+
+{% block body %}
+    {% include "_partials/page-header.html.twig" %}
+
+    <div class="container">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-12 col-sm-10">{{ form_row(form.title) }}</div>
+            <div class="col-12 col-sm-10">{{ form_row(form.description) }}</div>
+            <div class="col-12 col-sm-4">
+                <button class="btn btn-success" type="submit">{{ btn_label|default("Valider") }}</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}

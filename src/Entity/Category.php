@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -22,7 +25,7 @@ class Category
     /**
      * @ORM\Column(type="string", length=70)
      */
-    private $categoryName;
+    private $title;
 
     /**
      * @ORM\ManyToMany(targetEntity=Trick::class, mappedBy="categories")
@@ -39,6 +42,16 @@ class Category
      */
     private $childCategories;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * * @Assert\Length(
+     *    max = 1000,
+     *    maxMessage = "La description doit contenir au maximum {{ limit }} caractères",
+     *    allowEmptyString = true
+     * )
+     */
+    private $description;
+
     public function __construct()
     {
         $this->relatedTricks = new ArrayCollection();
@@ -50,14 +63,14 @@ class Category
         return $this->id;
     }
 
-    public function getCategoryName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->categoryName;
+        return $this->title;
     }
 
-    public function setCategoryName(string $categoryName): self
+    public function setTitle(string $title): self
     {
-        $this->categoryName = $categoryName;
+        $this->title = $title;
 
         return $this;
     }
@@ -129,6 +142,23 @@ class Category
                 $childCategory->setParentCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return (new Slugify())->slugify($this->title);
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
