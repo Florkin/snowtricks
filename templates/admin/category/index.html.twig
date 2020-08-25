@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ page.title }}
+{% endblock %}
+
+{% block messages %}
+    {% include "_partials/_messages.html.twig" %}
+{% endblock %}
+
+{% block body %}
+    {% include "_partials/_page-header.html.twig" %}
+
+    <div class="container py-3">
+        <a href="{{ path("admin.category.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Ajouter une catégorie</a>
+
+        <div class="row">
+            {% for category in categories %}
+                {% include "admin/_partials/_category-line.html.twig" %}
+            {% endfor %}
+        </div>
+
+        <div class="navigation">
+            {{ knp_pagination_render(categories) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+<div class="col-12 col-sm-6 col-lg-4 my-3">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>
+            </h5>
+            <p>{{ trick.description|u.truncate(50, "...") }}</p>
+            <p class="text-muted">{{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}</p>
+
+            {% if trick.categories|length > 0 %}
+                <div class="border-top py-2">
+                    {% for category in trick.categories %}
+                        <span class="text-muted">
+                            {% if current_menu is defined and current_menu == 'category.show.' ~ category.slug %}
+                                {{ category.title }}
+                            {% else %}
+                                <a href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>
+                            {% endif %}
+                            {% if not loop.last %} |{% endif %}
+                        </span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

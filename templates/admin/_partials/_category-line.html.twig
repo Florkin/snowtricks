@@ -1,0 +1,26 @@
+<div class="col-12 my-2">
+    <div class="card p-3">
+        <div class="row align-items-center">
+            <div class="col-md-9">
+                <h5 class="card-title">
+                    <span class="text-primary">{{ category.title }}</span>
+                </h5>
+                <p>{{ category.description|u.truncate(100, "...") }}</p>
+            </div>
+
+            <div class="actions col-md-3 text-right">
+                <a href="{{ path("admin.category.edit", {id: category.id, slug: category.slug}) }}" class="btn btn-primary">
+                    <span class="fa fa-edit"></span>
+                </a>
+                <form method="post" class="d-inline-block" action="{{ path("admin.category.delete", {id: category.id}) }}"
+                onsubmit="return confirm('Êtes vous sur de vouloir supprimer cette catégorie?')">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ category.id) }}">
+                    <button type="submit" href="#" class="btn btn-danger">
+                        <span class="fa fa-eraser"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

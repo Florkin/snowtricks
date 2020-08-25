@@ -10,9 +10,13 @@
                 <li class="nav-item{% if current_menu is defined and current_menu == "home" %} active{% endif %}">
                     <a class="nav-link" href="{{ path("home") }}">Home</a>
                 </li>
-                <li class="nav-item{% if current_menu is defined and current_menu == "tricks_list" %} active{% endif %}">
-                    <a class="nav-link" href="{{ path("trick.index") }}">Tricks</a>
-                </li>
+
+                {#                Get Catégories to create dropdown selector #}
+                {% if current_menu is defined %}
+                    {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList", {currentMenu: current_menu})) }}
+                {% else %}
+                    {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList")) }}
+                {% endif %}
             </ul>
             <ul class="navbar-nav right-nav">
                 <li class="nav-item dropdown">
@@ -25,6 +29,9 @@
                            href="{{ path("admin.trick.index") }}"><span class="fa fa-user"></span> Gérer des Tricks</a>
                         <a class="dropdown-item{% if current_menu is defined and current_menu == "admin.trick.new" %} active{% endif %}"
                            href="{{ path("admin.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "admin.category.new" %} active{% endif %}"
+                           href="{{ path("admin.category.index") }}"><span class="fa fa-object-group"></span> Gérer les
+                            catégories</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -34,11 +41,15 @@
                     </a>
                     <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
                         {% if app.user.username is defined %}
-                            <a class="dropdown-item" href="#"><span class="fa fa-user"></span> {{ app.user.username }}</a>
-                            <a class="dropdown-item" href="{{ path("app_logout") }}"><span class="fa fa-sign-out"></span> Logout</a>
+                            <a class="dropdown-item" href="#"><span class="fa fa-user"></span> {{ app.user.username }}
+                            </a>
+                            <a class="dropdown-item" href="{{ path("app_logout") }}"><span
+                                        class="fa fa-sign-out"></span> Logout</a>
                         {% else %}
-                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_login" %} active{% endif %}" href="{{ path("app_login") }}"><span class="fa fa-sign-in"></span> Se connecter</a>
-                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_register" %} active{% endif %}" href="{{ path("app_register") }}"><span class="fa fa-user-plus"></span> S'inscrire</a>
+                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_login" %} active{% endif %}"
+                               href="{{ path("app_login") }}"><span class="fa fa-sign-in"></span> Se connecter</a>
+                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_register" %} active{% endif %}"
+                               href="{{ path("app_register") }}"><span class="fa fa-user-plus"></span> S'inscrire</a>
                         {% endif %}
                     </div>
                 </li>

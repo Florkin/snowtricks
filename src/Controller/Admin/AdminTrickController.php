@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,23 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminTrickController extends AbstractController
 {
     /**
-     * @var string
-     *
-     * Titre de la page
-     */
-    private $pageTitle = "Gestion des tricks";
-
-    /**
-     * @var string
-     *
-     * Use to check active link on menu
-     */
-    private $currentMenu = "admin.trick.index";
-
-    /**
      * @var TrickRepository
      */
-    private $repository;
+    private $trickRepository;
     /**
      * @var EntityManager
      */
@@ -38,28 +25,35 @@ class AdminTrickController extends AbstractController
 
     /**
      * AdminTrickController constructor.
-     * @param TrickRepository $repository
+     * @param TrickRepository $trickRepository
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TrickRepository $repository, EntityManagerInterface $entityManager)
+    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager)
     {
-        $this->repository = $repository;
+        $this->trickRepository = $trickRepository;
         $this->entityManager = $entityManager;
     }
 
     /**
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
      * @Route("/admin/trick/liste", name="admin.trick.index")
      */
-    public function index(): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
-        $tricks = $this->repository->findAll();
-        return $this->render("admin/admin-trick/index.html.twig", [
-            "current_menu" => $this->currentMenu,
-            "page" => [
-                "title" => $this->pageTitle,
+        $tricks = $paginator->paginate(
+            $this->trickRepository->findAll(),
+            $request->query->getInt('page', 1),
+            12
+        );
+
+        return $this->render("admin/trick/index.html.twig", [
+            'current_menu' => 'admin.trick.index',
+            'page' => [
+                "title" => 'Gestion des tricks',
             ],
-            "tricks" => $tricks
+            'tricks' => $tricks
         ]);
     }
 
@@ -81,14 +75,15 @@ class AdminTrickController extends AbstractController
             return $this->redirectToRoute("admin.trick.index");
         }
 
-        return $this->render("admin/admin-trick/form.html.twig", [
+        return $this->render("admin/trick/form.html.twig", [
             "current_menu" => "admin.trick.new",
             "page" => [
                 "title" => "Nouveau Trick",
             ],
             "trick" => $trick,
             "form" => $form->createView(),
-            "btn_label" => "Créer"
+            "btn_label" => "Créer",
+            'enableFormsJS' => true
         ]);
     }
 
@@ -123,13 +118,14 @@ class AdminTrickController extends AbstractController
             return $this->redirectToRoute("admin.trick.index");
         }
 
-        return $this->render("admin/admin-trick/form.html.twig", [
+        return $this->render("admin/trick/form.html.twig", [
             "page" => [
                 "title" => $trick->getTitle() . ' - Edition',
             ],
             "form" => $form->createView(),
             "trick" => $trick,
-            "btn_label" => "Modifier"
+            "btn_label" => "Modifier",
+            'enableFormsJS' => true
         ]);
     }
 

@@ -1,0 +1,21 @@
+{% if categories|length > 0 %}
+    <li class="nav-item dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Tricks
+        </button>
+        <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
+            {% for category in categories %}
+                <a class="dropdown-item{% if current_menu is defined and current_menu == "category.show." ~ category.slug %} active{% endif %}"
+                   href="{{ path("category.show", {id: category.id, slug:category.slug}) }}">{{ category.title }}</a>
+            {% endfor %}
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item{% if current_menu is defined and current_menu == "trick.index" %} active{% endif %}"
+               href="{{ path("trick.index") }}"><b>Tous les tricks</b></a>
+        </div>
+    </li>
+{% else %}
+    <li class="nav-item{% if current_menu is defined and current_menu == "trick.index" %} active{% endif %}">
+    <a class="nav-link"
+       href="{{ path("trick.index") }}">Les tricks</a>
+    </li>
+{% endif %}

@@ -11,7 +11,7 @@
 </head>
 <body>
 {% block nav %}
-    {% include "_partials/nav.html.twig" %}
+    {% include "_partials/_nav.html.twig" %}
 {% endblock %}
 
 {% block messages %}{% endblock %}
@@ -24,6 +24,10 @@
 
     {% if enableListingJS is defined and enableListingJS == true %}
         {{ encore_entry_script_tags('listing') }}
+    {% endif %}
+
+    {% if enableFormsJS is defined and enableFormsJS == true %}
+        {{ encore_entry_script_tags('forms') }}
     {% endif %}
 {% endblock %}
 </body>
