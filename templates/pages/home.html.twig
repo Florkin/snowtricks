@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block body %}
-    {% include '_partials/messages.html.twig' %}
-    {% include "_partials/page-header.html.twig" %}
+    {% include '_partials/_messages.html.twig' %}
+    {% include "_partials/_page-header.html.twig" %}
 
     <div class="container">
         <h2>Derniers Tricks Ajoutés</h2>
         <div class="row">
             {% for trick in tricks %}
-                {% include "_partials/trick-miniature.html.twig" %}
+                {% include "_partials/_trick-miniature.html.twig" %}
             {% endfor %}
         </div>
     </div>

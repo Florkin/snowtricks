@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block messages %}
-    {% include "_partials/messages.html.twig" %}
+    {% include "_partials/_messages.html.twig" %}
 {% endblock %}
 
 {% block body %}
-    {% include "_partials/page-header.html.twig" %}
+    {% include "_partials/_page-header.html.twig" %}
 
     <div class="container py-3">
         <a href="{{ path("admin.trick.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Créer un
@@ -19,7 +19,7 @@
 
         <div class="row">
             {% for trick in tricks %}
-                {% include "admin/_partials/trick-miniature.html.twig" %}
+                {% include "admin/_partials/_trick-miniature.html.twig" %}
             {% endfor %}
         </div>
 
