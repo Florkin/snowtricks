@@ -12,7 +12,7 @@
                 </li>
 
                 {#                Get Catégories to create dropdown selector #}
-                {% if currentMenu is defined %}
+                {% if current_menu is defined %}
                     {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList", {currentMenu: current_menu})) }}
                 {% else %}
                     {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList")) }}
