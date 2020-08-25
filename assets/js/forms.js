@@ -1,6 +1,10 @@
+import "../css/forms.scss";
 
-// Make category selector the right height
-$(function () {
-    $(".category-selector").attr("size",$(".category-selector option").length + $(".category-selector optgroup").length);
-    $(".category-selector").css("overflow", "hidden");
+// Make category selector the better
+import "select2/dist/js/select2.min"
+
+$(document).ready(function() {
+    $(".category-selector").select2({
+        theme: "bootstrap4"
+    });
 });

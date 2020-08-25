@@ -8,6 +8,7 @@
         {# 'app' must match the first argument to addEntry() in webpack.config.js #}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
+    {% block add_stylesheets %}{% endblock %}
 </head>
 <body>
 {% block nav %}
@@ -20,15 +21,8 @@
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
-
-
-    {% if enableListingJS is defined and enableListingJS == true %}
-        {{ encore_entry_script_tags('listing') }}
-    {% endif %}
-
-    {% if enableFormsJS is defined and enableFormsJS == true %}
-        {{ encore_entry_script_tags('forms') }}
-    {% endif %}
 {% endblock %}
+
+{% block add_javascripts %}{% endblock %}
 </body>
 </html>
