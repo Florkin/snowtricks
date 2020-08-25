@@ -21,5 +21,12 @@
         </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
 
+{% block add_stylesheets %}
+    {{ encore_entry_link_tags('forms') }}
+{% endblock %}
+
+{% block add_javascripts %}
+    {{ encore_entry_script_tags('forms') }}
 {% endblock %}
