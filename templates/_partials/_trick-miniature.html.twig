@@ -10,7 +10,14 @@
             {% if trick.categories|length > 0 %}
                 <div class="border-top py-2">
                     {% for category in trick.categories %}
-                        <span class="text-muted"><a href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>{% if not loop.last %} |{% endif %}</span>
+                        <span class="text-muted">
+                            {% if current_menu is defined and current_menu == 'category.show.' ~ category.slug %}
+                                {{ category.title }}
+                            {% else %}
+                                <a href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>
+                            {% endif %}
+                            {% if not loop.last %} |{% endif %}
+                        </span>
                     {% endfor %}
                 </div>
             {% endif %}
