@@ -73,9 +73,9 @@ class CategoryController extends AbstractController
      * @param string $currentMenu
      * @return Response
      */
-    public function navbarDropdownList(string $currentMenu) : Response
+    public function navbarDropdownList(string $currentMenu = null) : Response
     {
-        $categories = $this->categoryRepository->findAll();
+        $categories = $this->categoryRepository->findAllNotEmpty();
         return $this->render('_partials/_categories-dropdown.html.twig', [
             'categories' => $categories,
             'current_menu' => $currentMenu
