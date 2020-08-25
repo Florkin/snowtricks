@@ -10,4 +10,12 @@
     <p>{{ trick.id }}</p>
     <p>{{ trick.title }}</p>
     <p>{{ trick.description|nl2br }}</p>
+
+    {% if trick.categories|length > 0 %}
+        <div class="border-top py-2 col-md-12">
+            {% for category in trick.categories %}
+                <span class="text-muted">{{ category.title }}{% if not loop.last %} |{% endif %}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
