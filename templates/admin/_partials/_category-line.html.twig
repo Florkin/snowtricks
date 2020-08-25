@@ -3,10 +3,9 @@
         <div class="row align-items-center">
             <div class="col-md-9">
                 <h5 class="card-title">
-{#                    <a href="{{ path("category.show", {id:category.id, slug:category.slug}) }}">{{ category.title }}</a>#}
-                    <a href="#">{{ category.title }}</a>
+                    <span class="text-primary">{{ category.title }}</span>
                 </h5>
-                <p>{{ category.description|u.truncate(50, "...") }}</p>
+                <p>{{ category.description|u.truncate(100, "...") }}</p>
             </div>
 
             <div class="actions col-md-3 text-right">
