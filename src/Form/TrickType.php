@@ -26,10 +26,6 @@ class TrickType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'title',
                 'multiple' => true,
-//                'query_builder' => function (CategoryRepository $categoryRepository) {
-//                    return $categoryRepository->createQueryBuilder("p")
-//                        ->where("p.parentCategory IS NOT NULL");
-//                },
                 'group_by' => function (Category $category) {
                     if (!is_null($category->getParentCategory())) {
                         return $category->getParentCategory()->getTitle();

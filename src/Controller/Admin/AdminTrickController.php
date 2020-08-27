@@ -125,7 +125,7 @@ class AdminTrickController extends AbstractController
             "form" => $form->createView(),
             "trick" => $trick,
             "btn_label" => "Modifier",
-            'enableFormsJS' => true
+            'ajaxImgUploadUrl' => $this->generateUrl('ajax.trick.img.upload', ['id' => $trick->getId()])
         ]);
     }
 
@@ -144,5 +144,23 @@ class AdminTrickController extends AbstractController
         }
 
         return $this->redirectToRoute("admin.trick.index");
+    }
+
+    /**
+     * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST")
+     * @param int $id
+     * @param Request $request
+     */
+    public function ajaxUploadImage(int $id, Request $request) :Response
+    {
+        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $trick->setPictureFiles($request->files->all()['trick']['pictureFiles']);
+
+        $date = new \DateTime();
+        $trick->setDateUpdate($date);
+
+        $this->entityManager->flush();
+
+        return $this->json(['status' => 'success']);
     }
 }
