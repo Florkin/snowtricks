@@ -83,7 +83,7 @@ class Trick
     /**
      * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      */
-    private $pictures;
+    protected $pictures;
 
     /**
      * @Assert\All({
@@ -230,7 +230,7 @@ class Trick
         return $this->pictures;
     }
 
-    public function getPicture(): ?Picture
+    public function getCover(): ?Picture
     {
         if ($this->pictures->isEmpty()) {
             return null;

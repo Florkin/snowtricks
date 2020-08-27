@@ -27,10 +27,10 @@ class Picture
     private $filename;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="Picture")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="pictures")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $trick;
+    protected $trick;
 
     /**
      * @var File|null
