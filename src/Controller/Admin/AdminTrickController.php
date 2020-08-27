@@ -7,10 +7,13 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Liip\ImagineBundle\Templating\Helper\FilterHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
 class AdminTrickController extends AbstractController
 {
@@ -71,7 +74,7 @@ class AdminTrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
-            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été ajouté");
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
             return $this->redirectToRoute("admin.trick.index");
         }
 
@@ -114,7 +117,7 @@ class AdminTrickController extends AbstractController
             $trick->setDateUpdate($date);
 
             $this->entityManager->flush();
-            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été modifié");
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été modifié");
             return $this->redirectToRoute("admin.trick.index");
         }
 
@@ -137,10 +140,10 @@ class AdminTrickController extends AbstractController
      */
     public function delete(Trick $trick, Request $request): Response
     {
-        if ($this->isCsrfTokenValid("delete". $trick->getId(), $request->get("_token"))){
+        if ($this->isCsrfTokenValid("delete" . $trick->getId(), $request->get("_token"))) {
             $this->entityManager->remove($trick);
             $this->entityManager->flush();
-            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été supprimé");
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été supprimé");
         }
 
         return $this->redirectToRoute("admin.trick.index");
@@ -150,8 +153,11 @@ class AdminTrickController extends AbstractController
      * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST")
      * @param int $id
      * @param Request $request
+     * @param UploaderHelper $uploaderHelper
+     * @param CacheManager $cacheManager
+     * @return Response
      */
-    public function ajaxUploadImage(int $id, Request $request) :Response
+    public function ajaxUploadImage(int $id, Request $request, UploaderHelper $uploaderHelper, CacheManager $cacheManager): Response
     {
         $trick = $this->trickRepository->findOneBy(['id' => $id]);
         $trick->setPictureFiles($request->files->all()['trick']['pictureFiles']);
@@ -161,6 +167,19 @@ class AdminTrickController extends AbstractController
 
         $this->entityManager->flush();
 
-        return $this->json(['status' => 'success']);
+        $imgArray = [];
+        $resizer = new FilterHelper($cacheManager);
+
+        foreach ($trick->getPictures() as $picture) {
+            $cacheManager->addResolver('/public/images/tricks/' . $picture->getFilename(), 'thumb');
+            $src = $resizer->filter('/public/images/tricks/' . $picture->getFilename(), 'thumb');
+            array_push($imgArray, '<img src="' . $src . '" class="file-preview-image">');
+        };
+
+        $response = [
+            'initialPreview' => $imgArray
+        ];
+
+        return $this->json($response);
     }
 }
