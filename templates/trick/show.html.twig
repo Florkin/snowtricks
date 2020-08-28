@@ -5,17 +5,51 @@
 {% endblock %}
 
 {% block body %}
+
     <h1>{{ trick.title }}</h1>
 
-    <p>{{ trick.id }}</p>
-    <p>{{ trick.title }}</p>
+    {% if trick.pictures|length > 0 %}
+        <!-- Slider main container -->
+        <div class="trick-show-images js-trick-show-images-swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for picture in trick.pictures %}
+                    <div class="swiper-slide d-flex justify-content-center">
+                        <img class="img-fluid"
+                             src="{{ vich_uploader_asset(picture, 'imageFile', 'App\\Entity\\Picture') | imagine_filter('mid_size_formated') }}">
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- If we need pagination -->
+            <div class="d-flex justify-content-center">
+                <button class="m-3 btn btn-outline-primary swiper-button-prev">
+                    <span class="fa fa-arrow-circle-o-left"></span>
+                </button>
+                <button class="m-3 btn btn-outline-primary swiper-button-next">
+                    <span class="fa fa-arrow-circle-o-right"></span>
+                </button>
+            </div>
+
+        </div>
+    {% endif %}
+
     <p>{{ trick.description|nl2br }}</p>
 
     {% if trick.categories|length > 0 %}
         <div class="border-top py-2 col-md-12">
             {% for category in trick.categories %}
-                <span class="text-muted"><a href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>{% if not loop.last %} |{% endif %}</span>
+                <span class="text-muted"><a
+                            href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>{% if not loop.last %} |{% endif %}</span>
             {% endfor %}
         </div>
     {% endif %}
+{% endblock %}
+
+{% block add_stylesheets %}
+    {{ encore_entry_link_tags('swipers') }}
+{% endblock %}
+
+{% block add_javascripts %}
+    {{ encore_entry_script_tags('swipers') }}
 {% endblock %}

@@ -4,13 +4,17 @@ namespace App\Controller\Admin;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
+use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Liip\ImagineBundle\Templating\Helper\FilterHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
 class AdminTrickController extends AbstractController
 {
@@ -22,16 +26,22 @@ class AdminTrickController extends AbstractController
      * @var EntityManager
      */
     private $entityManager;
+    /**
+     * @var PictureRepository
+     */
+    private $pictureRepository;
 
     /**
      * AdminTrickController constructor.
      * @param TrickRepository $trickRepository
+     * @param PictureRepository $pictureRepository
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager)
+    public function __construct(TrickRepository $trickRepository, PictureRepository $pictureRepository, EntityManagerInterface $entityManager)
     {
         $this->trickRepository = $trickRepository;
         $this->entityManager = $entityManager;
+        $this->pictureRepository = $pictureRepository;
     }
 
     /**
@@ -71,7 +81,7 @@ class AdminTrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
-            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été ajouté");
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
             return $this->redirectToRoute("admin.trick.index");
         }
 
@@ -83,7 +93,6 @@ class AdminTrickController extends AbstractController
             "trick" => $trick,
             "form" => $form->createView(),
             "btn_label" => "Créer",
-            'enableFormsJS' => true
         ]);
     }
 
@@ -114,7 +123,7 @@ class AdminTrickController extends AbstractController
             $trick->setDateUpdate($date);
 
             $this->entityManager->flush();
-            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été modifié");
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été modifié");
             return $this->redirectToRoute("admin.trick.index");
         }
 
@@ -125,7 +134,6 @@ class AdminTrickController extends AbstractController
             "form" => $form->createView(),
             "trick" => $trick,
             "btn_label" => "Modifier",
-            'enableFormsJS' => true
         ]);
     }
 
@@ -137,12 +145,81 @@ class AdminTrickController extends AbstractController
      */
     public function delete(Trick $trick, Request $request): Response
     {
-        if ($this->isCsrfTokenValid("delete". $trick->getId(), $request->get("_token"))){
+        if ($this->isCsrfTokenValid("delete" . $trick->getId(), $request->get("_token"))) {
             $this->entityManager->remove($trick);
             $this->entityManager->flush();
-            $this->addFlash("success", "Le trick ". $trick->getTitle() ." a bien été supprimé");
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été supprimé");
         }
 
         return $this->redirectToRoute("admin.trick.index");
+    }
+
+    /**
+     * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST")
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
+    public function ajaxUploadImage(int $id, Request $request): Response
+    {
+        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $trick->setPictureFiles($request->files->all());
+
+        $date = new \DateTime();
+        $trick->setDateUpdate($date);
+
+        $this->entityManager->flush();
+
+        $response = [
+            'status' => 'success'
+        ];
+
+        return $this->json($response);
+    }
+
+    /**
+     * @Route("/admin/trick/get-uploaded-images/{id}", name="ajax.get.uploaded.images", requirements={"id": "[0-9]*"}, methods="POST")
+     * @param int $id
+     * @param Request $request
+     * @param UploaderHelper $helper
+     * @return Response
+     */
+    public function ajaxGetUploadedImages(int $id, Request $request, UploaderHelper $helper): Response
+    {
+        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $pictures = $trick->getPictures();
+        $pathArray =[];
+        foreach ($pictures as $picture){
+            $pathArray[$picture->getId()] =  $helper->asset($picture, 'imageFile');
+        }
+
+        return $this->json($pathArray);
+    }
+
+    /**
+     * @Route("/admin/trick/remove-uploaded-image/{id}/{id_picture}", name="ajax.remove.image", requirements={"id": "[0-9]*", "id_picture": "[0-9]*"}, methods="POST")
+     * @param int $id
+     * @param int $id_picture
+     * @param Request $request
+     * @param UploaderHelper $helper
+     * @return Response
+     */
+    public function ajaxRemoveImage(int $id, $id_picture = 0): Response
+    {
+        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $picture = $this->pictureRepository->findOneBy(['id' => $id_picture]);
+
+        $trick->removePicture($picture);
+
+        $date = new \DateTime();
+        $trick->setDateUpdate($date);
+
+        $this->entityManager->flush();
+
+        $response = [
+            'status' => 'success'
+        ];
+
+        return $this->json($response);
     }
 }
