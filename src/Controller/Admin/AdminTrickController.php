@@ -170,4 +170,23 @@ class AdminTrickController extends AbstractController
 
         return $this->json($response);
     }
+
+    /**
+     * @Route("/admin/trick/get-uploaded-images/{id}", name="ajax.get.uploaded.images", requirements={"id": "[0-9]*"}, methods="POST")
+     * @param int $id
+     * @param Request $request
+     * @param UploaderHelper $helper
+     * @return Response
+     */
+    public function ajaxGetUploadedImages(int $id, Request $request, UploaderHelper $helper): Response
+    {
+        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $pictures = $trick->getPictures();
+        $pathArray =[];
+        foreach ($pictures as $picture){
+            $pathArray[$picture->getFilename()] =  $helper->asset($picture, 'imageFile');
+        }
+
+        return $this->json($pathArray);
+    }
 }
