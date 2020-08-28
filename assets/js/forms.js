@@ -2,16 +2,30 @@ import "../css/forms.scss";
 import "select2/dist/js/select2.min"
 import Dropzone from "dropzone"
 
-function getUploadedImages(url) {
+function ajaxHandleRequest(requestType, url, id) {
     let response = [];
-    $.ajax({
-        url: url,
-        type: "POST",
-        async: false,
-        success: function (data) {
-            response = data;
-        }
-    })
+
+    if (requestType == "getUploadedImages") {
+        $.ajax({
+            url: url,
+            type: "POST",
+            async: false,
+            success: function (data) {
+                response = data;
+            }
+        })
+    }
+
+    if (requestType == "removeImage") {
+        $.ajax({
+            url: url + "/" + id,
+            type: "POST",
+            async: false,
+            success: function (data) {
+                response = data;
+            }
+        })
+    }
 
     return response;
 }
@@ -19,28 +33,33 @@ function getUploadedImages(url) {
 // Images dropzone
 var _actionToDropZone = $(".file-dropzone").attr('data-upload-url');
 var _getUploadedImages = $(".file-dropzone").attr('data-get-images-url');
+var _removeImage = $(".file-dropzone").attr('data-remove-images-url');
 
 Dropzone.autoDiscover = false;
+let imagesPaths
+
 var imgDropzone = new Dropzone(".file-dropzone", {
     url: _actionToDropZone,
     addRemoveLinks: true,
     thumbnailWidth: 250,
     thumbnailHeight: 250,
     thumbnailMethod: "crop",
+    maxFiles:10,
     init: function () {
-        let imagesPaths = getUploadedImages(_getUploadedImages);
-
+        imagesPaths = ajaxHandleRequest("getUploadedImages", _getUploadedImages);
         let myDropzone = this;
 
         for (var key in imagesPaths){
-            let mockFile = {name: "thumb-" + key, size: 200 };
+            let mockFile = {name: key, size: 200 };
             myDropzone.displayExistingFile(mockFile, "/" + imagesPaths[key]);
         }
 
-        // If you use the maxFiles option, make sure you adjust it to the
-        // correct amount:
-        // let fileCountOnServer = 2; // The number of files already uploaded
-        // myDropzone.options.maxFiles = myDropzone.options.maxFiles - fileCountOnServer;
+        let fileCountOnServer = Object.keys(imagesPaths).length; // The number of files already uploaded
+        myDropzone.options.maxFiles = myDropzone.options.maxFiles - fileCountOnServer;
+    },
+    removedfile: function (file) {
+        ajaxHandleRequest("removeImage", _removeImage, file.name)
+        file.previewElement.remove();
     }
 });
 

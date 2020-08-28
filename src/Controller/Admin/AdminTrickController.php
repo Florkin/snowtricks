@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
+use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -25,16 +26,22 @@ class AdminTrickController extends AbstractController
      * @var EntityManager
      */
     private $entityManager;
+    /**
+     * @var PictureRepository
+     */
+    private $pictureRepository;
 
     /**
      * AdminTrickController constructor.
      * @param TrickRepository $trickRepository
+     * @param PictureRepository $pictureRepository
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager)
+    public function __construct(TrickRepository $trickRepository, PictureRepository $pictureRepository, EntityManagerInterface $entityManager)
     {
         $this->trickRepository = $trickRepository;
         $this->entityManager = $entityManager;
+        $this->pictureRepository = $pictureRepository;
     }
 
     /**
@@ -184,9 +191,36 @@ class AdminTrickController extends AbstractController
         $pictures = $trick->getPictures();
         $pathArray =[];
         foreach ($pictures as $picture){
-            $pathArray[$picture->getFilename()] =  $helper->asset($picture, 'imageFile');
+            $pathArray[$picture->getId()] =  $helper->asset($picture, 'imageFile');
         }
 
         return $this->json($pathArray);
+    }
+
+    /**
+     * @Route("/admin/trick/remove-uploaded-image/{id}/{id_picture}", name="ajax.remove.image", requirements={"id": "[0-9]*", "id_picture": "[0-9]*"}, methods="POST")
+     * @param int $id
+     * @param int $id_picture
+     * @param Request $request
+     * @param UploaderHelper $helper
+     * @return Response
+     */
+    public function ajaxRemoveImage(int $id, $id_picture = 0): Response
+    {
+        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $picture = $this->pictureRepository->findOneBy(['id' => $id_picture]);
+
+        $trick->removePicture($picture);
+
+        $date = new \DateTime();
+        $trick->setDateUpdate($date);
+
+        $this->entityManager->flush();
+
+        $response = [
+            'status' => 'success'
+        ];
+
+        return $this->json($response);
     }
 }

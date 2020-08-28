@@ -255,8 +255,8 @@ class Trick
 
     public function removePicture(Picture $picture): self
     {
-        if ($this->Picture->contains($picture)) {
-            $this->Picture->removeElement($picture);
+        if ($this->pictures->contains($picture)) {
+            $this->pictures->removeElement($picture);
             // set the owning side to null (unless already changed)
             if ($picture->getTrick() === $this) {
                 $picture->setTrick(null);
