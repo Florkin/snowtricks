@@ -34,10 +34,11 @@ class TrickType extends AbstractType
                 }
             ])
             ->add('visible')
-            ->add('pictureFiles', FileType::class, [
-                'required' => false,
-                'multiple' => true,
-            ]);
+//            ->add('pictureFiles', FileType::class, [
+//                'required' => false,
+//                'multiple' => true,
+//            ])
+        ;
     }
 
     /**

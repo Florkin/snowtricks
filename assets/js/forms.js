@@ -1,13 +1,18 @@
 import "../css/forms.scss";
-
-// Make category selector the better
 import "select2/dist/js/select2.min"
-import "bootstrap-fileinput/js/fileinput"
+import Dropzone from "dropzone"
 
-$(document).ready(function() {
+// Images dropzone
+var _actionToDropZone = $(".file-dropzone").attr('data-upload-url');
+
+Dropzone.autoDiscover = false;
+var myDropzone = new Dropzone(".file-dropzone", {
+    url: _actionToDropZone
+});
+
+// Category selector
+$(document).ready(function () {
     $(".category-selector").select2({
         theme: "bootstrap4"
     });
-
-    $(".file-dropzone").fileinput();
 });

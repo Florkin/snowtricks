@@ -10,7 +10,10 @@
     <div class="container">
         {{ form_start(form) }}
         <div class="row">
-            <div class="col-12 col-sm-10">{{ form_row(form.pictureFiles, {'attr': {'class': 'file-dropzone', 'data-upload-url': ajaxImgUploadUrl }}) }}</div>
+{#            <div class="col-12 col-sm-10">{{ form_row(form.pictureFiles, {'attr': {'class': 'file-dropzone', 'data-upload-url': ajaxImgUploadUrl }}) }}</div>#}
+            <div class="col-12 col-sm-10">
+                <div class="dropzone file-dropzone" data-upload-url="{{ path('ajax.trick.img.upload', {'id': trick.id}) }}"></div>
+            </div>
             <div class="col-12 col-sm-10">{{ form_row(form.title) }}</div>
             <div class="col-12 col-sm-2">{{ form_row(form.difficulty) }}</div>
             <div class="col-12 col-sm-12">{{ form_row(form.description) }}</div>

@@ -128,7 +128,6 @@ class AdminTrickController extends AbstractController
             "form" => $form->createView(),
             "trick" => $trick,
             "btn_label" => "Modifier",
-            'ajaxImgUploadUrl' => $this->generateUrl('ajax.trick.img.upload', ['id' => $trick->getId()])
         ]);
     }
 
@@ -157,29 +156,9 @@ class AdminTrickController extends AbstractController
      * @param CacheManager $cacheManager
      * @return Response
      */
-    public function ajaxUploadImage(int $id, Request $request, UploaderHelper $uploaderHelper, CacheManager $cacheManager): Response
+    public function ajaxUploadImage(int $id): Response
     {
         $trick = $this->trickRepository->findOneBy(['id' => $id]);
-        $trick->setPictureFiles($request->files->all()['trick']['pictureFiles']);
-
-        $date = new \DateTime();
-        $trick->setDateUpdate($date);
-
-        $this->entityManager->flush();
-
-        $imgArray = [];
-        $resizer = new FilterHelper($cacheManager);
-
-        foreach ($trick->getPictures() as $picture) {
-            $cacheManager->addResolver('/public/images/tricks/' . $picture->getFilename(), 'thumb');
-            $src = $resizer->filter('/public/images/tricks/' . $picture->getFilename(), 'thumb');
-            array_push($imgArray, '<img src="' . $src . '" class="file-preview-image">');
-        };
-
-        $response = [
-            'initialPreview' => $imgArray
-        ];
-
-        return $this->json($response);
+        dd($trick);
     }
 }
