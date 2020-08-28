@@ -93,7 +93,6 @@ class AdminTrickController extends AbstractController
             "trick" => $trick,
             "form" => $form->createView(),
             "btn_label" => "Créer",
-            'enableFormsJS' => true
         ]);
     }
 
