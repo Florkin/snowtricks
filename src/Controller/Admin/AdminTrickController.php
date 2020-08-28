@@ -152,13 +152,22 @@ class AdminTrickController extends AbstractController
      * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST")
      * @param int $id
      * @param Request $request
-     * @param UploaderHelper $uploaderHelper
-     * @param CacheManager $cacheManager
      * @return Response
      */
-    public function ajaxUploadImage(int $id): Response
+    public function ajaxUploadImage(int $id, Request $request): Response
     {
         $trick = $this->trickRepository->findOneBy(['id' => $id]);
-        dd($trick);
+        $trick->setPictureFiles($request->files->all());
+
+        $date = new \DateTime();
+        $trick->setDateUpdate($date);
+
+        $this->entityManager->flush();
+
+        $response = [
+            'status' => 'success'
+        ];
+
+        return $this->json($response);
     }
 }

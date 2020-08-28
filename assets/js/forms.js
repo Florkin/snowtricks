@@ -6,7 +6,7 @@ import Dropzone from "dropzone"
 var _actionToDropZone = $(".file-dropzone").attr('data-upload-url');
 
 Dropzone.autoDiscover = false;
-var myDropzone = new Dropzone(".file-dropzone", {
+var imgDropzone = new Dropzone(".file-dropzone", {
     url: _actionToDropZone
 });
 
