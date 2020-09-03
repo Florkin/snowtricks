@@ -81,8 +81,6 @@ var imgDropzone = new Dropzone(".file-dropzone", {
         });
 
         reader.readAsDataURL(file);
-
-
     },
     removedfile: function (file) {
         if (file.status != "error") {
