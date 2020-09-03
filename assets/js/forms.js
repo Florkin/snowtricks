@@ -38,27 +38,56 @@ var _removeImage = $(".file-dropzone").attr('data-remove-images-url');
 Dropzone.autoDiscover = false;
 let imagesPaths
 
+function detectImgSize(file, src, callback) {
+    let image = new Image();
+    image.src = src;
+    image.onload = function () {
+        let result = {x: this.width, y: this.height};
+        callback(result);
+    };
+}
+
 var imgDropzone = new Dropzone(".file-dropzone", {
     url: _actionToDropZone,
+    paramName: "file",
     addRemoveLinks: true,
     thumbnailWidth: 250,
     thumbnailHeight: 250,
     thumbnailMethod: "crop",
-    maxFiles:10,
+    maxFiles: 10,
+    resizeMimeType: "image/webp",
     init: function () {
         imagesPaths = ajaxHandleRequest("getUploadedImages", _getUploadedImages);
         let myDropzone = this;
 
-        for (var key in imagesPaths){
-            let mockFile = {name: key, size: 200 };
+        for (var key in imagesPaths) {
+            let mockFile = {name: key, size: 200};
             myDropzone.displayExistingFile(mockFile, "/" + imagesPaths[key]);
         }
 
         let fileCountOnServer = Object.keys(imagesPaths).length; // The number of files already uploaded
         myDropzone.options.maxFiles = myDropzone.options.maxFiles - fileCountOnServer;
     },
+    accept: function (file, done) {
+        let reader = new FileReader();
+        reader.onload = (function (entry) {
+            detectImgSize(file, entry.target.result, function (result) {
+                if (result.x < 1280 || result.y < 720) {
+                    done("Image must be at least 1280 x 720");
+                } else {
+                    done();
+                }
+            });
+        });
+
+        reader.readAsDataURL(file);
+
+
+    },
     removedfile: function (file) {
-        ajaxHandleRequest("removeImage", _removeImage, file.name)
+        if (file.status != "error") {
+            ajaxHandleRequest("removeImage", _removeImage, file.name)
+        }
         file.previewElement.remove();
     }
 });
