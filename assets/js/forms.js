@@ -19,7 +19,7 @@ function ajaxHandleRequest(requestType, url, id) {
     if (requestType == "removeImage") {
         $.ajax({
             url: url + "/" + id,
-            type: "POST",
+            type: "DELETE",
             async: false,
             success: function (data) {
                 response = data;

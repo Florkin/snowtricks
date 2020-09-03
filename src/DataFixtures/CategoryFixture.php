@@ -9,8 +9,6 @@ use Faker\Factory;
 
 class CategoryFixture extends Fixture
 {
-    public const CATEGORY_REFERENCE = 'grabs';
-
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');

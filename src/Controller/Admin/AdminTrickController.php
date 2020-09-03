@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class AdminTrickController extends AbstractController
 {
@@ -152,74 +151,4 @@ class AdminTrickController extends AbstractController
         return $this->redirectToRoute("admin.trick.index");
     }
 
-    /**
-     * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST")
-     * @param int $id
-     * @param Request $request
-     * @param UploaderHelper $helper
-     * @return Response
-     */
-    public function ajaxUploadImage(int $id, Request $request): Response
-    {
-        $trick = $this->trickRepository->findOneBy(['id' => $id]);
-
-        $trick->setPictureFiles($request->files->all());
-
-        $date = new \DateTime();
-        $trick->setDateUpdate($date);
-
-        $this->entityManager->flush();
-
-        $response = [
-            'status' => 'success'
-        ];
-
-        return $this->json($response);
-    }
-
-    /**
-     * @Route("/admin/trick/get-uploaded-images/{id}", name="ajax.get.uploaded.images", requirements={"id": "[0-9]*"}, methods="POST")
-     * @param int $id
-     * @param Request $request
-     * @param UploaderHelper $helper
-     * @return Response
-     */
-    public function ajaxGetUploadedImages(int $id, Request $request, UploaderHelper $helper): Response
-    {
-        $trick = $this->trickRepository->findOneBy(['id' => $id]);
-        $pictures = $trick->getPictures();
-        $pathArray =[];
-        foreach ($pictures as $picture){
-            $pathArray[$picture->getId()] =  $helper->asset($picture, 'imageFile');
-        }
-
-        return $this->json($pathArray);
-    }
-
-    /**
-     * @Route("/admin/trick/remove-uploaded-image/{id}/{id_picture}", name="ajax.remove.image", requirements={"id": "[0-9]*", "id_picture": "[0-9]*"}, methods="POST")
-     * @param int $id
-     * @param int $id_picture
-     * @param Request $request
-     * @param UploaderHelper $helper
-     * @return Response
-     */
-    public function ajaxRemoveImage(int $id, $id_picture = 0): Response
-    {
-        $trick = $this->trickRepository->findOneBy(['id' => $id]);
-        $picture = $this->pictureRepository->findOneBy(['id' => $id_picture]);
-
-        $trick->removePicture($picture);
-
-        $date = new \DateTime();
-        $trick->setDateUpdate($date);
-
-        $this->entityManager->flush();
-
-        $response = [
-            'status' => 'success'
-        ];
-
-        return $this->json($response);
-    }
 }
