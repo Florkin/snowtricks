@@ -8,13 +8,11 @@ use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Liip\ImagineBundle\Templating\Helper\FilterHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
 class AdminTrickController extends AbstractController
 {
@@ -158,11 +156,13 @@ class AdminTrickController extends AbstractController
      * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST")
      * @param int $id
      * @param Request $request
+     * @param UploaderHelper $helper
      * @return Response
      */
     public function ajaxUploadImage(int $id, Request $request): Response
     {
         $trick = $this->trickRepository->findOneBy(['id' => $id]);
+
         $trick->setPictureFiles($request->files->all());
 
         $date = new \DateTime();
