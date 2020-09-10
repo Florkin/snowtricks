@@ -54,6 +54,7 @@ class CategoryController extends AbstractController
 
         $tricks = $category->getRelatedTricks();
 
+
         return $this->render('trick/index.html.twig', [
             'current_menu' => 'category.show.' . $category->getSlug(),
             'page' => [

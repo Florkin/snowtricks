@@ -26,18 +26,21 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/liste", name="trick.index", requirements={"page" = "\d+"})
-     * @param Request $request
+     * @Route("/tricks/liste/{page}", name="trick.index", requirements={"page" = "\d+"})
+     * @param int $page
      * @return Response
      */
-    public function index(Request $request)
+    public function index(int $page = 1)
     {
-        $tricks = $this->trickRepository->findVisibleByPage(1, 12);
+        $tricks = $this->trickRepository->findVisibleByPage($page, 12);
 
         return $this->render("trick/index.html.twig", [
             'current_menu' => 'trick.index',
             'page' => [
                 'title' => 'Liste des tricks',
+            ],
+            'pagination' => [
+                'page' => $page
             ],
             'tricks' => $tricks,
         ]);
