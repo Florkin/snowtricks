@@ -3,10 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\Trick;
+use App\Repository\PictureRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
@@ -17,15 +19,27 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
      * @var UploaderHelper
      */
     private $uploaderHelper;
+    /**
+     * @var PictureRepository
+     */
+    private $pictureRepository;
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
 
     /**
      * TrickFixture constructor.
      * @param UploaderHelper $uploaderHelper
+     * @param PictureRepository $pictureRepository
+     * @param CacheManager $cacheManager
      */
-    public function __construct(UploaderHelper $uploaderHelper)
+    public function __construct(UploaderHelper $uploaderHelper, PictureRepository $pictureRepository, CacheManager $cacheManager)
     {
 
         $this->uploaderHelper = $uploaderHelper;
+        $this->pictureRepository = $pictureRepository;
+        $this->cacheManager = $cacheManager;
     }
 
     public function load(ObjectManager $manager)
@@ -57,13 +71,14 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+
     private function cleanImagesFolders()
     {
-        $path =  __DIR__ . "/../../public/images/tricks/*";
+        $this->cacheManager->remove();
+        $path = __DIR__ . "/../../public/images/tricks/*";
         $files = glob($path);
-
-        foreach($files as $file){
-            if(is_file($file))
+        foreach ($files as $file) {
+            if (is_file($file))
                 unlink($file);
         }
     }
@@ -75,15 +90,21 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         $pictures = [];
 
         for ($j = 0; $j < $numberOfImages; $j++) {
-            $name = "img" . $this->randomNumber(1, 3) . ".jpg";
+            $originalPath = $this->randomPic(__DIR__ . "/FixturesImages");
             $uniqueName = "img" . $j . ".jpg";
             $fileSystem = new Filesystem();
-            $originalPath = __DIR__ . "/FixturesImages/" . $name;
             $targetPath = sys_get_temp_dir() . '/' . $uniqueName;
             $fileSystem->copy($originalPath, $targetPath, false);
             $pictures[$j] = new UploadedFile($targetPath, $uniqueName, "image/jpeg", null, true);
         }
         return $pictures;
+    }
+
+    function randomPic($dir)
+    {
+        $files = glob($dir . '/*.*');
+        $file = array_rand($files);
+        return $files[$file];
     }
 
     private function randomNumber($minNumber, $maxNumber)
