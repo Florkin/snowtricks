@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,21 +17,47 @@ use Doctrine\Persistence\ManagerRegistry;
 class TrickRepository extends ServiceEntityRepository
 {
     /**
+     * @var Paginator
+     */
+    private $paginator;
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
+
+    /**
      * TrickRepository constructor.
      * @param ManagerRegistry $registry
+     * @param Paginator $paginator
      */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Trick::class);
+        $this->registry = $registry;
     }
 
     /**
-     * @return Query
+     * @return array
      */
-    public function findAllVisibleQuery(): Query
+    public function findAllVisible(): array
     {
         return $this->findVisibleQuery()
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findVisibleByPage($page, $pageSize): array
+    {
+        $query = $this->findVisibleQuery();
+
+        $paginator = new Paginator($query);
+        $total = count($paginator);
+
+        return $query
+            ->setFirstResult($pageSize * ($page - 1))
+            ->setMaxResults($pageSize)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

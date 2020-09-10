@@ -29,6 +29,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('forms', './assets/js/forms.js')
     .addEntry('swipers', './assets/js/swipers.js')
+    .addEntry('loadmore', './assets/js/loadmore.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
