@@ -89,12 +89,17 @@ class TrickController extends AbstractController
      */
     public function ajaxLoadMore(int $page, int $category_id = null, Request $request, CategoryRepository $categoryRepository)
     {
-        $category = $categoryRepository->find($category_id);
+        $category = null;
+
+        if ($category_id) {
+            $category = $categoryRepository->find($category_id);
+        }
+
         $tricks = $this->trickRepository->findVisibleByPage($page, Self::PAGE_SIZE, $category_id);
 
         $html = $this->render("_partials/_listing.html.twig", [
             'tricks' => $tricks,
-            'category' => $category,
+            'category' => $category
         ])->getContent();
 
         $response = [
