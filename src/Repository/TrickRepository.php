@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -28,7 +29,6 @@ class TrickRepository extends ServiceEntityRepository
     /**
      * TrickRepository constructor.
      * @param ManagerRegistry $registry
-     * @param Paginator $paginator
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -46,13 +46,24 @@ class TrickRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findVisibleByPage($page, $pageSize): array
+    /**
+     * @param int $page
+     * @param int $pageSize
+     * @param int|null $categoryID
+     * @return array
+     */
+    public function findVisibleByPage(int $page, int $pageSize, int $categoryID = null): array
     {
         $query = $this->findVisibleQuery();
 
         $paginator = new Paginator($query);
         $total = count($paginator);
 
+        if ($categoryID) {
+            $query
+                ->leftJoin("p.categories", "c")
+                ->where("c.id = ". $categoryID);
+        }
         return $query
             ->setFirstResult($pageSize * ($page - 1))
             ->setMaxResults($pageSize)
@@ -80,6 +91,4 @@ class TrickRepository extends ServiceEntityRepository
         return $this->createQueryBuilder("p")
             ->where("p.visible = true");
     }
-
-
 }

@@ -13,7 +13,7 @@
         </div>
 
         <div class="text-center">
-            <button id="js-load-more-btn" class="btn btn-primary">Voir plus</button>
+            <button id="js-load-more-btn" class="btn btn-primary" {% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus</button>
         </div>
     </div>
 

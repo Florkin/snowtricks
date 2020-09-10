@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Repository\CategoryRepository;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -79,17 +80,21 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/load/{page}", name="ajax.loadmore", requirements={"page" = "\d+"}, methods="POST", options = {"expose" = true})
+     * @Route("/tricks/load/{page}/{category_id}", name="ajax.loadmore", requirements={"page" = "\d+", "category_id" = "\d+"}, methods="GET", options = {"expose" = true})
      * @param int $page
+     * @param int|null $category_id
      * @param Request $request
+     * @param CategoryRepository $categoryRepository
      * @return Response
      */
-    public function ajaxLoadMore(int $page, Request $request)
+    public function ajaxLoadMore(int $page, int $category_id = null, Request $request, CategoryRepository $categoryRepository)
     {
-        $tricks = $this->trickRepository->findVisibleByPage($page, Self::PAGE_SIZE);
+        $category = $categoryRepository->find($category_id);
+        $tricks = $this->trickRepository->findVisibleByPage($page, Self::PAGE_SIZE, $category_id);
 
         $html = $this->render("_partials/_listing.html.twig", [
             'tricks' => $tricks,
+            'category' => $category,
         ])->getContent();
 
         $response = [
