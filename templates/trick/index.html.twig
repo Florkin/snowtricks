@@ -17,6 +17,14 @@
         </div>
     </div>
 
+    <div class="d-none" id="loader">
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
+
+{% endblock %}
+
+{% block add_stylesheets %}
+    {{ encore_entry_link_tags('loadmore') }}
 {% endblock %}
 
 {% block add_javascripts %}

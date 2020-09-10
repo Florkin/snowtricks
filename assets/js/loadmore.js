@@ -1,8 +1,19 @@
+import "../css/loadmore.scss";
+
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
 const routes = require('./fos_js_routes.json');
 Routing.setRoutingData(routes);
 const axios = require('axios').default;
+
+axios.interceptors.request.use(function (config) {
+    let loader = document.getElementById("loader");
+    loader.classList.remove("d-none");
+    return config;
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+});
 
 async function addToHtml(data) {
     let container = document.getElementById("js-tricks-container");
@@ -10,12 +21,15 @@ async function addToHtml(data) {
     let i = 0
     htmlObj.forEach(function (elem) {
         // Add id to new element to make anchor
-        if (i == 0) {
-            if (elem.nodeType == 1) {
-                elem.id = "first-of-page-" + (page-1)
+        if (elem.nodeType == 1) {
+            if (i == 0) {
+                elem.id = "page-" + (page - 1)
                 i++
             }
+            elem.style.opacity = "0";
+            elem.classList.add("trick-page-" + (page - 1));
         }
+
         // append elements to HTML
         container.append(elem);
     })
@@ -25,14 +39,30 @@ async function loadMoreItems(page) {
     axios.post(Routing.generate("ajax.loadmore", {page: page}))
         .then(function (response) {
             addToHtml(response.data).then(function () {
-                // focus to first elem of new page
-                let elem = document.getElementById("first-of-page-" + page);
-                location.href = "#first-of-page-" + page;
+                focusAndAnimate();
             });
         })
         .catch(function (error) {
             console.error(error)
         });
+}
+
+// focus to first elem of new page
+async function focusAndAnimate() {
+    location.href = "#page-" + (page-1);
+    let i = 0;
+    let elems = document.getElementsByClassName("trick-page-" + (page-1));
+    elems.forEach(function (e) {
+        setTimeout(function () {
+            e.style.opacity = "1";
+        }, i * 75)
+
+        i++;
+    })
+
+    // Loader remove
+    let loader = document.getElementById("loader");
+    loader.classList.add("d-none");
 }
 
 let page = 2;
