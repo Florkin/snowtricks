@@ -32,7 +32,7 @@ class TrickController extends AbstractController
      */
     public function index(Request $request)
     {
-        $tricks = $this->trickRepository->findAllVisibleQuery();
+        $tricks = $this->trickRepository->findVisibleByPage(1, 12);
 
         return $this->render("trick/index.html.twig", [
             'current_menu' => 'trick.index',
