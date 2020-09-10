@@ -1,0 +1,1 @@
+{"base_url":"","routes":{"ajax.loadmore":{"tokens":[["variable","\/","\\d+","page",true],["text","\/tricks\/load"]],"defaults":[],"requirements":{"page":"\\d+"},"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http","locale":[]}

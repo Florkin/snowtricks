@@ -5,16 +5,21 @@ namespace App\Controller;
 use App\Entity\Trick;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TrickController extends AbstractController
 {
+    const PAGE_SIZE = 9;
     /**
      * @var TrickRepository
      */
     private $trickRepository;
+    /**
+     * @var int
+     */
 
     /**
      * TrickController constructor.
@@ -32,7 +37,7 @@ class TrickController extends AbstractController
      */
     public function index(int $page = 1)
     {
-        $tricks = $this->trickRepository->findVisibleByPage($page, 12);
+        $tricks = $this->trickRepository->findVisibleByPage($page, Self::PAGE_SIZE);
 
         return $this->render("trick/index.html.twig", [
             'current_menu' => 'trick.index',
@@ -72,4 +77,28 @@ class TrickController extends AbstractController
             "trick" => $trick,
         ]);
     }
+
+    /**
+     * @Route("/tricks/load/{page}", name="ajax.loadmore", requirements={"page" = "\d+"}, methods="POST", options = {"expose" = true})
+     * @param int $page
+     * @param Request $request
+     * @return Response
+     */
+    public function ajaxLoadMore(int $page, Request $request)
+    {
+        $tricks = $this->trickRepository->findVisibleByPage($page, Self::PAGE_SIZE);
+
+        $html = $this->render("_partials/_listing.html.twig", [
+            'tricks' => $tricks,
+        ])->getContent();
+
+        $response = [
+            "code" => 200,
+            "html" => $html,
+            "page" => $page
+        ];
+
+        return new JsonResponse($response);
+    }
+
 }

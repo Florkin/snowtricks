@@ -8,16 +8,17 @@
     {% include "_partials/_page-header.html.twig" %}
 
     <div class="container">
-        <div class="row">
-            {% for trick in tricks %}
-                {% include "_partials/_trick-miniature.html.twig" %}
-            {% endfor %}
+        <div id="js-tricks-container" class="row">
+            {% include "_partials/_listing.html.twig" %}
         </div>
 
         <div class="text-center">
-            <div class="btn btn-primary js-load-more">Voir plus</div>
+            <button id="js-load-more-btn" class="btn btn-primary">Voir plus</button>
         </div>
     </div>
 
+{% endblock %}
 
+{% block add_javascripts %}
+    {{ encore_entry_script_tags('loadmore') }}
 {% endblock %}
