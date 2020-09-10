@@ -52,14 +52,9 @@ class CategoryController extends AbstractController
             ], 301);
         }
 
-        $tricks = $paginator->paginate(
-            $category->getRelatedTricks(),
-            $request->query->getInt('page', 1),
-            12
-        );
+        $tricks = $category->getRelatedTricks();
 
-
-        return $this->render('category/show.html.twig', [
+        return $this->render('trick/index.html.twig', [
             'current_menu' => 'category.show.' . $category->getSlug(),
             'page' => [
                 'title' => $category->getTitle(),

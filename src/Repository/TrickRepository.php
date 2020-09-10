@@ -28,10 +28,12 @@ class TrickRepository extends ServiceEntityRepository
     /**
      * @return Query
      */
-    public function findAllVisibleQuery(): Query
+    public function findAllVisibleQuery(): array
     {
         return $this->findVisibleQuery()
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
+
     }
 
     /**
