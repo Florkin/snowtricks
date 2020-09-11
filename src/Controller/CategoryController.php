@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,12 +25,17 @@ class CategoryController extends AbstractController
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var TrickRepository
+     */
+    private $trickRepository;
 
-    public function __construct(CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
+    public function __construct(CategoryRepository $categoryRepository, TrickRepository $trickRepository, EntityManagerInterface $entityManager)
     {
 
         $this->categoryRepository = $categoryRepository;
         $this->entityManager = $entityManager;
+        $this->trickRepository = $trickRepository;
     }
 
     /**
@@ -52,8 +58,7 @@ class CategoryController extends AbstractController
             ], 301);
         }
 
-        $tricks = $category->getRelatedTricks();
-
+        $tricks = $this->trickRepository->findVisibleByPage(1, TrickController::PAGE_SIZE, $category->getId());
 
         return $this->render('trick/index.html.twig', [
             'current_menu' => 'category.show.' . $category->getSlug(),

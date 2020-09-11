@@ -35,8 +35,8 @@ async function addToHtml(data) {
     })
 }
 
-async function loadMoreItems(page) {
-    axios.post(Routing.generate("ajax.loadmore", {page: page}))
+async function loadMoreItems(page, categoryID) {
+    axios.get(Routing.generate("ajax.loadmore", {page: page, category_id: categoryID}))
         .then(function (response) {
             addToHtml(response.data).then(function () {
                 focusAndAnimate();
@@ -67,9 +67,10 @@ async function focusAndAnimate() {
 
 let page = 2;
 let loadMoreBtn = document.getElementById("js-load-more-btn");
+let categoryID  = loadMoreBtn.getAttribute("data-category");
 
 loadMoreBtn.addEventListener("click", function () {
-    loadMoreItems(page).then(function () {
+    loadMoreItems(page, categoryID).then(function () {
         page++
     });
 })
