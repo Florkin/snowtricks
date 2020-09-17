@@ -120,8 +120,7 @@ class AdminTrickController extends AbstractController
      * @return Response
      * @Route("/admin/trick/{id}-{slug}", name="admin.trick.edit", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"}, methods="GET|POST")
      */
-    public
-    function edit(string $slug, Trick $trick, Request $request): Response
+    public function edit(string $slug, Trick $trick, Request $request): Response
     {
         $trickSlug = $trick->getSlug();
 
@@ -161,8 +160,7 @@ class AdminTrickController extends AbstractController
      * @return Response
      * @Route("/admin/trick/{id}", name="admin.trick.delete", requirements={"id": "[0-9]*"}, methods="DELETE")
      */
-    public
-    function delete(Trick $trick, Request $request): Response
+    public function delete(Trick $trick, Request $request): Response
     {
         if ($this->isCsrfTokenValid("delete" . $trick->getId(), $request->get("_token"))) {
             $this->entityManager->remove($trick);

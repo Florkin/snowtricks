@@ -47,7 +47,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         $this->cleanImagesFolders();
 
         $faker = Factory::create('fr_FR');
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $trick = new Trick();
             $trick
                 ->setTitle($i + 1 . "-" . $faker->words(3, true))

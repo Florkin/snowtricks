@@ -18,7 +18,7 @@
                     <span class="fa fa-edit"></span>
                 </a>
                 <form method="post" class="d-inline-block" action="{{ path("admin.trick.delete", {id: trick.id}) }}"
-                onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce bien?')">
+                onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
                     <button type="submit" href="#" class="btn btn-danger">
