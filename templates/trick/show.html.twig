@@ -46,6 +46,16 @@
     {% endif %}
 
     <div class="chat-section">
+        <div class="chat-messages">
+            {% for post in chatposts %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <p>Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F') }}</p>
+                        <p>{{ post.message }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
         <div class="chat-form">
             {{ form_start(form) }}
             {{ form_row(form.message) }}

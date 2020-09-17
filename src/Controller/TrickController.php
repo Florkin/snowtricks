@@ -6,6 +6,7 @@ use App\Entity\ChatPost;
 use App\Entity\Trick;
 use App\Form\ChatType;
 use App\Repository\CategoryRepository;
+use App\Repository\ChatPostRepository;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,20 +32,26 @@ class TrickController extends AbstractController
      */
     private $security;
     /**
+     * @var ChatPostRepository
+     */
+    private $chatPostRepository;
+    /**
      * @var int
      */
 
     /**
      * TrickController constructor.
      * @param TrickRepository $trickRepository
+     * @param ChatPostRepository $chatPostRepository
      * @param EntityManagerInterface $entityManager
      * @param Security $security
      */
-    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager, Security $security)
+    public function __construct(TrickRepository $trickRepository, ChatPostRepository $chatPostRepository, EntityManagerInterface $entityManager, Security $security)
     {
         $this->trickRepository = $trickRepository;
         $this->entityManager = $entityManager;
         $this->security = $security;
+        $this->chatPostRepository = $chatPostRepository;
     }
 
     /**
@@ -95,6 +102,8 @@ class TrickController extends AbstractController
             $this->processPostForm($chatPost, $trick);
         }
 
+        $chatPosts = $this->chatPostRepository->findBy(["trick" => $trick]);
+
         return $this->render("trick/show.html.twig", [
             "current_menu" => "trick.show",
             "page" => [
@@ -102,6 +111,7 @@ class TrickController extends AbstractController
             ],
             "trick" => $trick,
             "form" => $form->createView(),
+            "chatposts" => $chatPosts,
         ]);
     }
 

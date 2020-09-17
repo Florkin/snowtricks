@@ -40,7 +40,7 @@ class ChatPostFixture extends Fixture implements DependentFixtureInterface
         $users = $this->userRepository->findAll();
         $faker = Factory::create('fr_FR');
 
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $chatPost = new ChatPost();
             $chatPost
                 ->setMessage($faker->sentences($this->randomNumber(1,8), true))
