@@ -92,12 +92,7 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $chatPost->setTrick($trick);
-            $chatPost->setUser($this->security->getUser());
-            $this->entityManager->persist($chatPost);
-            $this->entityManager->flush();
-            $this->addFlash("success", "Votre " . $trick->getTitle() . " a bien été ajouté");
-            return $this->redirectToRoute("trick.show", ["id" => $trick->getId(), "slug" => $trickSlug]);
+            $this->processPostForm($chatPost, $trick);
         }
 
         return $this->render("trick/show.html.twig", [
@@ -108,6 +103,16 @@ class TrickController extends AbstractController
             "trick" => $trick,
             "form" => $form->createView(),
         ]);
+    }
+
+    public function processPostForm($chatPost, $trick)
+    {
+        $chatPost->setTrick($trick);
+        $chatPost->setUser($this->security->getUser());
+        $this->entityManager->persist($chatPost);
+        $this->entityManager->flush();
+        $this->addFlash("success", "Votre message a bien été ajouté");
+        return $this->redirectToRoute("trick.show", ["id" => $trick->getId(), "slug" => $trick->getSlug()]);
     }
 
     /**
