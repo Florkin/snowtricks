@@ -94,6 +94,11 @@ class Trick
     private $pictureFiles;
 
     /**
+     * @ORM\OneToMany(targetEntity=ChatPost::class, mappedBy="trick", orphanRemoval=true)
+     */
+    private $chatPosts;
+
+    /**
      * Trick constructor.
      */
     public function __construct()
@@ -101,6 +106,7 @@ class Trick
         $this->date_add = new \DateTime();
         $this->categories = new ArrayCollection();
         $this->pictures = new ArrayCollection();
+        $this->chatPosts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -286,6 +292,37 @@ class Trick
             $this->addPicture($picture);
         }
         $this->pictureFiles = $pictureFiles;
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChatPost[]
+     */
+    public function getChatPosts(): Collection
+    {
+        return $this->chatPosts;
+    }
+
+    public function addChatPost(ChatPost $chatPost): self
+    {
+        if (!$this->chatPosts->contains($chatPost)) {
+            $this->chatPosts[] = $chatPost;
+            $chatPost->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChatPost(ChatPost $chatPost): self
+    {
+        if ($this->chatPosts->contains($chatPost)) {
+            $this->chatPosts->removeElement($chatPost);
+            // set the owning side to null (unless already changed)
+            if ($chatPost->getTrick() === $this) {
+                $chatPost->setTrick(null);
+            }
+        }
+
         return $this;
     }
 
