@@ -42,7 +42,7 @@ class AdminPictureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST")
+     * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST", options = {"expose" = true})
      * @param int $id
      * @param Request $request
      * @return Response
@@ -66,7 +66,7 @@ class AdminPictureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/trick/get-uploaded-images/{id}", name="ajax.get.uploaded.images", requirements={"id": "[0-9]*"}, methods="POST")
+     * @Route("/admin/trick/get-uploaded-images/{id}", name="ajax.get.uploaded.images", requirements={"id": "[0-9]*"}, methods="POST", options = {"expose" = true})
      * @param int $id
      * @param Request $request
      * @param UploaderHelper $helper
@@ -85,7 +85,7 @@ class AdminPictureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/trick/remove-uploaded-image/{id}/{id_picture}", name="ajax.remove.image", requirements={"id": "[0-9]*", "id_picture": "[0-9]*"}, methods="DELETE")
+     * @Route("/admin/trick/remove-uploaded-image/{id}/{id_picture}", name="ajax.remove.image", requirements={"id": "[0-9]*", "id_picture": "[0-9]*"}, methods="DELETE", options = {"expose" = true})
      * @param int $id
      * @param int $id_picture
      * @param Request $request
