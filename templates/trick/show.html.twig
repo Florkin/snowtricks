@@ -44,6 +44,15 @@
             {% endfor %}
         </div>
     {% endif %}
+
+    <div class="chat-section">
+        <div class="chat-form">
+            {{ form_start(form) }}
+            {{ form_row(form.message) }}
+            <button class="btn btn-primary" type="submit">Envoyer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}
 
 {% block add_stylesheets %}

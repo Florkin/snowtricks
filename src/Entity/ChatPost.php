@@ -29,7 +29,7 @@ class ChatPost
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=trick::class, inversedBy="chatPosts")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="chatPosts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $trick;
