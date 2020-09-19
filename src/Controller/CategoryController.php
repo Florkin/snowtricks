@@ -59,14 +59,20 @@ class CategoryController extends AbstractController
         }
 
         $tricks = $this->trickRepository->findVisibleByPage(1, TrickController::PAGE_SIZE, $category->getId());
+        $total = $this->trickRepository->howManyTricks($category->getId());
+        $loadmoreBtn = false;
+        if ($total > TrickController::PAGE_SIZE) {
+            $loadmoreBtn = true;
+        }
 
         return $this->render('trick/index.html.twig', [
-            'current_menu' => 'category.show.' . $category->getSlug(),
-            'page' => [
-                'title' => $category->getTitle(),
+            "current_menu" => "category.show." . $category->getSlug(),
+            "page" => [
+                "title" => $category->getTitle(),
             ],
-            'category' => $category,
-            'tricks' => $tricks,
+            "category" => $category,
+            "tricks" => $tricks,
+            "loadmoreBtn" => $loadmoreBtn
         ]);
     }
 

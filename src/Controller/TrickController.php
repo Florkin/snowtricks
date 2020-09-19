@@ -62,16 +62,22 @@ class TrickController extends AbstractController
     public function index(int $page = 1)
     {
         $tricks = $this->trickRepository->findVisibleByPage($page, Self::PAGE_SIZE);
+        $total = $this->trickRepository->howManyTricks();
+        $loadmoreBtn = false;
+        if ($total > Self::PAGE_SIZE) {
+            $loadmoreBtn = true;
+        }
 
         return $this->render("trick/index.html.twig", [
-            'current_menu' => 'trick.index',
-            'page' => [
-                'title' => 'Liste des tricks',
+            "current_menu" => "trick.index",
+            "page" => [
+                "title" => "Liste des tricks",
             ],
-            'pagination' => [
-                'page' => $page
+            "pagination" => [
+                "page" => $page
             ],
-            'tricks' => $tricks,
+            "tricks" => $tricks,
+            "loadmoreBtn" => $loadmoreBtn
         ]);
     }
 
@@ -141,6 +147,14 @@ class TrickController extends AbstractController
             $category = $categoryRepository->find($category_id);
         }
 
+        // Check if there is entities to load
+        $total = $this->trickRepository->howManyTricks($category_id);
+        $current = ceil($total / Self::PAGE_SIZE);
+        $isLast = false;
+        if ((int)$current == (int)$page) {
+            $isLast = true;
+        }
+
         $tricks = $this->trickRepository->findVisibleByPage($page, Self::PAGE_SIZE, $category_id);
 
         $html = $this->render("_partials/_listing.html.twig", [
@@ -151,7 +165,8 @@ class TrickController extends AbstractController
         $response = [
             "code" => 200,
             "html" => $html,
-            "page" => $page
+            "page" => $page,
+            "isLast" => $isLast
         ];
 
         return new JsonResponse($response);
