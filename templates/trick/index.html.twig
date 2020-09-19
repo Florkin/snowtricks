@@ -12,14 +12,16 @@
             {% include "_partials/_listing.html.twig" %}
         </div>
 
-        <div class="text-center">
-            <button id="js-load-more-btn" class="btn btn-primary" {% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus</button>
-        </div>
+        {% if loadmoreBtn is defined and loadmoreBtn == true %}
+            <div class="text-center">
+                <button id="js-load-more-btn" class="btn btn-primary"
+                        {% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus
+                </button>
+            </div>
+        {% endif %}
     </div>
 
-    <div class="d-none" id="loader">
-        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-    </div>
+    {% include "_partials/_ajax-loader.html.twig" %}
 
 {% endblock %}
 

@@ -16,6 +16,9 @@ axios.interceptors.request.use(function (config) {
 });
 
 async function addToHtml(data) {
+    if (data.isLast) {
+        loadMoreBtn.parentNode.removeChild(loadMoreBtn);
+    }
     let container = document.getElementById("js-tricks-container");
     let htmlObj = $.parseHTML(data.html)
     let i = 0

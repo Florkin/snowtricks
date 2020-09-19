@@ -47,6 +47,23 @@ class TrickRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int|null $categoryID
+     * @return int
+     */
+    public function howManyTricks(int $categoryID = null) : int
+    {
+        $query = $this->findVisibleQuery();
+        if ($categoryID != null) {
+            $query
+                ->leftJoin("p.categories", "c")
+                ->where("c.id = ". $categoryID);
+        }
+
+        $paginator = new Paginator($query);
+        return count($paginator);
+    }
+
+    /**
      * @param int $page
      * @param int $pageSize
      * @param int|null $categoryID
@@ -55,9 +72,6 @@ class TrickRepository extends ServiceEntityRepository
     public function findVisibleByPage(int $page, int $pageSize, int $categoryID = null): array
     {
         $query = $this->findVisibleQuery();
-
-        $paginator = new Paginator($query);
-        $total = count($paginator);
 
         if ($categoryID) {
             $query
