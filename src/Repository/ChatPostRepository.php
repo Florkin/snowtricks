@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ChatPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,31 @@ class ChatPostRepository extends ServiceEntityRepository
         parent::__construct($registry, ChatPost::class);
     }
 
-    // /**
-    //  * @return ChatPost[] Returns an array of ChatPost objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param int $trickID
+     * @return int
+     */
+    public function howManyPosts(int $trickID): int
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder("p");
+        if ($trickID != null) {
+            $query
+                ->where("p.trick = " . $trickID);
+        }
 
-    /*
-    public function findOneBySomeField($value): ?ChatPost
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $paginator = new Paginator($query);
+        return count($paginator);
     }
-    */
+
+    public function findByPage(int $page, int $pageSize, int $trickID): array
+    {
+        $query = $this->createQueryBuilder("p");
+
+        return $query
+            ->setFirstResult($pageSize * ($page - 1))
+            ->setMaxResults($pageSize)
+            ->where("p.trick = ". $trickID)
+            ->getQuery()
+            ->getResult();
+    }
 }
