@@ -1,10 +1,13 @@
 import "../css/forms.scss";
 import "select2/dist/js/select2.min"
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+
 const routes = require('./fos_js_routes.json');
 Routing.setRoutingData(routes);
 import Dropzone from "dropzone";
+
 Dropzone.autoDiscover = false;
+
 function detectImgSize(file, src, callback) {
     let image = new Image();
     image.src = src;
@@ -14,7 +17,24 @@ function detectImgSize(file, src, callback) {
     };
 }
 
-function addTagForm($collectionHolder, value) {
+function deleteFile(filename) {
+    let deleteUrl = Routing.generate('ajax.picture.delete', {
+        filename: filename,
+    })
+    let response
+    $.ajax({
+        url: deleteUrl,
+        type: "DELETE",
+        async: false,
+        success: function (data) {
+            response = data;
+        }
+    })
+
+    return response;
+}
+
+function addTagForm($collectionHolder, filename) {
     // Get the data-prototype explained earlier
     let prototype = $collectionHolder.data('prototype');
 
@@ -24,12 +44,10 @@ function addTagForm($collectionHolder, value) {
     let newForm = prototype;
     newForm = newForm.replace(/__name__/g, index);
 
-    $collectionHolder.data('index', index + 1);
-    $collectionHolder.data('value', value);
-
     // Display the form in the page in an li, before the "Add a tag" link li
     $collectionHolder.append(newForm);
-    $collectionHolder.find("input:last").attr("value", value);
+    $collectionHolder.find("input:last").attr("value", filename);
+    $collectionHolder.data('index', index + 1);
 }
 
 let actionToDropZone = Routing.generate("ajax.picture.upload")
@@ -46,12 +64,11 @@ let imgDropzone = new Dropzone(".file-dropzone", {
     maxFiles: 10,
     resizeMimeType: "image/webp",
     init: function () {
-        this.on("success", function(file, response) {
-            response.forEach(function (e) {
-                let $collectionHolder = $('ul.pictures');
-                $collectionHolder.data('index', $collectionHolder.find('input').length);
-                addTagForm($collectionHolder, e)
-            })
+        $('ul.pictures').data('index', $('ul.pictures').find('input').length);
+        this.on("success", function (file, filename) {
+            file.index = $('ul.pictures').data('index');
+            file.uniqfilename = filename;
+            addTagForm($('ul.pictures'), filename)
         });
     },
     accept: function (file, done) {
@@ -69,10 +86,11 @@ let imgDropzone = new Dropzone(".file-dropzone", {
         reader.readAsDataURL(file);
     },
     removedfile: function (file) {
-
+        $("#trick_pictures_" + file.index).remove();
+        deleteFile(file.uniqfilename);
+        file.previewElement.remove();
     }
 });
-
 
 
 // Category selector
