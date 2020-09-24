@@ -77,36 +77,36 @@ let imgDropzone = new Dropzone(".file-dropzone", {
     thumbnailMethod: "crop",
     maxFiles: 10,
     resizeMimeType: "image/webp",
-    init: function () {
-        let myDropzone = this;
-        // If updating existing instance
-        if (typeof (id) != "undefined") {
-            imagesPaths = ajaxHandleRequest("getUploadedImages", _getUploadedImages);
-
-            for (let key in imagesPaths) {
-                let mockFile = {name: key, size: 200};
-                myDropzone.displayExistingFile(mockFile, "/" + imagesPaths[key]);
-            }
-
-            let fileCountOnServer = Object.keys(imagesPaths).length; // The number of files already uploaded
-            myDropzone.options.maxFiles = myDropzone.options.maxFiles - fileCountOnServer;
-            // Else if we are adding new instance, we have to create instance before process image upload
-        } else {
-            $("form[name='trick']").on("submit", function (e) {
-                e.preventDefault();
-                let result = ajaxHandleRequest("addNewInstance", _addInstance, null, $(this).serialize());
-
-                if (result.status == "success") {
-                    let id = result.id;
-                    myDropzone.options.url += "/" + id;
-                    myDropzone.processQueue()
-                }
-                myDropzone.on('queuecomplete', function (file) {
-                    window.location.href = Routing.generate("admin.trick.index");
-                })
-            })
-        }
-    },
+    // init: function () {
+    //     let myDropzone = this;
+    //     // If updating existing instance
+    //     if (typeof (id) != "undefined") {
+    //         imagesPaths = ajaxHandleRequest("getUploadedImages", _getUploadedImages);
+    //
+    //         for (let key in imagesPaths) {
+    //             let mockFile = {name: key, size: 200};
+    //             myDropzone.displayExistingFile(mockFile, "/" + imagesPaths[key]);
+    //         }
+    //
+    //         let fileCountOnServer = Object.keys(imagesPaths).length; // The number of files already uploaded
+    //         myDropzone.options.maxFiles = myDropzone.options.maxFiles - fileCountOnServer;
+    //         // Else if we are adding new instance, we have to create instance before process image upload
+    //     } else {
+    //         $("form[name='trick']").on("submit", function (e) {
+    //             e.preventDefault();
+    //             let result = ajaxHandleRequest("addNewInstance", _addInstance, null, $(this).serialize());
+    //
+    //             if (result.status == "success") {
+    //                 let id = result.id;
+    //                 myDropzone.options.url += "/" + id;
+    //                 myDropzone.processQueue()
+    //             }
+    //             myDropzone.on('queuecomplete', function (file) {
+    //                 window.location.href = Routing.generate("admin.trick.index");
+    //             })
+    //         })
+    //     }
+    // },
     accept: function (file, done) {
         let reader = new FileReader();
         reader.onload = (function (entry) {
@@ -131,6 +131,8 @@ let imgDropzone = new Dropzone(".file-dropzone", {
         }
     }
 });
+
+
 
 // Category selector
 $(document).ready(function () {

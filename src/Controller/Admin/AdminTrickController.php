@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
-use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,25 +19,19 @@ class AdminTrickController extends AbstractController
      */
     private $trickRepository;
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
-    /**
-     * @var PictureRepository
-     */
-    private $pictureRepository;
 
     /**
      * AdminTrickController constructor.
      * @param TrickRepository $trickRepository
-     * @param PictureRepository $pictureRepository
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TrickRepository $trickRepository, PictureRepository $pictureRepository, EntityManagerInterface $entityManager)
+    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager)
     {
         $this->trickRepository = $trickRepository;
         $this->entityManager = $entityManager;
-        $this->pictureRepository = $pictureRepository;
     }
 
     /**
@@ -92,26 +85,6 @@ class AdminTrickController extends AbstractController
             "btn_label" => "Créer",
         ]);
     }
-
-    /**
-     * @param Request $request
-     * @return Response
-     * @Route("/admin/trick/new", name="ajax.trick.new", methods="POST", options={"expose" = true})
-     */
-    public function ajaxNew(Request $request): Response
-    {
-        $form = $this->createForm(TrickType::class);
-        $trick = $form->handleRequest($request)->getData();
-        if ($form->isValid()) {
-            $this->entityManager->persist($trick);
-            $this->entityManager->flush();
-            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
-            return $this->json(["status" => "success", "id" => $trick->getId()]);
-        }
-
-        return $this->json(["status" => "error"]);
-    }
-
 
     /**
      * @param string $slug
