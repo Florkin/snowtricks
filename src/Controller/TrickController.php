@@ -108,7 +108,7 @@ class TrickController extends AbstractController
             $this->processPostForm($chatPost, $trick);
         }
 
-        $chatPosts = $this->chatPostRepository->findByPage(1, Self::PAGE_SIZE, $trick->getId());
+        $chatPosts = $this->chatPostRepository->findByPage(1, ChatPostController::PAGE_SIZE, $trick->getId());
 
         return $this->render("trick/show.html.twig", [
             "current_menu" => "trick.show",

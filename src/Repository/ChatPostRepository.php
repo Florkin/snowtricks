@@ -40,13 +40,13 @@ class ChatPostRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder("p");
         $nbrOfPosts = $this->howManyPosts($trickID);
-        $offset = $pageSize * $page;
+        $offset = $nbrOfPosts - ($pageSize * $page);
         if ($offset < 0) {
             $offset = 0;
         }
 
         return $query
-            ->setFirstResult($nbrOfPosts - $offset)
+            ->setFirstResult($offset)
             ->setMaxResults($pageSize)
             ->orderBy("p.date_add", "asc")
             ->where("p.trick = " . $trickID)
