@@ -14,6 +14,24 @@ function detectImgSize(file, src, callback) {
     };
 }
 
+function addTagForm($collectionHolder, value) {
+    // Get the data-prototype explained earlier
+    let prototype = $collectionHolder.data('prototype');
+
+    // get the new index
+    let index = $collectionHolder.data('index');
+
+    let newForm = prototype;
+    newForm = newForm.replace(/__name__/g, index);
+
+    $collectionHolder.data('index', index + 1);
+    $collectionHolder.data('value', value);
+
+    // Display the form in the page in an li, before the "Add a tag" link li
+    $collectionHolder.append(newForm);
+    $collectionHolder.find("input:last").attr("value", value);
+}
+
 let actionToDropZone = Routing.generate("ajax.picture.upload")
 
 let imgDropzone = new Dropzone(".file-dropzone", {
@@ -29,7 +47,11 @@ let imgDropzone = new Dropzone(".file-dropzone", {
     resizeMimeType: "image/webp",
     init: function () {
         this.on("success", function(file, response) {
-            console.log(response);
+            response.forEach(function (e) {
+                let $collectionHolder = $('ul.pictures');
+                $collectionHolder.data('index', $collectionHolder.find('input').length);
+                addTagForm($collectionHolder, e)
+            })
         });
     },
     accept: function (file, done) {
