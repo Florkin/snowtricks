@@ -46,7 +46,7 @@ class ChatPostFixture extends Fixture implements DependentFixtureInterface
                 ->setMessage($faker->sentences($this->randomNumber(1,8), true))
                 ->setUser($faker->randomElement($users))
                 ->setTrick($faker->randomElement($tricks))
-                ->setDateUpdate($faker->dateTime);
+                ->setDateAdd($faker->dateTime);
 
             $manager->persist($chatPost);
         }

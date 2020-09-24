@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ChatPostController extends AbstractController
 {
+    const PAGE_SIZE = 9;
 
     /**
      * @var EntityManagerInterface
