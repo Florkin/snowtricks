@@ -64,6 +64,20 @@ let imgDropzone = new Dropzone(".file-dropzone", {
     maxFiles: 10,
     resizeMimeType: "image/webp",
     init: function () {
+        let myDropzone = this;
+
+        // get already uploaded images
+        let imagesPaths = [];
+        $("#trick_pictures").find("input").each(function () {
+            imagesPaths.push("uploads/images/tricks/" + $(this).attr("value"));
+        })
+        for (let key in imagesPaths) {
+            let mockFile = {name: key, size: 200};
+            myDropzone.displayExistingFile(mockFile, "/" + imagesPaths[key]);
+        }
+
+        console.log(imagesPaths)
+
         $('ul.pictures').data('index', $('ul.pictures').find('input').length);
         this.on("success", function (file, filename) {
             file.index = $('ul.pictures').data('index');
