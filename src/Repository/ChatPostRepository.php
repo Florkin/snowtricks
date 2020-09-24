@@ -39,11 +39,17 @@ class ChatPostRepository extends ServiceEntityRepository
     public function findByPage(int $page, int $pageSize, int $trickID): array
     {
         $query = $this->createQueryBuilder("p");
+        $nbrOfPosts = $this->howManyPosts($trickID);
+        $offset = $pageSize * $page;
+        if ($offset < 0) {
+            $offset = 0;
+        }
 
         return $query
-            ->setFirstResult($pageSize * ($page - 1))
+            ->setFirstResult($nbrOfPosts - $offset)
             ->setMaxResults($pageSize)
-            ->where("p.trick = ". $trickID)
+            ->orderBy("p.date_add", "asc")
+            ->where("p.trick = " . $trickID)
             ->getQuery()
             ->getResult();
     }

@@ -51,7 +51,7 @@
                 {% for post in chatposts %}
                     <div class="card mb-2">
                         <div class="card-body">
-                            <p>Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F') }}</p>
+                            <p>Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F Y') }}</p>
                             <p>{{ post.message }}</p>
                             {% if post.user == app.user %}
                                 <a class="btn btn-warning" href="#"><span class="fa fa-edit"></span></a>
@@ -68,6 +68,9 @@
                         </div>
                     </div>
                 {% endfor %}
+                <div class="d-flex justify-content-center">
+                    <div class="btn btn-outline-primary">Voir plus de commentaires</div>
+                </div>
             </div>
             <div class="chat-form">
                 {{ form_start(form) }}
