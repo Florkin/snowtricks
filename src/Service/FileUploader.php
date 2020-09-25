@@ -33,7 +33,7 @@ class FileUploader
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
-        $fileName = uniqid().'.'.$file->guessExtension();
+        $fileName = uniqid() . '.' . $file->guessExtension();
         if ($newFileName != null) {
             $fileName = $newFileName . "." . $file->guessExtension();
         }
@@ -59,7 +59,7 @@ class FileUploader
 
     public function delete($filename)
     {
-        if ($this->fileSystem->exists($this->targetDirectory . "/" . $filename)){
+        if ($this->fileSystem->exists($this->targetDirectory . "/" . $filename)) {
             $this->fileSystem->remove($this->targetDirectory . "/" . $filename);
         }
     }
