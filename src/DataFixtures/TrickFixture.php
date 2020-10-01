@@ -78,7 +78,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         for ($j = 0; $j < $numberOfImages; $j++) {
             $originalPath = $this->randomPic(__DIR__ . "/imagesFixtures");
             $uniqueName = "img" . $j . ".tmp";
-            $targetPath = sys_get_temp_dir() . '\\' . $uniqueName;
+            $targetPath = sys_get_temp_dir() . '/' . $uniqueName;
 
             $this->filesystem->copy($originalPath, $targetPath, false);
             $picture = new File($targetPath, $uniqueName, "image/jpeg", null, true);
