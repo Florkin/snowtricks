@@ -28,23 +28,6 @@ class FileUploader
         $this->fileSystem = $fileSystem;
     }
 
-//    public function upload(UploadedFile $file, $newFileName = null)
-//    {
-//        $fileName = uniqid() . '.' . $file->guessExtension();
-//
-//        if ($newFileName != null) {
-//            $fileName = $newFileName . "." . $file->guessExtension();
-//        }
-//
-//        try {
-//            $file->move($this->getTargetDirectory(), $fileName);
-//        } catch (FileException $e) {
-//            // ... handle exception if something happens during file upload
-//        }
-//
-//        return $fileName;
-//    }
-
     public function upload(File $file, $newFileName = null)
     {
         $fileName = uniqid() . '.' . $file->guessExtension();
@@ -74,8 +57,8 @@ class FileUploader
 
     public function delete($filename)
     {
-        if ($this->fileSystem->exists($this->targetDirectory . "/" . $filename)) {
-            $this->fileSystem->remove($this->targetDirectory . "/" . $filename);
+        if ($this->fileSystem->exists(realpath($this->targetDirectory . "/" . $filename))) {
+            $this->fileSystem->remove(realpath($this->targetDirectory . "/" . $filename));
         }
     }
 }

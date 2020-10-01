@@ -15,9 +15,9 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-    public function getImage($collection, $filename)
+    public function getImage($collection, $filename, $thumb = false)
     {
-        $path = "uploads/images/" . $collection . "/" . $filename;
+        $path = $thumb == true ? "/uploads/images/" . $collection . "/" . "thumbs/" . $filename : "/uploads/images/" . $collection . "/" . $filename;
         return $path;
     }
 }

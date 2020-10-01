@@ -1,9 +1,9 @@
 <div class="col-12 col-sm-6 col-lg-4 my-3">
     <div class="card h-100">
-{#        {% if trick.pictures|length > 0 %}#}
-{#            <img class="img-fluid" src="{{ vich_uploader_asset(trick.cover, 'imageFile', 'App\\Entity\\Picture') | imagine_filter('thumb') }}"#}
-{#                 alt="{{ trick.title }}_cover">#}
-{#        {% endif %}#}
+        {% if trick.pictures|length > 0 %}
+            <img class="img-fluid" src="{{ asset(getImage("tricks", trick.pictures|first.filename, true)) }}"
+                 alt="{{ trick.title }}_cover">
+        {% endif %}
         <div class="card-body">
             <h5 class="card-title">
                 <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>

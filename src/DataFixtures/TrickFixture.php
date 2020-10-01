@@ -113,7 +113,13 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
 
     private function cleanImagesFolders()
     {
-        $path = "public/uploads/images/tricks/*";
+        $path = "public/uploads/images/tricks/**";
+        $files = glob($path);
+        foreach ($files as $file) {
+            if (is_file($file))
+                unlink($file);
+        }
+        $path = "public/uploads/images/tricks/thumbs/**";
         $files = glob($path);
         foreach ($files as $file) {
             if (is_file($file))
