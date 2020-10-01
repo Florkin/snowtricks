@@ -23,10 +23,12 @@
             <div class="col-12 col-sm-12">{{ form_row(form.description) }}</div>
             <div class="col-12 col-sm-12">{{ form_row(form.categories, {'attr': {'class': 'category-selector'}}) }}</div>
             <div class="col-12 col-sm-8">{{ form_row(form.visible) }}</div>
+            <ul class="pictures" data-prototype="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"></ul>
             <div class="col-12 col-sm-4">
                 <button class="btn btn-success" type="submit">{{ btn_label|default("Valider") }}</button>
             </div>
         </div>
+
         {{ form_end(form) }}
     </div>
 {% endblock %}

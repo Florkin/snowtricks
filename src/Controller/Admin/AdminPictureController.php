@@ -1,113 +1,51 @@
 <?php
 
-
 namespace App\Controller\Admin;
 
-
-use App\Repository\PictureRepository;
-use App\Repository\TrickRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminPictureController extends AbstractController
 {
     /**
-     * @var TrickRepository
+     * @var FileUploader
      */
-    private $trickRepository;
-    /**
-     * @var PictureRepository
-     */
-    private $pictureRepository;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private $fileUploader;
 
     /**
      * AdminPictureController constructor.
-     * @param TrickRepository $trickRepository
-     * @param PictureRepository $pictureRepository
-     * @param EntityManagerInterface $entityManager
+     * @param FileUploader $fileUploader
      */
-    public function __construct(TrickRepository $trickRepository, PictureRepository $pictureRepository, EntityManagerInterface $entityManager)
+    public function __construct(FileUploader $fileUploader)
     {
-        $this->trickRepository = $trickRepository;
-        $this->pictureRepository = $pictureRepository;
-        $this->entityManager = $entityManager;
+        $this->fileUploader = $fileUploader;
+        $this->fileUploader->setTargetDirectory("uploads/images/tricks");
     }
 
     /**
-     * @Route("/admin/trick/upload-image/{id}", name="ajax.trick.img.upload", requirements={"id": "[0-9]*"}, methods="POST", options = {"expose" = true})
-     * @param int $id
+     * @Route("/admin/picture/upload", name="ajax.picture.upload", methods="GET|POST", options={"expose"=true})
      * @param Request $request
      * @return Response
      */
-    public function ajaxUploadImage(int $id, Request $request): Response
+    public function ajaxUploadImage(Request $request)
     {
-        $trick = $this->trickRepository->findOneBy(['id' => $id]);
+        $files = $request->files->all();
+        $fileName = $this->fileUploader->upload($files["pictureFiles"]);
 
-        $trick->setPictureFiles($request->files->all());
-
-        $date = new \DateTime();
-        $trick->setDateUpdate($date);
-
-        $this->entityManager->flush();
-
-        $response = [
-            'status' => 'success'
-        ];
-
-        return $this->json($response);
+        return $this->json($fileName);
     }
 
     /**
-     * @Route("/admin/trick/get-uploaded-images/{id}", name="ajax.get.uploaded.images", requirements={"id": "[0-9]*"}, methods="POST", options = {"expose" = true})
-     * @param int $id
-     * @param Request $request
-     * @param UploaderHelper $helper
+     * @Route("/admin/picture/delete/{filename}", name="ajax.picture.delete", methods="DELETE", options={"expose"=true})
+     * @param string $filename
      * @return Response
      */
-    public function ajaxGetUploadedImages(int $id, Request $request, UploaderHelper $helper): Response
+    public function ajaxDeleteImage(string $filename)
     {
-        $trick = $this->trickRepository->findOneBy(['id' => $id]);
-        $pictures = $trick->getPictures();
-        $pathArray =[];
-        foreach ($pictures as $picture){
-            $pathArray[$picture->getId()] =  $helper->asset($picture, 'imageFile');
-        }
-
-        return $this->json($pathArray);
-    }
-
-    /**
-     * @Route("/admin/trick/remove-uploaded-image/{id}/{id_picture}", name="ajax.remove.image", requirements={"id": "[0-9]*", "id_picture": "[0-9]*"}, methods="DELETE", options = {"expose" = true})
-     * @param int $id
-     * @param int $id_picture
-     * @param Request $request
-     * @param UploaderHelper $helper
-     * @return Response
-     */
-    public function ajaxRemoveImage(int $id, $id_picture = 0): Response
-    {
-        $trick = $this->trickRepository->findOneBy(['id' => $id]);
-        $picture = $this->pictureRepository->findOneBy(['id' => $id_picture]);
-
-        $trick->removePicture($picture);
-
-        $date = new \DateTime();
-        $trick->setDateUpdate($date);
-
-        $this->entityManager->flush();
-
-        $response = [
-            'status' => 'success'
-        ];
-
-        return $this->json($response);
+        $this->fileUploader->delete($filename);
+        return $this->json("image " . $filename . " successfully deleted");
     }
 }

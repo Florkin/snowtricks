@@ -4,12 +4,9 @@ namespace App\Entity;
 
 use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
- * @Vich\Uploadable()
  */
 class Picture
 {
@@ -21,8 +18,7 @@ class Picture
     private $id;
 
     /**
-     * @var string|null
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $filename;
 
@@ -30,13 +26,7 @@ class Picture
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="pictures")
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $trick;
-
-    /**
-     * @var File|null
-     * @Vich\UploadableField(mapping="trick_image", fileNameProperty="filename")
-     */
-    private $imageFile;
+    private $trick;
 
     public function getId(): ?int
     {
@@ -48,7 +38,7 @@ class Picture
         return $this->filename;
     }
 
-    public function setFilename(?string $filename): self
+    public function setFilename(string $filename): self
     {
         $this->filename = $filename;
 
@@ -64,24 +54,6 @@ class Picture
     {
         $this->trick = $trick;
 
-        return $this;
-    }
-
-    /**
-     * @return File|null
-     */
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * @param File|null $imageFile
-     * @return $this
-     */
-    public function setImageFile(?File $imageFile): self
-    {
-        $this->imageFile = $imageFile;
         return $this;
     }
 }

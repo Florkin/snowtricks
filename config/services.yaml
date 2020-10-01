@@ -27,6 +27,12 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Listener\ImageCacheSubscriber:
+    #### EVENTS LISTENER
+    App\Listener\PictureEventSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
+
+    #### SERVICES
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '../public/uploads/'

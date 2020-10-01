@@ -2,53 +2,54 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Picture;
 use App\Entity\Trick;
-use App\Repository\PictureRepository;
+use App\Service\FileUploader;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Symfony\Component\HttpFoundation\File\File;
 
 class TrickFixture extends Fixture implements DependentFixtureInterface
 {
     /**
-     * @var UploaderHelper
+     * @var FileUploader
      */
-    private $uploaderHelper;
+    private $fileUploader;
     /**
-     * @var PictureRepository
+     * @var Filesystem
      */
-    private $pictureRepository;
-    /**
-     * @var CacheManager
-     */
-    private $cacheManager;
+    private $filesystem;
 
     /**
      * TrickFixture constructor.
-     * @param UploaderHelper $uploaderHelper
-     * @param PictureRepository $pictureRepository
-     * @param CacheManager $cacheManager
+     * @param Filesystem $filesystem
+     * @param FileUploader $fileUploader
      */
-    public function __construct(UploaderHelper $uploaderHelper, PictureRepository $pictureRepository, CacheManager $cacheManager)
+    public function __construct(Filesystem $filesystem, FileUploader $fileUploader)
     {
-
-        $this->uploaderHelper = $uploaderHelper;
-        $this->pictureRepository = $pictureRepository;
-        $this->cacheManager = $cacheManager;
+        $this->fileUploader = $fileUploader;
+        $this->filesystem = $filesystem;
     }
 
     public function load(ObjectManager $manager)
     {
         $this->cleanImagesFolders();
+        $this->fileUploader->setTargetDirectory("public/uploads/images/tricks");
 
         $faker = Factory::create('fr_FR');
         for ($i = 0; $i < 50; $i++) {
             $trick = new Trick();
+
+            $filenames = $this->fakeUploadPictures();
+            foreach ($filenames as $filename) {
+                $newPic = (new Picture())->setFilename($filename);
+                $manager->persist($newPic);
+                $trick->addPicture($newPic);
+            }
+
             $trick
                 ->setTitle($i + 1 . "-" . $faker->words(3, true))
                 ->setDescription($faker->sentences(20, true))
@@ -56,8 +57,6 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
                 ->setVisible(1)
                 ->setDateUpdate($faker->dateTime);
 
-            $pictures = $this->fakeUploadPictures();
-            $trick->setPictureFiles($pictures);
 
             // We have to random how many categories the trick will be associated to
             $numberOfCategories = $this->randomNumber(1, 4);
@@ -71,33 +70,22 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-
-    private function cleanImagesFolders()
-    {
-        $this->cacheManager->remove();
-        $path = __DIR__ . "/../../public/images/tricks/*";
-        $files = glob($path);
-        foreach ($files as $file) {
-            if (is_file($file))
-                unlink($file);
-        }
-    }
-
     private function fakeUploadPictures()
     {
         $numberOfImages = $this->randomNumber(1, 10);
-
-        $pictures = [];
+        $filenames = [];
 
         for ($j = 0; $j < $numberOfImages; $j++) {
-            $originalPath = $this->randomPic(__DIR__ . "/FixturesImages");
-            $uniqueName = "img" . $j . ".jpg";
-            $fileSystem = new Filesystem();
+            $originalPath = $this->randomPic(__DIR__ . "/imagesFixtures");
+            $uniqueName = "img" . $j . ".tmp";
             $targetPath = sys_get_temp_dir() . '/' . $uniqueName;
-            $fileSystem->copy($originalPath, $targetPath, false);
-            $pictures[$j] = new UploadedFile($targetPath, $uniqueName, "image/jpeg", null, true);
+
+            $this->filesystem->copy($originalPath, $targetPath, false);
+            $picture = new File($targetPath, $uniqueName, "image/jpeg", null, true);
+            $filenames[$j] = $this->fileUploader->upload($picture);
         }
-        return $pictures;
+
+        return $filenames;
     }
 
     function randomPic($dir)
@@ -121,5 +109,21 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         return array(
             CategoryFixture::class
         );
+    }
+
+    private function cleanImagesFolders()
+    {
+        $path = "public/uploads/images/tricks/**";
+        $files = glob($path);
+        foreach ($files as $file) {
+            if (is_file($file))
+                unlink($file);
+        }
+        $path = "public/uploads/images/tricks/thumbs/**";
+        $files = glob($path);
+        foreach ($files as $file) {
+            if (is_file($file))
+                unlink($file);
+        }
     }
 }

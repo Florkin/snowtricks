@@ -16,8 +16,7 @@
                 <!-- Slides -->
                 {% for picture in trick.pictures %}
                     <div class="swiper-slide d-flex justify-content-center">
-                        <img class="img-fluid"
-                             src="{{ vich_uploader_asset(picture, 'imageFile', 'App\\Entity\\Picture') | imagine_filter('mid_size_formated') }}">
+                        <img class="img-fluid" src="{{ asset(getImage("tricks", picture.filename)) }}">
                     </div>
                 {% endfor %}
             </div>
