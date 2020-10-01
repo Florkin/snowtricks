@@ -18,6 +18,7 @@ function detectImgSize(file, src, callback) {
 }
 
 function deleteFile(filename) {
+    console.log(filename)
     let deleteUrl = Routing.generate('ajax.picture.delete', {
         filename: filename,
     })
@@ -68,17 +69,16 @@ let imgDropzone = new Dropzone(".file-dropzone", {
 
         // get already uploaded images
         let imagesPaths = [];
+        let fileNames = [];
         $("#trick_pictures").find("input").each(function () {
             imagesPaths.push("uploads/images/tricks/" + $(this).attr("value"));
         })
         for (let key in imagesPaths) {
-            let mockFile = {name: key, size: 200};
+            let mockFile = {index: key, name: key, size: 200};
             myDropzone.displayExistingFile(mockFile, "/" + imagesPaths[key]);
         }
 
-        console.log(imagesPaths)
-
-        $('ul.pictures').data('index', $('ul.pictures').find('input').length);
+        $('ul.pictures').data('index', $('ul.pictures').find('input').length + $('#trick_pictures').find('input').length);
         this.on("success", function (file, filename) {
             file.index = $('ul.pictures').data('index');
             file.uniqfilename = filename;
@@ -101,7 +101,9 @@ let imgDropzone = new Dropzone(".file-dropzone", {
     },
     removedfile: function (file) {
         $("#trick_pictures_" + file.index).remove();
-        deleteFile(file.uniqfilename);
+        if (file.uniqfilename) {
+            deleteFile(file.uniqfilename);
+        }
         file.previewElement.remove();
     }
 });

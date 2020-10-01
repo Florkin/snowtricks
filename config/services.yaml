@@ -31,3 +31,7 @@ services:
         arguments:
             $targetDirectory: '../public/uploads/'
 
+    App\Listener\PictureEventSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
+

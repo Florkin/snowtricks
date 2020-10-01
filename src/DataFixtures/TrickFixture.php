@@ -40,12 +40,12 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 50; $i++) {
             $trick = new Trick();
 
-            $filenames = $this->fakeUploadPictures();
-            foreach ($filenames as $filename) {
-                $newPic = (new Picture())->setFilename($filename);
-                $manager->persist($newPic);
-                $trick->addPicture($newPic);
-            }
+//            $filenames = $this->fakeUploadPictures();
+//            foreach ($filenames as $filename) {
+//                $newPic = (new Picture())->setFilename($filename);
+//                $manager->persist($newPic);
+//                $trick->addPicture($newPic);
+//            }
 
             $trick
                 ->setTitle($i + 1 . "-" . $faker->words(3, true))
