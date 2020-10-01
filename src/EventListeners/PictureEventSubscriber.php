@@ -22,7 +22,6 @@ class PictureEventSubscriber implements EventSubscriber
     public function __construct(FileUploader $fileUploader)
     {
         $this->fileUploader = $fileUploader;
-        $this->fileUploader->setTargetDirectory("images/tricks");
     }
 
     public function getSubscribedEvents()
@@ -42,7 +41,7 @@ class PictureEventSubscriber implements EventSubscriber
         if (!$entity instanceof Picture) {
             return;
         }
-
+        $this->fileUploader->setTargetDirectory("images/tricks");
         $this->fileUploader->delete($entity->getFilename());
     }
 }
