@@ -6,7 +6,6 @@ use App\Entity\Picture;
 use App\Service\FileUploader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class PictureEventSubscriber implements EventSubscriber
 {

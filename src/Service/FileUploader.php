@@ -69,7 +69,7 @@ class FileUploader
 
     public function setTargetDirectory($targetDirectory)
     {
-        return $this->targetDirectory = $this->targetDirectory . $targetDirectory;
+        return $this->targetDirectory = $targetDirectory;
     }
 
     public function delete($filename)

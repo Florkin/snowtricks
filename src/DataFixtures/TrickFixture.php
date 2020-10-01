@@ -36,16 +36,19 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+        $this->cleanImagesFolders();
+        $this->fileUploader->setTargetDirectory("public/uploads/images/tricks");
+
         $faker = Factory::create('fr_FR');
         for ($i = 0; $i < 50; $i++) {
             $trick = new Trick();
 
-//            $filenames = $this->fakeUploadPictures();
-//            foreach ($filenames as $filename) {
-//                $newPic = (new Picture())->setFilename($filename);
-//                $manager->persist($newPic);
-//                $trick->addPicture($newPic);
-//            }
+            $filenames = $this->fakeUploadPictures();
+            foreach ($filenames as $filename) {
+                $newPic = (new Picture())->setFilename($filename);
+                $manager->persist($newPic);
+                $trick->addPicture($newPic);
+            }
 
             $trick
                 ->setTitle($i + 1 . "-" . $faker->words(3, true))
@@ -69,8 +72,6 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
 
     private function fakeUploadPictures()
     {
-        $this->fileUploader->setTargetDirectory("images/tricks");
-
         $numberOfImages = $this->randomNumber(1, 10);
         $filenames = [];
 
@@ -108,5 +109,15 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         return array(
             CategoryFixture::class
         );
+    }
+
+    private function cleanImagesFolders()
+    {
+        $path = "public/uploads/images/tricks/*";
+        $files = glob($path);
+        foreach ($files as $file) {
+            if (is_file($file))
+                unlink($file);
+        }
     }
 }

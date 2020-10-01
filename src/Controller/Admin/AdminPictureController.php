@@ -22,7 +22,7 @@ class AdminPictureController extends AbstractController
     public function __construct(FileUploader $fileUploader)
     {
         $this->fileUploader = $fileUploader;
-        $this->fileUploader->setTargetDirectory("images/tricks");
+        $this->fileUploader->setTargetDirectory("uploads/images/tricks");
     }
 
     /**
