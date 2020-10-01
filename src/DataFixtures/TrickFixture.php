@@ -10,7 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 class TrickFixture extends Fixture implements DependentFixtureInterface
 {
@@ -18,10 +18,20 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
      * @var FileUploader
      */
     private $fileUploader;
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
 
-    public function __construct(FileUploader $fileUploader)
+    /**
+     * TrickFixture constructor.
+     * @param Filesystem $filesystem
+     * @param FileUploader $fileUploader
+     */
+    public function __construct(Filesystem $filesystem, FileUploader $fileUploader)
     {
         $this->fileUploader = $fileUploader;
+        $this->filesystem = $filesystem;
     }
 
     public function load(ObjectManager $manager)
@@ -59,7 +69,6 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
 
     private function fakeUploadPictures()
     {
-        $fileSystem = new Filesystem();
         $this->fileUploader->setTargetDirectory("images/tricks");
 
         $numberOfImages = $this->randomNumber(1, 10);
@@ -67,10 +76,11 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
 
         for ($j = 0; $j < $numberOfImages; $j++) {
             $originalPath = $this->randomPic(__DIR__ . "/imagesFixtures");
-            $uniqueName = "img" . $j . ".jpg";
-            $targetPath = sys_get_temp_dir() . '/' . $uniqueName;
-            $fileSystem->copy($originalPath, $targetPath, false);
-            $picture = new UploadedFile($targetPath, $uniqueName, "image/jpeg", null, true);
+            $uniqueName = "img" . $j . ".tmp";
+            $targetPath = sys_get_temp_dir() . '\\' . $uniqueName;
+
+            $this->filesystem->copy($originalPath, $targetPath, false);
+            $picture = new File($targetPath, $uniqueName, "image/jpeg", null, true);
             $filenames[$j] = $this->fileUploader->upload($picture);
         }
 

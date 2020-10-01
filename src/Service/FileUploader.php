@@ -4,13 +4,14 @@ namespace App\Service;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 class FileUploader
 {
     private $targetDirectory;
-    private $slugger;
+
     /**
      * @var Filesystem
      */
@@ -19,21 +20,35 @@ class FileUploader
     /**
      * FileUploader constructor.
      * @param $targetDirectory
-     * @param SluggerInterface $slugger
      * @param Filesystem $fileSystem
      */
-    public function __construct($targetDirectory, SluggerInterface $slugger, Filesystem $fileSystem)
+    public function __construct($targetDirectory, Filesystem $fileSystem)
     {
         $this->targetDirectory = $targetDirectory;
-        $this->slugger = $slugger;
         $this->fileSystem = $fileSystem;
     }
 
-    public function upload(UploadedFile $file, $newFileName = null)
+//    public function upload(UploadedFile $file, $newFileName = null)
+//    {
+//        $fileName = uniqid() . '.' . $file->guessExtension();
+//
+//        if ($newFileName != null) {
+//            $fileName = $newFileName . "." . $file->guessExtension();
+//        }
+//
+//        try {
+//            $file->move($this->getTargetDirectory(), $fileName);
+//        } catch (FileException $e) {
+//            // ... handle exception if something happens during file upload
+//        }
+//
+//        return $fileName;
+//    }
+
+    public function upload(File $file, $newFileName = null)
     {
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = uniqid() . '.' . $file->guessExtension();
+
         if ($newFileName != null) {
             $fileName = $newFileName . "." . $file->guessExtension();
         }
