@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Manage;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminTrickController extends AbstractController
+class ManageTrickController extends AbstractController
 {
     /**
      * @var TrickRepository
@@ -38,7 +38,7 @@ class AdminTrickController extends AbstractController
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
-     * @Route("/admin/trick/liste", name="admin.trick.index", options = {"expose" = true})
+     * @Route("/manage/trick/liste", name="manage.trick.index", options = {"expose" = true})
      */
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
@@ -48,8 +48,8 @@ class AdminTrickController extends AbstractController
             12
         );
 
-        return $this->render("admin/trick/index.html.twig", [
-            'current_menu' => 'admin.trick.index',
+        return $this->render("manage/trick/index.html.twig", [
+            'current_menu' => 'manage.trick.index',
             'page' => [
                 "title" => 'Gestion des tricks',
             ],
@@ -60,7 +60,7 @@ class AdminTrickController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @Route("/admin/trick/nouveau", name="admin.trick.new")
+     * @Route("/manage/trick/nouveau", name="manage.trick.new")
      */
     public function new(Request $request): Response
     {
@@ -72,11 +72,11 @@ class AdminTrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
-            return $this->redirectToRoute("admin.trick.index");
+            return $this->redirectToRoute("manage.trick.index");
         }
 
-        return $this->render("admin/trick/form.html.twig", [
-            "current_menu" => "admin.trick.new",
+        return $this->render("manage/trick/form.html.twig", [
+            "current_menu" => "manage.trick.new",
             "page" => [
                 "title" => "Nouveau Trick",
             ],
@@ -91,7 +91,7 @@ class AdminTrickController extends AbstractController
      * @param Trick $trick
      * @param Request $request
      * @return Response
-     * @Route("/admin/trick/{id}-{slug}", name="admin.trick.edit", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"}, methods="GET|POST")
+     * @Route("/manage/trick/{id}-{slug}", name="manage.trick.edit", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"}, methods="GET|POST")
      */
     public function edit(string $slug, Trick $trick, Request $request): Response
     {
@@ -99,7 +99,7 @@ class AdminTrickController extends AbstractController
 
         // If slug is wrong, use id to get it and redirect to the right trick
         if ($trickSlug !== $slug) {
-            return $this->redirectToRoute("admin.trick.edit", [
+            return $this->redirectToRoute("manage.trick.edit", [
                 "id" => $trick->getId(),
                 "slug" => $trickSlug
             ], 301);
@@ -114,10 +114,10 @@ class AdminTrickController extends AbstractController
 
             $this->entityManager->flush();
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été modifié");
-            return $this->redirectToRoute("admin.trick.index");
+            return $this->redirectToRoute("manage.trick.index");
         }
 
-        return $this->render("admin/trick/form.html.twig", [
+        return $this->render("manage/trick/form.html.twig", [
             "page" => [
                 "title" => $trick->getTitle() . ' - Edition',
             ],
@@ -131,7 +131,7 @@ class AdminTrickController extends AbstractController
      * @param Trick $trick
      * @param Request $request
      * @return Response
-     * @Route("/admin/trick/{id}", name="admin.trick.delete", requirements={"id": "[0-9]*"}, methods="DELETE")
+     * @Route("/manage/trick/{id}", name="manage.trick.delete", requirements={"id": "[0-9]*"}, methods="DELETE")
      */
     public function delete(Trick $trick, Request $request): Response
     {
@@ -141,7 +141,7 @@ class AdminTrickController extends AbstractController
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été supprimé");
         }
 
-        return $this->redirectToRoute("admin.trick.index");
+        return $this->redirectToRoute("manage.trick.index");
     }
 
 }

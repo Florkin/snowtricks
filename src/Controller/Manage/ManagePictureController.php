@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Manage;
 
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminPictureController extends AbstractController
+class ManagePictureController extends AbstractController
 {
     /**
      * @var FileUploader
@@ -26,7 +26,7 @@ class AdminPictureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/picture/upload", name="ajax.picture.upload", methods="GET|POST", options={"expose"=true})
+     * @Route("/manage/picture/upload", name="ajax.picture.upload", methods="GET|POST", options={"expose"=true})
      * @param Request $request
      * @return Response
      */
@@ -39,7 +39,7 @@ class AdminPictureController extends AbstractController
     }
 
     /**
-     * @Route("/admin/picture/delete/{filename}", name="ajax.picture.delete", methods="DELETE", options={"expose"=true})
+     * @Route("/manage/picture/delete/{filename}", name="ajax.picture.delete", methods="DELETE", options={"expose"=true})
      * @param string $filename
      * @return Response
      */

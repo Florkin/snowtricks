@@ -22,10 +22,18 @@ class UserFixture extends Fixture
         $faker = Factory::create('fr_FR');
         $user = new User;
         $user
+            ->setEmail("superadmin@demo.fr")
+            ->setPassword($this->encoder->encodePassword($user, "demodemo"))
+            ->setUsername("Superadmindemo")
+            ->setRoles(["ROLE_SUPER_ADMIN"]);
+        $manager->persist($user);
+
+        $user = new User;
+        $user
             ->setEmail("admin@demo.fr")
             ->setPassword($this->encoder->encodePassword($user, "demodemo"))
             ->setUsername("Admindemo")
-            ->setRoles(["ROLE_ADMIN", "ROLE_USER"]);
+            ->setRoles(["ROLE_ADMIN"]);
         $manager->persist($user);
 
         $user = new User;

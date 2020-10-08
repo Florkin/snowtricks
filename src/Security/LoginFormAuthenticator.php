@@ -126,7 +126,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         $successLoginMessage = $this->translator->trans('You have been logged in', [], 'security');
         $this->flashBag->add('success', $successLoginMessage);
-        return new RedirectResponse($this->urlGenerator->generate('admin.trick.index'));
+        return new RedirectResponse($this->urlGenerator->generate('manage.trick.index'));
     }
 
     protected function getLoginUrl()

@@ -12,11 +12,11 @@
     {% include "_partials/_page-header.html.twig" %}
 
     <div class="container py-3">
-        <a href="{{ path("admin.category.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Ajouter une catégorie</a>
+        <a href="{{ path("manage.category.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Ajouter une catégorie</a>
 
         <div class="row">
             {% for category in categories %}
-                {% include "admin/_partials/_category-line.html.twig" %}
+                {% include "manage/_partials/_category-line.html.twig" %}
             {% endfor %}
         </div>
 
