@@ -22,7 +22,12 @@
                     {% endfor %}
                     {% for video in trick.videos %}
                         <div class="swiper-slide d-flex justify-content-center">
-                            {{ video.url }}
+                            <div class="codegena">
+                                <iframe width='1280' height='720'
+                                        src="https://www.youtube.com/embed/{{ video.youtubeId }}?&theme=dark&autoplay=1&autohide=2&modestbranding=1&fs=0"
+                                        frameborder="0">
+                                </iframe>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
