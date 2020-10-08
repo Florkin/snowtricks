@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil: {{ user.username }}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    {{ dump(user) }}
+    {{ dump(role_display) }}
+    <a href="{{ path("manage.user.update", {id: user.id, slug: user.slug}) }}" class="btn btn-primary">Modifier mon profil</a>
+</div>
+{% endblock %}
