@@ -16,10 +16,10 @@ use Symfony\Component\HttpFoundation\File\File;
 class TrickFixture extends Fixture implements DependentFixtureInterface
 {
     const YOUTUBE_VIDEOS = [
-        "www.youtube.com/watch?v=SQyTWk7OxSI",
-        "www.youtube.com/watch?v=V9xuy-rVj9w",
-        "www.youtube.com/watch?v=0uGETVnkujA",
-        "https://www.youtube.com/watch?v=8AWdZKMTG3U",
+        "https://www.youtube.com/watch?v=SQyTWk7OxSI",
+        "https://www.youtube.com/watch?v=V9xuy-rVj9w",
+        "https://www.youtube.com/watch?v=0uGETVnkujA",
+        "https://www.youtube.com/watch?v=1CR0QmCaMTs",
         "https://www.youtube.com/watch?v=1CR0QmCaMTs"
     ];
     /**

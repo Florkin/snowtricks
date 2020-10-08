@@ -93,6 +93,7 @@ class Trick
 
     /**
      * @ORM\OneToMany(targetEntity=EmbedVideo::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
+     * @Assert\Valid()
      */
     private $videos;
 

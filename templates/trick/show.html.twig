@@ -20,6 +20,11 @@
                             <img class="img-fluid" src="{{ asset(getImage("tricks", picture.filename)) }}">
                         </div>
                     {% endfor %}
+                    {% for video in trick.videos %}
+                        <div class="swiper-slide d-flex justify-content-center">
+                            {{ video.url }}
+                        </div>
+                    {% endfor %}
                 </div>
                 <!-- If we need pagination -->
                 <div class="d-flex justify-content-center">

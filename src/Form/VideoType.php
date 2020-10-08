@@ -16,12 +16,14 @@ class VideoType extends AbstractType
         $builder
             ->add("url", TextType::class, [
                 "label" => false,
-                "attr" => ["placeholder" => "Lien de vidéo youtube"]
+                "attr" => [
+                    "placeholder" => "Lien de vidéo youtube",
+                    "pattern" => "^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$"
+                ]
             ])
             ->add("delete", ButtonType::class, [
                 "attr" => ["class" => "btn-outline-danger js-delete-video"]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
