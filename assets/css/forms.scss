@@ -5,8 +5,24 @@
 .dropzone .dz-preview .dz-image {
   display: flex;
   justify-content: center;
+
   img {
     max-height: 100%;
+  }
+}
+
+#videos-fields-list {
+  .trick-video-field {
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+
+      .form-group:first-child {
+        width: 300px;
+        margin-right: 10px;
+      }
+    }
   }
 }
 

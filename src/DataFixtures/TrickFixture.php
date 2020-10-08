@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\EmbedVideo;
 use App\Entity\Picture;
 use App\Entity\Trick;
 use App\Service\FileUploader;
@@ -14,6 +15,13 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class TrickFixture extends Fixture implements DependentFixtureInterface
 {
+    const YOUTUBE_VIDEOS = [
+        "https://www.youtube.com/watch?v=SQyTWk7OxSI",
+        "https://www.youtube.com/watch?v=V9xuy-rVj9w",
+        "https://www.youtube.com/watch?v=0uGETVnkujA",
+        "https://www.youtube.com/watch?v=1CR0QmCaMTs",
+        "https://www.youtube.com/watch?v=1CR0QmCaMTs"
+    ];
     /**
      * @var FileUploader
      */
@@ -40,9 +48,19 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         $this->fileUploader->setTargetDirectory("public/uploads/images/tricks");
 
         $faker = Factory::create('fr_FR');
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $trick = new Trick();
 
+            // Add videos
+            $count = count(Self::YOUTUBE_VIDEOS);
+            $numberOfVideos = $this->randomNumber(1, $count);
+            for ($y = 0; $y < $numberOfVideos; $y++) {
+                $newVideo = (new EmbedVideo())->setUrl(Self::YOUTUBE_VIDEOS[$faker->numberBetween(0, $count - 1)]);
+                $manager->persist($newVideo);
+                $trick->addVideo($newVideo);
+            }
+
+            // Add pictures
             $filenames = $this->fakeUploadPictures();
             foreach ($filenames as $filename) {
                 $newPic = (new Picture())->setFilename($filename);
@@ -62,7 +80,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
             $numberOfCategories = $this->randomNumber(1, 4);
 
             for ($j = 0; $j < $numberOfCategories; $j++) {
-                $trick->addCategory($this->getReference("ref_" . $this->randomNumber(0, 9)));
+                $trick->addCategory($this->getReference("ref_" . $this->randomNumber(0, 5)));
             }
             $manager->persist($trick);
         }
@@ -72,7 +90,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
 
     private function fakeUploadPictures()
     {
-        $numberOfImages = $this->randomNumber(1, 10);
+        $numberOfImages = $this->randomNumber(1, 5);
         $filenames = [];
 
         for ($j = 0; $j < $numberOfImages; $j++) {
