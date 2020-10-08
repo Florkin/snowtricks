@@ -16,30 +16,38 @@ class TrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('description')
-            ->add('difficulty', ChoiceType::class, [
-                'choices' => $this->getDifficulties()
+            ->add("title")
+            ->add("description")
+            ->add("difficulty", ChoiceType::class, [
+                "choices" => $this->getDifficulties()
             ])
-            ->add('categories', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'title',
-                'multiple' => true,
-                'group_by' => function (Category $category) {
+            ->add("categories", EntityType::class, [
+                "class" => Category::class,
+                "choice_label" => "title",
+                "multiple" => true,
+                "group_by" => function (Category $category) {
                     if (!is_null($category->getParentCategory())) {
                         return $category->getParentCategory()->getTitle();
                     }
                     return null;
                 }
             ])
-            ->add('visible')
+            ->add("visible")
             ->add("pictures", CollectionType::class, [
-                'label' => false,
-                'entry_type' => PictureType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'by_reference' => false,
-                'allow_delete' => true,
+                "label" => false,
+                "entry_type" => PictureType::class,
+                "entry_options" => ['label' => false],
+                "allow_add" => true,
+                "by_reference" => false,
+                "allow_delete" => true,
+            ])
+            ->add("videos", CollectionType::class, [
+                "entry_type" => VideoType::class,
+                "allow_delete" => true,
+                "allow_add" => true,
+                "label" => false,
+                "delete_empty" => true,
+                "by_reference" => false,
             ]);
     }
 

@@ -23,8 +23,26 @@
             <div class="col-12 col-sm-12">{{ form_row(form.description) }}</div>
             <div class="col-12 col-sm-12">{{ form_row(form.categories, {'attr': {'class': 'category-selector'}}) }}</div>
             <div class="col-12 col-sm-8">{{ form_row(form.visible) }}</div>
+            <div class="col-12 col-sm-8">
+                <div id="videos-fields-list"
+                    data-prototype="{{ form_widget(form.videos.vars.prototype)|e }}"
+                    data-widget-tags="{{ '<div class="trick-video-field"></div>'|e }}"
+                    data-widget-counter="{{ form.videos|length }}">
+                    <label for="videos-fields-list">Vidéos youtube</label>
+                    {% for videoField in form.videos %}
+                        <div class="trick-video-field">
+                            {{ form_errors(videoField) }}
+                            {{ form_widget(videoField) }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button type="button"
+                        class="js-add-video-btn btn btn-outline-primary"
+                        data-list-selector="#videos-fields-list">Ajouter une vidéo</button>
+            </div>
             <ul class="pictures" data-prototype="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"></ul>
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-sm-4 mt-5">
                 <button class="btn btn-success" type="submit">{{ btn_label|default("Valider") }}</button>
             </div>
         </div>
