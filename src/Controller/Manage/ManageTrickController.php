@@ -69,6 +69,7 @@ class ManageTrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $trick->setAuthor($this->getUser());
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
@@ -108,6 +109,7 @@ class ManageTrickController extends AbstractController
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $trick->setUpdatedBy($this->getUser());
             // Set update date
             $date = new \DateTime();
             $trick->setDateUpdate($date);

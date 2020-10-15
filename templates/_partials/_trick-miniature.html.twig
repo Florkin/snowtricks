@@ -8,9 +8,16 @@
             <h5 class="card-title">
                 <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>
             </h5>
-            <p>{{ trick.description|u.truncate(50, "...") }}</p>
-            <p class="text-muted">{{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}</p>
-
+            <p>{{ trick.description|u.truncate(70, "...") }}</p>
+            <p class="text-muted">
+                Ajouté par {{ trick.author.username }}
+                le {{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}
+                {% if trick.updatedBy is not null %}
+                    <small class="d-block text-muted">
+                        Dernière mise a jour par {{ trick.updatedBy.username }}
+                    </small>
+                {% endif %}
+            </p>
             {% if trick.categories|length > 0 %}
                 <div class="border-top py-2">
                     {% for cat in trick.categories %}

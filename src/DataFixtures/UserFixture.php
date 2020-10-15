@@ -27,6 +27,7 @@ class UserFixture extends Fixture
             ->setUsername("Superadmindemo")
             ->setRoles(["ROLE_SUPER_ADMIN"]);
         $manager->persist($user);
+        $this->addReference("userref_0", $user);
 
         $user = new User;
         $user
@@ -35,6 +36,7 @@ class UserFixture extends Fixture
             ->setUsername("Admindemo")
             ->setRoles(["ROLE_ADMIN"]);
         $manager->persist($user);
+        $this->addReference("userref_1", $user);
 
         $user = new User;
         $user
@@ -43,9 +45,11 @@ class UserFixture extends Fixture
             ->setUsername("Userdemo")
             ->setRoles(["ROLE_USER"]);
         $manager->persist($user);
+        $this->addReference("userref_2", $user);
 
 
-        for ($i = 0; $i < 20; $i++) {
+
+        for ($i = 3; $i < 20; $i++) {
             $roles = ["ROLE_USER"];
             $user = new User();
             $user
@@ -55,6 +59,7 @@ class UserFixture extends Fixture
                 ->setRoles($roles);
 
             $manager->persist($user);
+            $this->addReference("userref_" . $i, $user);
         }
 
         $manager->flush();
