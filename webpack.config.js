@@ -31,6 +31,7 @@ Encore
     .addEntry('swipers', './assets/js/swipers.js')
     .addEntry('loadmore', './assets/js/loadmore.js')
     .addEntry('loadmoreChatposts', './assets/js/loadmoreChatposts.js')
+    .addEntry('addChatpost', './assets/js/addChatPost.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

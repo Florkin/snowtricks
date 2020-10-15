@@ -7,7 +7,7 @@ Routing.setRoutingData(routes);
 const axios = require('axios').default;
 
 async function loadMoreItems(page, categoryID) {
-    axios.get(Routing.generate("ajax.loadmore.chatposts", {page: page, trick_id: trickID}))
+    axios.get(Routing.generate("ajax.chatposts.loadmore", {page: page, trick_id: trickID}))
         .then(function (response) {
             addToHtml(response.data).then(function () {
                 focusAndAnimate();

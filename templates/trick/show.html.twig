@@ -71,9 +71,10 @@
                         {% include "_partials/_chatposts-listing.html.twig" %}
                     </div>
                 </div>
-                <div class="chat-form">
+                <div class="chat-form js-chat-form">
                     {{ form_start(form) }}
                     {{ form_row(form.message) }}
+                    <input id="trick_id" type="hidden" value="{{ trick.id }}">
                     <button class="btn btn-primary" type="submit">Envoyer</button>
                     {{ form_end(form) }}
                 </div>
@@ -92,4 +93,5 @@
 {% block add_javascripts %}
     {{ encore_entry_script_tags('swipers') }}
     {{ encore_entry_script_tags('loadmoreChatposts') }}
+    {{ encore_entry_script_tags('addChatpost') }}
 {% endblock %}

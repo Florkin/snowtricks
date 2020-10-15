@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\ChatPost;
-use App\Repository\CategoryRepository;
 use App\Repository\ChatPostRepository;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,16 +24,22 @@ class ChatPostController extends AbstractController
      * @var ChatPostRepository
      */
     private $chatPostRepository;
+    /**
+     * @var TrickRepository
+     */
+    private $trickRepository;
 
     /**
      * ChatPostController constructor.
      * @param EntityManagerInterface $entityManager
      * @param ChatPostRepository $chatPostRepository
+     * @param TrickRepository $trickRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, ChatPostRepository $chatPostRepository)
+    public function __construct(EntityManagerInterface $entityManager, ChatPostRepository $chatPostRepository, TrickRepository $trickRepository)
     {
         $this->entityManager = $entityManager;
         $this->chatPostRepository = $chatPostRepository;
+        $this->trickRepository = $trickRepository;
     }
 
     /**
@@ -58,14 +63,14 @@ class ChatPostController extends AbstractController
     }
 
     /**
-     * @Route("/chatposts/load/{page}/{trick_id}", name="ajax.loadmore.chatposts", requirements={"page" = "\d+", "trick_id" = "\d+"}, methods="GET", options = {"expose" = true})
+     * @Route("/chatposts/load/{page}/{trick_id}", name="ajax.chatposts.loadmore", requirements={"page" = "\d+", "trick_id" = "\d+"}, methods="GET", options = {"expose" = true})
      * @param int $page
      * @param int|null $trick_id
      * @param Request $request
      * @param TrickRepository $trickRepository
      * @return Response
      */
-    public function ajaxLoadMore(int $page, int $trick_id, Request $request, TrickRepository $trickRepository)
+    public function ajaxLoadMore(int $page, int $trick_id)
     {
         // Check if there is entities to load
         $total = $this->chatPostRepository->howManyPosts($trick_id);
@@ -75,7 +80,7 @@ class ChatPostController extends AbstractController
             $isLast = true;
         }
 
-        $trick = $trickRepository->findOneBy(["id" => $trick_id]);
+        $trick = $this->trickRepository->findOneBy(["id" => $trick_id]);
         $chatPosts = $this->chatPostRepository->findByPage($page, Self::PAGE_SIZE, $trick_id);
 
         $html = $this->render("_partials/_chatposts-listing.html.twig", [
@@ -88,6 +93,35 @@ class ChatPostController extends AbstractController
             "html" => $html,
             "page" => $page,
             "isLast" => $isLast
+        ];
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @Route("/chatposts/new", name="ajax.chatposts.new", methods="POST", options = {"expose" = true})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function ajaxNew(Request $request)
+    {
+        $message = $request->request->get("message");
+        $trick = $this->trickRepository->find($request->request->get("trick_id"));
+        $chatPost = new ChatPost();
+        $chatPost->setMessage($message);
+        $chatPost->setTrick($trick);
+        $chatPost->setUser($this->getUser());
+        $this->entityManager->persist($chatPost);
+        $this->entityManager->flush();
+
+        $html = $this->render("_partials/_chatpost.html.twig", [
+            'post' => $chatPost,
+            'trick' => $trick
+        ])->getContent();
+
+        $response = [
+            "code" => 200,
+            "html" => $html,
         ];
 
         return new JsonResponse($response);
