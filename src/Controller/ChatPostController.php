@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ChatPostController extends AbstractController
 {
@@ -101,9 +102,10 @@ class ChatPostController extends AbstractController
     /**
      * @Route("/chatposts/new", name="ajax.chatposts.new", methods="POST", options = {"expose" = true})
      * @param Request $request
+     * @param ValidatorInterface $validator
      * @return JsonResponse
      */
-    public function ajaxNew(Request $request)
+    public function ajaxNew(Request $request, ValidatorInterface $validator)
     {
         $message = $request->request->get("message");
         $trick = $this->trickRepository->find($request->request->get("trick_id"));
@@ -113,6 +115,16 @@ class ChatPostController extends AbstractController
         $chatPost->setMessage($message);
         $chatPost->setTrick($trick);
         $chatPost->setUser($this->getUser());
+        $errors = $validator->validate($chatPost);
+
+        if ($errors->count() > 0) {
+            $html = $this->render('_partials/_messages.html.twig', [
+                'errors' => $errors
+            ])->getContent();
+
+            return new JsonResponse(["html" => $html]);
+        }
+
         $this->entityManager->persist($chatPost);
         $this->entityManager->flush();
 

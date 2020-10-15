@@ -16,4 +16,12 @@
             {{ message }}
         </div>
     {% endfor %}
+
+    {% if errors is defined %}
+        {% for error in errors %}
+            <div class="alert alert-danger">
+                {{ error.message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 </div>
