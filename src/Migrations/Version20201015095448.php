@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201015092157 extends AbstractMigration
+final class Version20201015095448 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,7 @@ final class Version20201015092157 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE trick ADD author_id INT NOT NULL, ADD updated_by_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE trick CHANGE author_id author_id INT NOT NULL');
         $this->addSql('ALTER TABLE trick ADD CONSTRAINT FK_D8F0A91EF675F31B FOREIGN KEY (author_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE trick ADD CONSTRAINT FK_D8F0A91E896DBBDE FOREIGN KEY (updated_by_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_D8F0A91EF675F31B ON trick (author_id)');
@@ -38,6 +38,6 @@ final class Version20201015092157 extends AbstractMigration
         $this->addSql('ALTER TABLE trick DROP FOREIGN KEY FK_D8F0A91E896DBBDE');
         $this->addSql('DROP INDEX IDX_D8F0A91EF675F31B ON trick');
         $this->addSql('DROP INDEX IDX_D8F0A91E896DBBDE ON trick');
-        $this->addSql('ALTER TABLE trick DROP author_id, DROP updated_by_id');
+        $this->addSql('ALTER TABLE trick CHANGE author_id author_id INT DEFAULT 1 NOT NULL');
     }
 }
