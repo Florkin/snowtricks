@@ -58,6 +58,8 @@ class ManageUserController extends AbstractController
     public function update(int $id, string $slug, Request $request)
     {
         $user = $this->userRepository->find($id);
+        $this->denyAccessUnlessGranted('EDIT_USER', $user);
+
         $userSlug = $user->getSlug();
 
         if ($userSlug !== $slug) {
@@ -103,6 +105,8 @@ class ManageUserController extends AbstractController
     public function passwordUpdate(int $id, string $slug, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->userRepository->find($id);
+        $this->denyAccessUnlessGranted('EDIT_PASSWORD', $user);
+
         $userSlug = $user->getSlug();
 
         if ($userSlug !== $slug) {
