@@ -96,6 +96,8 @@ class ManageTrickController extends AbstractController
      */
     public function edit(string $slug, Trick $trick, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $trick);
+
         $trickSlug = $trick->getSlug();
 
         // If slug is wrong, use id to get it and redirect to the right trick
@@ -137,6 +139,8 @@ class ManageTrickController extends AbstractController
      */
     public function delete(Trick $trick, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('DELETE', $trick);
+
         if ($this->isCsrfTokenValid("delete" . $trick->getId(), $request->get("_token"))) {
             $this->entityManager->remove($trick);
             $this->entityManager->flush();

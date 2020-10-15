@@ -14,9 +14,12 @@
 
 
             <div class="actions col-md-3 text-right">
+                {% if is_granted("EDIT", trick) %}
                 <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}" class="btn btn-primary">
                     <span class="fa fa-edit"></span>
                 </a>
+                {% endif %}
+                {% if is_granted("DELETE", trick) %}
                 <form method="post" class="d-inline-block" action="{{ path("manage.trick.delete", {id: trick.id}) }}"
                 onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
                     <input type="hidden" name="_method" value="DELETE">
@@ -25,6 +28,7 @@
                         <span class="fa fa-eraser"></span>
                     </button>
                 </form>
+                {% endif %}
             </div>
             {% if trick.categories|length > 0 %}
                 <div class="border-top py-2 col-md-12">
