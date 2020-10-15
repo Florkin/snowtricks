@@ -54,7 +54,6 @@ class ChatPostVoter extends Voter
             case 'DELETE':
                 return $chatPost->getUser() == $user;
                 break;
-
         }
 
         return false;

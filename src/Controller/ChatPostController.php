@@ -107,6 +107,8 @@ class ChatPostController extends AbstractController
     {
         $message = $request->request->get("message");
         $trick = $this->trickRepository->find($request->request->get("trick_id"));
+        $this->denyAccessUnlessGranted('ADD_CHATPOST', $trick);
+
         $chatPost = new ChatPost();
         $chatPost->setMessage($message);
         $chatPost->setTrick($trick);

@@ -71,13 +71,20 @@
                         {% include "_partials/_chatposts-listing.html.twig" %}
                     </div>
                 </div>
-                <div class="chat-form js-chat-form">
-                    {{ form_start(form) }}
-                    {{ form_row(form.message) }}
-                    <input id="trick_id" type="hidden" value="{{ trick.id }}">
-                    <button class="btn btn-primary" type="submit">Envoyer</button>
-                    {{ form_end(form) }}
-                </div>
+
+                {% if is_granted('ADD_CHATPOST', trick) %}
+                    <div class="chat-form js-chat-form">
+                        {{ form_start(form) }}
+                        {{ form_row(form.message) }}
+                        <input id="trick_id" type="hidden" value="{{ trick.id }}">
+                        <button class="btn btn-primary" type="submit">Envoyer</button>
+                        {{ form_end(form) }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <a href="{{ path('app_login') }}">Connectez vous</a> pour ajouter un commentaire
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

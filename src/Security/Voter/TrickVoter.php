@@ -26,7 +26,7 @@ class TrickVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['DELETE', 'EDIT'])
+        return in_array($attribute, ['DELETE', 'EDIT', 'ADD_CHATPOST'])
             && $subject instanceof Trick;
     }
 
@@ -54,9 +54,11 @@ class TrickVoter extends Voter
                 return $trick->getAuthor() == $user;
                 break;
 
+            case 'ADD_CHATPOST':
             case 'EDIT':
-                return $user instanceof UserInterface;
+                return $this->security->isGranted('ROLE_USER');
                 break;
+
         }
 
         return false;
