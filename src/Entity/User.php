@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -48,9 +49,21 @@ class User implements UserInterface
      */
     private $chatPosts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="author")
+     */
+    private $tricks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="updatedBy")
+     */
+    private $tricksUpdate;
+
     public function __construct()
     {
         $this->chatPosts = new ArrayCollection();
+        $this->tricks = new ArrayCollection();
+        $this->tricksUpdate = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +176,73 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($chatPost->getUser() === $this) {
                 $chatPost->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return (new Slugify())->slugify($this->username);
+    }
+
+    /**
+     * @return Collection|Trick[]
+     */
+    public function getTricks(): Collection
+    {
+        return $this->tricks;
+    }
+
+    public function addTrick(Trick $trick): self
+    {
+        if (!$this->tricks->contains($trick)) {
+            $this->tricks[] = $trick;
+            $trick->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->tricks->contains($trick)) {
+            $this->tricks->removeElement($trick);
+            // set the owning side to null (unless already changed)
+            if ($trick->getAuthor() === $this) {
+                $trick->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trick[]
+     */
+    public function getTricksUpdate(): Collection
+    {
+        return $this->tricksUpdate;
+    }
+
+    public function addTricksUpdate(Trick $tricksUpdate): self
+    {
+        if (!$this->tricksUpdate->contains($tricksUpdate)) {
+            $this->tricksUpdate[] = $tricksUpdate;
+            $tricksUpdate->setUpdatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTricksUpdate(Trick $tricksUpdate): self
+    {
+        if ($this->tricksUpdate->contains($tricksUpdate)) {
+            $this->tricksUpdate->removeElement($tricksUpdate);
+            // set the owning side to null (unless already changed)
+            if ($tricksUpdate->getUpdatedBy() === $this) {
+                $tricksUpdate->setUpdatedBy(null);
             }
         }
 

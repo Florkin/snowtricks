@@ -9,6 +9,9 @@
     <div class="container">
         <h1>{{ trick.title }}</h1>
 
+        <p class="text-muted">Ajouté par {{ trick.author.username }}
+            {% if trick.updatedBy is not null %}, Dernière mise a jour par {{ trick.updatedBy.username }}{% endif %}
+        </p>
         {% if trick.pictures|length > 0 %}
             <!-- Slider main container -->
             <div class="trick-show-images js-trick-show-images-swiper overflow-hidden">
@@ -24,7 +27,7 @@
                         <div class="swiper-slide d-flex justify-content-center">
                             <div class="codegena">
                                 <iframe width='1280' height='720'
-                                        src="https://www.youtube.com/embed/{{ video.youtubeId }}?&theme=dark&autoplay=1&autohide=2&modestbranding=1&fs=0"
+                                        src="https://www.youtube.com/embed/{{ video.youtubeId }}?&theme=dark&autoplay=0&autohide=2&modestbranding=1&fs=0"
                                         frameborder="0">
                                 </iframe>
                             </div>

@@ -25,12 +25,12 @@
                         <span class="fa fa-edit"></span>
                     </a>
                     <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item{% if current_menu is defined and current_menu == "admin.trick.index" %} active{% endif %}"
-                           href="{{ path("admin.trick.index") }}"><span class="fa fa-user"></span> Gérer des Tricks</a>
-                        <a class="dropdown-item{% if current_menu is defined and current_menu == "admin.trick.new" %} active{% endif %}"
-                           href="{{ path("admin.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
-                        <a class="dropdown-item{% if current_menu is defined and current_menu == "admin.category.new" %} active{% endif %}"
-                           href="{{ path("admin.category.index") }}"><span class="fa fa-object-group"></span> Gérer les
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.trick.index" %} active{% endif %}"
+                           href="{{ path("manage.trick.index") }}"><span class="fa fa-user"></span> Gérer des Tricks</a>
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.trick.new" %} active{% endif %}"
+                           href="{{ path("manage.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.category.new" %} active{% endif %}"
+                           href="{{ path("manage.category.index") }}"><span class="fa fa-object-group"></span> Gérer les
                             catégories</a>
                     </div>
                 </li>
@@ -41,7 +41,7 @@
                     </a>
                     <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
                         {% if app.user.username is defined %}
-                            <a class="dropdown-item" href="#"><span class="fa fa-user"></span> {{ app.user.username }}
+                            <a class="dropdown-item" href="{{ path("user.show") }}"><span class="fa fa-user"></span> {{ app.user.username }}
                             </a>
                             <a class="dropdown-item" href="{{ path("app_logout") }}"><span
                                         class="fa fa-sign-out"></span> Logout</a>

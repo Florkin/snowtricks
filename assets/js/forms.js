@@ -18,7 +18,6 @@ function detectImgSize(file, src, callback) {
 }
 
 function deleteFile(filename) {
-    console.log(filename)
     let deleteUrl = Routing.generate('ajax.picture.delete', {
         filename: filename,
     })

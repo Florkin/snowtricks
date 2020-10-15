@@ -47,6 +47,7 @@ class ChatPostController extends AbstractController
      */
     public function delete(ChatPost $chatPost, int $trickID, string $trickSlug, Request $request): Response
     {
+        $this->denyAccessUnlessGranted("DELETE", $chatPost);
         if ($this->isCsrfTokenValid("delete" . $chatPost->getId(), $request->get("_token"))) {
             $this->entityManager->remove($chatPost);
             $this->entityManager->flush();
@@ -91,4 +92,5 @@ class ChatPostController extends AbstractController
 
         return new JsonResponse($response);
     }
+
 }

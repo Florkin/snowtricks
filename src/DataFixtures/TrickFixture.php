@@ -80,8 +80,12 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
             $numberOfCategories = $this->randomNumber(1, 4);
 
             for ($j = 0; $j < $numberOfCategories; $j++) {
-                $trick->addCategory($this->getReference("ref_" . $this->randomNumber(0, 5)));
+                $trick->addCategory($this->getReference("catref_" . $this->randomNumber(0, 5)));
             }
+
+            $trick->setAuthor($this->getReference("userref_" . $this->randomNumber(0, 19)));
+            $trick->setUpdatedBy($this->getReference("userref_" . $this->randomNumber(0, 19)));
+
             $manager->persist($trick);
         }
 
@@ -125,7 +129,8 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return array(
-            CategoryFixture::class
+            CategoryFixture::class,
+            UserFixture::class
         );
     }
 

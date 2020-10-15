@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Profil{% endblock %}
+
+{% block body %}
+    {% include '_partials/_messages.html.twig' %}
+
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Modifier le profil</h1>
+
+    {{ form_start(userForm) }}
+        {{ form_row(userForm.username) }}
+        {{ form_row(userForm.email) }}
+
+        <button type="submit" class="btn btn-primary">Modifier</button>
+    {{ form_end(userForm) }}
+    <a href="{{ path("manage.password.update", {id: user.id, slug: user.slug}) }}" class="btn btn-outline-primary">Modifier le mot de passe</a>
+{% endblock %}

@@ -123,6 +123,9 @@ class TrickController extends AbstractController
 
     public function processPostForm($chatPost, $trick)
     {
+        if (null != $chatPost->getId()) {
+            $this->denyAccessUnlessGranted("EDIT", $chatPost);
+        };
         $chatPost->setTrick($trick);
         $chatPost->setUser($this->security->getUser());
         $this->entityManager->persist($chatPost);

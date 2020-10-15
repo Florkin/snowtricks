@@ -9,10 +9,10 @@
             </div>
 
             <div class="actions col-md-3 text-right">
-                <a href="{{ path("admin.category.edit", {id: category.id, slug: category.slug}) }}" class="btn btn-primary">
+                <a href="{{ path("manage.category.edit", {id: category.id, slug: category.slug}) }}" class="btn btn-primary">
                     <span class="fa fa-edit"></span>
                 </a>
-                <form method="post" class="d-inline-block" action="{{ path("admin.category.delete", {id: category.id}) }}"
+                <form method="post" class="d-inline-block" action="{{ path("manage.category.delete", {id: category.id}) }}"
                 onsubmit="return confirm('Êtes vous sur de vouloir supprimer cette catégorie?')">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ category.id) }}">

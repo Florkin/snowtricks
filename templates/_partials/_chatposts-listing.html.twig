@@ -3,8 +3,10 @@
         <div class="card-body">
             <p>Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F Y') }}</p>
             <p>{{ post.message }}</p>
-            {% if post.user == app.user %}
-                <a class="btn btn-warning" href="#"><span class="fa fa-edit"></span></a>
+{#            {% if is_granted("EDIT", post) %}#}
+{#                <a class="btn btn-warning" href="#"><span class="fa fa-edit"></span></a>#}
+{#            {% endif %}#}
+            {% if is_granted("DELETE", post) %}
                 <form method="post" class="d-inline-block"
                       action="{{ path("chatpost.delete", {trickSlug:trick.slug, trickID: trick.id, id: post.id}) }}"
                       onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce message?')">
