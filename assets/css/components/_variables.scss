@@ -1,9 +1,20 @@
 $container-max-widths: (
         sm: 540px,
-        md: 720px,
+        md: 900px,
         lg: 960px,
-        xl: 1280px
+        xl: 1600px
 );
+
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1500px
+);
+
+$grid-columns: 15;
+
 
 $primary: #3784A7;
 $secondary: #F77F00;

@@ -2,10 +2,10 @@
 
 .home-jumbotron {
   padding: 8rem 2rem;
-  background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,1)), url('../../img/home-bg.jpg') center;
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)), url('../../img/home-bg.jpg') center;
   background-size: cover;
 
-  .jumbotron-title{
+  .jumbotron-title {
     font-weight: bold;
     font-size: 2rem;
   }
@@ -13,7 +13,7 @@
   @include media-breakpoint-up(md) {
     padding: 13rem 2rem;
 
-    .jumbotron-title{
+    .jumbotron-title {
       font-size: 3.5rem;
     }
   }

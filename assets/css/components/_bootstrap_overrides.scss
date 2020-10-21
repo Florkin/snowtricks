@@ -6,10 +6,8 @@
 
 .card {
   transition-duration: 300ms;
-  border-radius: 0.5rem;
+  border-radius: 2px;
   overflow: hidden;
-  border: 0px;
-  @include box-shadow;
 
   .card-body {
     display: flex;
@@ -20,6 +18,7 @@
 
 .btn {
   text-transform: uppercase;
+  border-radius: 2px;
 
   &.btn-lg {
     padding: 0.8rem 1.5rem;

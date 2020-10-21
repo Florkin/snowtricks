@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    const PAGE_SIZE = 12;
+    const PAGE_SIZE = 15;
 
     /**
      * @var string
