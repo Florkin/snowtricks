@@ -6,16 +6,29 @@
 
 {% block body %}
     {% include '_partials/_messages.html.twig' %}
-    {% include "_partials/_page-header.html.twig" %}
 
     <div class="container">
-        <h2>Derniers Tricks Ajoutés</h2>
-        <div class="row">
-            {% for trick in tricks %}
-                {% include "_partials/_trick-miniature.html.twig" %}
-            {% endfor %}
+        <div id="js-tricks-container" class="row">
+            {% include "_partials/_listing.html.twig" %}
         </div>
+
+        {% if loadmoreBtn is defined and loadmoreBtn == true %}
+            <div class="text-center">
+                <button id="js-load-more-btn" class="btn btn-primary"
+                        {% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus
+                </button>
+            </div>
+        {% endif %}
     </div>
 
+    {% include "_partials/_ajax-loader.html.twig" %}
 
+{% endblock %}
+
+{% block add_stylesheets %}
+    {{ encore_entry_link_tags('loadmore') }}
+{% endblock %}
+
+{% block add_javascripts %}
+    {{ encore_entry_script_tags('loadmore') }}
 {% endblock %}

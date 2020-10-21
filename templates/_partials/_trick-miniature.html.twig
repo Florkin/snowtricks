@@ -11,10 +11,10 @@
             <p>{{ trick.description|u.truncate(70, "...") }}</p>
             <p class="text-muted">
                 Ajouté par {{ trick.author.username }}
-                le {{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}
+                le {{ trick.dateadd|format_datetime('full', 'none', locale='fr') }}
                 {% if trick.updatedBy is not null %}
                     <small class="d-block text-muted">
-                        Dernière mise a jour par {{ trick.updatedBy.username }}
+                        Dernière mise a jour par {{ trick.updatedBy.username }} le {{ trick.dateupdate|format_datetime('full', 'none', locale='fr') }}
                     </small>
                 {% endif %}
             </p>

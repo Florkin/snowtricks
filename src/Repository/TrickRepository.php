@@ -50,13 +50,13 @@ class TrickRepository extends ServiceEntityRepository
      * @param int|null $categoryID
      * @return int
      */
-    public function howManyTricks(int $categoryID = null) : int
+    public function howManyTricks(int $categoryID = null): int
     {
         $query = $this->findVisibleQuery();
         if ($categoryID != null) {
             $query
                 ->leftJoin("p.categories", "c")
-                ->where("c.id = ". $categoryID);
+                ->where("c.id = " . $categoryID);
         }
 
         $paginator = new Paginator($query);
@@ -76,7 +76,7 @@ class TrickRepository extends ServiceEntityRepository
         if ($categoryID) {
             $query
                 ->leftJoin("p.categories", "c")
-                ->where("c.id = ". $categoryID);
+                ->where("c.id = " . $categoryID);
         }
         return $query
             ->setFirstResult($pageSize * ($page - 1))
@@ -84,6 +84,7 @@ class TrickRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 
     /**
      * @param int $number Number of tricks to return
@@ -103,6 +104,7 @@ class TrickRepository extends ServiceEntityRepository
     private function findVisibleQuery(): QueryBuilder
     {
         return $this->createQueryBuilder("p")
+            ->orderBy("p.date_add", "desc")
             ->where("p.visible = true");
     }
 }
