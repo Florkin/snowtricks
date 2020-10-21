@@ -1,0 +1,27 @@
+@import "mixins";
+
+.text-bold {
+  font-weight: 600;
+}
+
+.card {
+  transition-duration: 300ms;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 0px;
+  @include box-shadow;
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.btn {
+  text-transform: uppercase;
+
+  &.btn-lg {
+    padding: 0.8rem 1.5rem;
+  }
+}

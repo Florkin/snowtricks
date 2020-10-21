@@ -6,6 +6,12 @@
 
 {% block body %}
     {% include '_partials/_messages.html.twig' %}
+    <div class="home-jumbotron jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="jumbotron-title text-center text-uppercase text-primary">Snowtricks</h1>
+            <p class="lead text-center text-bold">La communauté francophone dédiée au Snowboard</p>
+        </div>
+    </div>
 
     <div class="container">
         <div id="js-tricks-container" class="row">
@@ -13,10 +19,8 @@
         </div>
 
         {% if loadmoreBtn is defined and loadmoreBtn == true %}
-            <div class="text-center">
-                <button id="js-load-more-btn" class="btn btn-primary"
-                        {% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus
-                </button>
+            <div class="text-center py-5">
+                <button id="js-load-more-btn" class="btn btn-outline-primary btn-lg">Voir plus de tricks</button>
             </div>
         {% endif %}
     </div>

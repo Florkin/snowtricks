@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Security;
 
 class TrickController extends AbstractController
 {
-    const PAGE_SIZE = 9;
+    const PAGE_SIZE = 12;
     /**
      * @var TrickRepository
      */

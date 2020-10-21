@@ -69,7 +69,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
             }
 
             $trick
-                ->setTitle($i + 1 . "-" . $faker->words(3, true))
+                ->setTitle($faker->words(3, true))
                 ->setDescription($faker->sentences(20, true))
                 ->setDifficulty($faker->numberBetween(1, 5))
                 ->setVisible(1)
