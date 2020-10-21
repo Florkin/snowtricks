@@ -1,5 +1,22 @@
+@import "mixins";
+@import "variables";
+
 .main-navbar {
   .user-dropdown {
     left: -100px;
+  }
+}
+
+.nav-item {
+  text-transform: uppercase;
+}
+
+.sticky-header {
+  transition-duration: 200ms;
+  background: transparent;
+
+  &.is-sticked {
+    background: $white;
+    @include box-shadow-down
   }
 }

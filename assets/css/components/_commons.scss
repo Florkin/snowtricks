@@ -1,0 +1,10 @@
+@import "_variables.scss";
+
+body {
+  font-family: "Poppins", Helvetica, Arial, sans-serif;
+  color: $dark
+}
+
+.transition-300 {
+  transition-duration: 300ms;
+}

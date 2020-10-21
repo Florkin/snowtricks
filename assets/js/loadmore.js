@@ -1,5 +1,10 @@
 import "../css/loadmore.scss";
 
+;
+import SmoothScroll from "smooth-scroll";
+
+let scroll = new SmoothScroll;
+
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
 const routes = require('./fos_js_routes.json');
@@ -52,9 +57,18 @@ async function loadMoreItems(page, categoryID) {
 
 // focus to first elem of new page
 async function focusAndAnimate() {
-    location.href = "#page-" + (page-1);
     let i = 0;
-    let elems = document.getElementsByClassName("trick-page-" + (page-1));
+    let elems = document.getElementsByClassName("trick-page-" + (page - 1));
+    scroll.animateScroll(
+        document.getElementById("page-" + (page - 1)),
+        null,
+        {
+            speed: 500,
+            easing: 'easeOutCubic',
+            offset: 100,
+            speedAsDuration: true
+        }
+    );
     elems.forEach(function (e) {
         setTimeout(function () {
             e.style.opacity = "1";
@@ -70,7 +84,7 @@ async function focusAndAnimate() {
 
 let page = 2;
 let loadMoreBtn = document.getElementById("js-load-more-btn");
-let categoryID  = loadMoreBtn.getAttribute("data-category");
+let categoryID = loadMoreBtn.getAttribute("data-category");
 
 loadMoreBtn.addEventListener("click", function () {
     loadMoreItems(page, categoryID).then(function () {

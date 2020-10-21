@@ -6,16 +6,33 @@
 
 {% block body %}
     {% include '_partials/_messages.html.twig' %}
-    {% include "_partials/_page-header.html.twig" %}
-
-    <div class="container">
-        <h2>Derniers Tricks Ajoutés</h2>
-        <div class="row">
-            {% for trick in tricks %}
-                {% include "_partials/_trick-miniature.html.twig" %}
-            {% endfor %}
+    <div class="home-jumbotron jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="jumbotron-title text-center text-uppercase text-primary">Snowtricks</h1>
+            <p class="lead text-center text-bold">La communauté francophone dédiée au Snowboard</p>
         </div>
     </div>
 
+    <div class="container">
+        <div id="js-tricks-container" class="row">
+            {% include "_partials/_listing.html.twig" %}
+        </div>
 
+        {% if loadmoreBtn is defined and loadmoreBtn == true %}
+            <div class="text-center py-5">
+                <button id="js-load-more-btn" class="btn btn-outline-primary btn-lg">Voir plus de tricks</button>
+            </div>
+        {% endif %}
+    </div>
+
+    {% include "_partials/_ajax-loader.html.twig" %}
+
+{% endblock %}
+
+{% block add_stylesheets %}
+    {{ encore_entry_link_tags('loadmore') }}
+{% endblock %}
+
+{% block add_javascripts %}
+    {{ encore_entry_script_tags('loadmore') }}
 {% endblock %}

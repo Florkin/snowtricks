@@ -1,34 +1,36 @@
-<div class="col-12 col-sm-6 col-lg-4 my-3">
+<div class="col-15 col-md-5 col-lg-5 col-xl-3 my-3 transition-300">
     <div class="card h-100">
         {% if trick.pictures|length > 0 %}
-            <img class="img-fluid" src="{{ asset(getImage("tricks", trick.pictures|first.filename, true)) }}"
+            <img class="card-img-top" src="{{ asset(getImage("tricks", trick.pictures|first.filename, true)) }}"
                  alt="{{ trick.title }}_cover">
         {% endif %}
         <div class="card-body">
-            <h5 class="card-title">
+            <h5 class="card-title text-uppercase text-bold">
                 <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>
             </h5>
-            <p>{{ trick.description|u.truncate(70, "...") }}</p>
+{#            <p>{{ trick.description|u.truncate(50, "...") }}</p>#}
             <p class="text-muted">
-                Ajouté par {{ trick.author.username }}
-                le {{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}
                 {% if trick.updatedBy is not null %}
                     <small class="d-block text-muted">
-                        Dernière mise a jour par {{ trick.updatedBy.username }}
+                        Dernière mise a jour par {{ trick.updatedBy.username }} le {{ trick.dateupdate|format_datetime('full', 'none', locale='fr') }}
                     </small>
+                    {% else %}
+                        <small class="d-block text-muted">
+                            Ajouté par {{ trick.author.username }} le {{ trick.dateadd|format_datetime('full', 'none', locale='fr') }}
+                        </small>
                 {% endif %}
             </p>
             {% if trick.categories|length > 0 %}
                 <div class="border-top py-2">
                     {% for cat in trick.categories %}
-                        <span class="text-muted">
+                        <small class="text-muted">
                             {% if category is defined and category != null and category.id == cat.id %}
                                 {{ cat.title }}
                             {% else %}
                                 <a href="{{ path('category.show', {id: cat.id, slug: cat.slug}) }}">{{ cat.title }}</a>
                             {% endif %}
                             {% if not loop.last %} |{% endif %}
-                        </span>
+                        </small>
                     {% endfor %}
                 </div>
             {% endif %}

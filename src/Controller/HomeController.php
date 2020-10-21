@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    const PAGE_SIZE = 15;
+
     /**
      * @var string
      *
@@ -43,14 +45,23 @@ class HomeController extends AbstractController
      */
     public function show() : Response
     {
-        $tricks = $this->trickRepository->findVisibleLatest(3);
+        $tricks = $this->trickRepository->findVisibleByPage(1, Self::PAGE_SIZE);
+        $total = $this->trickRepository->howManyTricks();
+        $loadmoreBtn = false;
+        if ($total > Self::PAGE_SIZE) {
+            $loadmoreBtn = true;
+        }
 
         return $this->render("pages/home.html.twig", [
             "current_menu" => $this->currentMenu,
             "page" => [
                 "title" => $this->pageTitle,
             ],
-            "tricks" => $tricks
+            "pagination" => [
+                "page" => 1
+            ],
+            "tricks" => $tricks,
+            "loadmoreBtn" => $loadmoreBtn
         ]);
     }
 }

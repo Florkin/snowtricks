@@ -1,6 +1,6 @@
 {% block nav %}
-    <nav class="main-navbar navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">SnowTricks</a>
+    <nav class="js-sticky-header sticky-header main-navbar navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand text-uppercase text-bold" href="/">SnowTricks</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -41,7 +41,8 @@
                     </a>
                     <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
                         {% if app.user.username is defined %}
-                            <a class="dropdown-item" href="{{ path("user.show") }}"><span class="fa fa-user"></span> {{ app.user.username }}
+                            <a class="dropdown-item" href="{{ path("user.show") }}"><span
+                                        class="fa fa-user"></span> {{ app.user.username }}
                             </a>
                             <a class="dropdown-item" href="{{ path("app_logout") }}"><span
                                         class="fa fa-sign-out"></span> Logout</a>
