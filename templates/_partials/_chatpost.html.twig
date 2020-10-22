@@ -1,4 +1,4 @@
-<div class="card mb-2">
+<div class="card mb-2 transition-300 chat-message{% if post.user.id == app.user.id %} is-mine{% endif %}">
     <div class="card-body">
         <p>Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F Y') }}</p>
         <p>{{ post.message }}</p>

@@ -40,8 +40,8 @@ class ChatPostRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder("p");
         $nbrOfPosts = $this->howManyPosts($trickID);
-        $offset = $nbrOfPosts - ($pageSize * $page);
-        if ($offset < 0) {
+        $offset = ($pageSize * $page) - $pageSize;
+        if ($page == 1) {
             $offset = 0;
         }
 

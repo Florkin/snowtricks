@@ -22,8 +22,7 @@ $(".js-chat-form").on("submit", function (e) {
     })
         // using the done promise callback
         .done(function (data) {
-            console.log(data);
-            $('#chat-messages-container').append(data.html)
+            $('#chat-messages-container').prepend(data.html)
             $('#chat_message').val('')
         });
 })
