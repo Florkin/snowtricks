@@ -16,7 +16,7 @@ class CategoryFixture extends Fixture
             $category = new Category();
             $category
                 ->setTitle($faker->words(2, true))
-                ->setDescription($faker->sentences(3, true));
+                ->setDescription($faker->sentences(6, true));
 
             $manager->persist($category);
 

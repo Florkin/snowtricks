@@ -48,7 +48,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
         $this->fileUploader->setTargetDirectory("public/uploads/images/tricks");
 
         $faker = Factory::create('fr_FR');
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 60; $i++) {
             $trick = new Trick();
 
             // Add videos

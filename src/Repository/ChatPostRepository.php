@@ -48,7 +48,7 @@ class ChatPostRepository extends ServiceEntityRepository
         return $query
             ->setFirstResult($offset)
             ->setMaxResults($pageSize)
-            ->orderBy("p.date_add", "asc")
+            ->orderBy("p.date_add", "desc")
             ->where("p.trick = " . $trickID)
             ->getQuery()
             ->getResult();

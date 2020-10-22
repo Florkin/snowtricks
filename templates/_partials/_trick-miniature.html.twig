@@ -1,12 +1,13 @@
-<div class="col-15 col-md-5 col-lg-5 col-xl-3 my-3 transition-300">
+<div class="col-30 col-sm-15 col-lg-25 col-xl-6 my-3 transition-300">
     <div class="card h-100">
         {% if trick.pictures|length > 0 %}
-            <img class="card-img-top" src="{{ asset(getImage("tricks", trick.pictures|first.filename, true)) }}"
+            <img class="card-img-top" src="{{ asset(getUploadedImage("tricks", trick.pictures|first.filename, true)) }}"
                  alt="{{ trick.title }}_cover">
         {% endif %}
+        <a class="card-overlayer" href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}"></a>
         <div class="card-body">
             <h5 class="card-title text-uppercase text-bold">
-                <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>
+                {{ trick.title }}
             </h5>
 {#            <p>{{ trick.description|u.truncate(50, "...") }}</p>#}
             <p class="text-muted">
@@ -21,7 +22,7 @@
                 {% endif %}
             </p>
             {% if trick.categories|length > 0 %}
-                <div class="border-top py-2">
+                <div class="border-top py-2 card-above-overlayer">
                     {% for cat in trick.categories %}
                         <small class="text-muted">
                             {% if category is defined and category != null and category.id == cat.id %}

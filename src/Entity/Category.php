@@ -52,6 +52,7 @@ class Category
      */
     private $description;
 
+
     public function __construct()
     {
         $this->relatedTricks = new ArrayCollection();

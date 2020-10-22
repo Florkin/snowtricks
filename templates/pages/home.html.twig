@@ -6,12 +6,7 @@
 
 {% block body %}
     {% include '_partials/_messages.html.twig' %}
-    <div class="home-jumbotron jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="jumbotron-title text-center text-uppercase text-primary">Snowtricks</h1>
-            <p class="lead text-center text-bold">La communauté francophone dédiée au Snowboard</p>
-        </div>
-    </div>
+    {% include '_partials/_listing-page-header.html.twig' %}
 
     <div class="container">
         <div id="js-tricks-container" class="row">

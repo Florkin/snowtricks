@@ -5,25 +5,24 @@
 {% endblock %}
 
 {% block body %}
-    {% include "_partials/_page-header.html.twig" %}
 
     <div class="container">
         {{ form_start(form) }}
         <div class="row">
-{#            <div class="col-12 col-sm-10">{{ form_row(form.pictureFiles, {'attr': {'class': 'file-dropzone', 'data-upload-url': ajaxImgUploadUrl }}) }}</div>#}
-            <div class="col-12 col-sm-10">
+{#            <div class="col-30 col-sm-25">{{ form_row(form.pictureFiles, {'attr': {'class': 'file-dropzone', 'data-upload-url': ajaxImgUploadUrl }}) }}</div>#}
+            <div class="col-30 col-sm-25">
                 <div class="dropzone file-dropzone"
                 {% if trick.id is defined and trick.id != null %}
                      data-trick-id="{{ trick.id }}"
                 {% endif %}
                 ></div>
             </div>
-            <div class="col-12 col-sm-10">{{ form_row(form.title) }}</div>
-            <div class="col-12 col-sm-2">{{ form_row(form.difficulty) }}</div>
-            <div class="col-12 col-sm-12">{{ form_row(form.description) }}</div>
-            <div class="col-12 col-sm-12">{{ form_row(form.categories, {'attr': {'class': 'category-selector'}}) }}</div>
-            <div class="col-12 col-sm-8">{{ form_row(form.visible) }}</div>
-            <div class="col-12 col-sm-8">
+            <div class="col-30 col-sm-25">{{ form_row(form.title) }}</div>
+            <div class="col-30 col-sm-5">{{ form_row(form.difficulty) }}</div>
+            <div class="col-30 col-sm-12">{{ form_row(form.description) }}</div>
+            <div class="col-30 col-sm-12">{{ form_row(form.categories, {'attr': {'class': 'category-selector'}}) }}</div>
+            <div class="col-30 col-sm-20">{{ form_row(form.visible) }}</div>
+            <div class="col-30 col-sm-20">
                 <div id="videos-fields-list"
                     data-prototype="{{ form_widget(form.videos.vars.prototype)|e }}"
                     data-widget-tags="{{ '<div class="trick-video-field"></div>'|e }}"
@@ -42,7 +41,7 @@
                         data-list-selector="#videos-fields-list">Ajouter une vidéo</button>
             </div>
             <ul class="pictures" data-prototype="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"></ul>
-            <div class="col-12 col-sm-4 mt-5">
+            <div class="col-30 col-sm-25 mt-5">
                 <button class="btn btn-success" type="submit">{{ btn_label|default("Valider") }}</button>
             </div>
         </div>
