@@ -109,6 +109,8 @@ class TrickController extends AbstractController
         }
 
         $chatPosts = $this->chatPostRepository->findByPage(1, ChatPostController::PAGE_SIZE, $trick->getId());
+        $nbrOfChatPosts = $this->chatPostRepository->howManyPosts($trick->getId());
+        $isThereMorePosts = $nbrOfChatPosts > 10;
 
         return $this->render("trick/show.html.twig", [
             "current_menu" => "trick.show",
@@ -118,6 +120,7 @@ class TrickController extends AbstractController
             "trick" => $trick,
             "form" => $form->createView(),
             "chatposts" => $chatPosts,
+            "isThereMorePosts" => $isThereMorePosts
         ]);
     }
 

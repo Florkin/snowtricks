@@ -67,8 +67,6 @@ class ChatPostController extends AbstractController
      * @Route("/chatposts/load/{page}/{trick_id}", name="ajax.chatposts.loadmore", requirements={"page" = "\d+", "trick_id" = "\d+"}, methods="GET", options = {"expose" = true})
      * @param int $page
      * @param int|null $trick_id
-     * @param Request $request
-     * @param TrickRepository $trickRepository
      * @return Response
      */
     public function ajaxLoadMore(int $page, int $trick_id)

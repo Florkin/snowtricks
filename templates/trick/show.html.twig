@@ -53,12 +53,14 @@
                 <div id="chat-messages-container">
                     {% include "_partials/_chatposts-listing.html.twig" %}
                 </div>
+
+                {% if isThereMorePosts %}
                 <div class="py-4 d-flex justify-content-center">
                     <button data-trick="{{ trick.id }}" id="js-load-more-chatposts" class="btn btn-outline-primary">
-                        Voir
-                        les précédents messages
+                        Voir les précédents messages
                     </button>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
