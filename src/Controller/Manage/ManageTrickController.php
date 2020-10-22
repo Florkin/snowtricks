@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Handlers\Forms\Trick\NewTrickFormHandler;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,22 +60,24 @@ class ManageTrickController extends AbstractController
 
     /**
      * @param Request $request
+     * @param NewTrickFormHandler $formHandler
      * @return Response
      * @Route("/manage/trick/nouveau", name="manage.trick.new")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, NewTrickFormHandler $formHandler): Response
     {
         $trick = new Trick();
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setAuthor($this->getUser());
-            $this->entityManager->persist($trick);
-            $this->entityManager->flush();
-            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
-            return $this->redirectToRoute("manage.trick.index");
-        }
+        dump($formHandler->createForm($trick));
+        dd($this->createForm(TrickType::class, $trick));
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $trick->setAuthor($this->getUser());
+//            $this->entityManager->persist($trick);
+//            $this->entityManager->flush();
+//            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
+//            return $this->redirectToRoute("manage.trick.index");
+//        }
 
         return $this->render("manage/trick/form.html.twig", [
             "current_menu" => "manage.trick.new",
