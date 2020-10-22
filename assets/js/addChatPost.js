@@ -22,7 +22,15 @@ $(".js-chat-form").on("submit", function (e) {
     })
         // using the done promise callback
         .done(function (data) {
-            $('#chat-messages-container').prepend(data.html)
-            $('#chat_message').val('')
+            let htmlObj = $.parseHTML(data.html);
+            htmlObj.forEach(function (elem) {
+                if (elem.nodeType == 1) {
+                    elem.classList.add("opacity-animate");
+                    elem.style.display = "none";
+                    $('#chat-messages-container').prepend(elem)
+                    $('.opacity-animate').show(200);
+                    $('#chat_message').val('')
+                }
+            })
         });
 })
