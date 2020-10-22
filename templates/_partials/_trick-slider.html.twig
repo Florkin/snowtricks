@@ -1,0 +1,58 @@
+<div class="container js-header-offset">
+    {% if trick.pictures|length > 0 %}
+        <!-- Slider main container -->
+        <div class="trick-show-images js-trick-show-images-swiper overflow-hidden">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for picture in trick.pictures %}
+                    <div class="swiper-slide d-flex justify-content-center">
+                        <img class="img-fluid" src="{{ asset(getUploadedImage("tricks", picture.filename)) }}">
+                    </div>
+                {% endfor %}
+                {% for video in trick.videos %}
+                    <div class="swiper-slide d-flex justify-content-center">
+                        <div class="codegena">
+                            <iframe width='1280' height='720'
+                                    src="https://www.youtube.com/embed/{{ video.youtubeId }}?&theme=dark&autoplay=0&autohide=2&modestbranding=1&fs=0"
+                                    frameborder="0">
+                            </iframe>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- If we need pagination -->
+            <div class="slider-center-buttons">
+                <button class="m-3 btn btn-outline-primary swiper-button-prev round-btn">
+                    <span class="fa fa-angle-left"></span>
+                </button>
+                <button class="m-3 btn btn-outline-primary swiper-button-next round-btn">
+                    <span class="fa fa-angle-right"></span>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="mt-2 trick-show-images-thumbs js-trick-show-images-swiper-thumbs overflow-hidden">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for picture in trick.pictures %}
+                    <div class="swiper-slide d-flex justify-content-center">
+                        <img class="img-fluid"
+                             src="{{ asset(getUploadedImage("tricks", picture.filename, true)) }}">
+                    </div>
+                {% endfor %}
+                {% for video in trick.videos %}
+                    <div class="swiper-slide d-flex justify-content-center position-relative">
+                        <img class="img-fluid"
+                             src="http://img.youtube.com/vi/{{ video.youtubeId }}/sddefault.jpg">
+                        <div class="youtube-thumb-logo">
+                            <span class="fa fa-youtube-play"></span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>

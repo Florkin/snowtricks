@@ -1,19 +1,19 @@
-<div class="col-12 my-2">
+<div class="col-30 my-2">
     <div class="card p-3">
         <div class="row align-items-center">
-            <div class="col-md-6">
+            <div class="col-md-15">
                 <h5 class="card-title">
                     <a href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">{{ trick.title }}</a>
                 </h5>
                 <p>{{ trick.description|u.truncate(50, "...") }}</p>
             </div>
 
-            <div class="col-md-3 text-center">
+            <div class="col-md-7  text-center">
                 <p class="text-muted">{{ trick.stringedDatetime|format_datetime('full', 'none', locale='fr') }}</p>
             </div>
 
 
-            <div class="actions col-md-3 text-right">
+            <div class="actions col-md-7  text-right">
                 {% if is_granted("EDIT", trick) %}
                 <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}" class="btn btn-primary">
                     <span class="fa fa-edit"></span>
@@ -31,7 +31,7 @@
                 {% endif %}
             </div>
             {% if trick.categories|length > 0 %}
-                <div class="border-top py-2 col-md-12">
+                <div class="border-top py-2 col-md-30">
                     {% for category in trick.categories %}
                         <span class="text-muted"><a href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>{% if not loop.last %} |{% endif %}</span>
                     {% endfor %}

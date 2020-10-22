@@ -1,0 +1,30 @@
+@import "variables";
+@import "mixins";
+
+.chat-messages {
+  #chat-messages-container {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+
+    .chat-message {
+      width: 90%;
+
+      &.is-mine {
+        background: $primary;
+        color: $white;
+        text-align: right;
+        align-self: flex-end;
+      }
+    }
+  }
+
+  .card {
+    border-radius: 1rem;
+    padding: 0px;
+
+    p {
+      margin-bottom: 5px;
+    }
+  }
+}

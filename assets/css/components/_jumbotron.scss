@@ -1,9 +1,8 @@
 @import "~bootstrap/scss/mixins/_breakpoints";
 
-.home-jumbotron {
-  padding: 8rem 2rem;
-  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)), url('../../img/home-bg.jpg') center;
+.jumbotron {
   background-size: cover;
+  padding: 0;
 
   .jumbotron-title {
     font-weight: bold;
@@ -11,10 +10,19 @@
   }
 
   @include media-breakpoint-up(md) {
-    padding: 13rem 2rem;
-
     .jumbotron-title {
       font-size: 3.5rem;
     }
   }
+
+  &.home-jumbotron {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)), url('../../img/home-bg.jpg') center;
+    background-size: cover;
+    padding: 8rem 2rem;
+
+    @include media-breakpoint-up(md) {
+      padding: 13rem 2rem;
+    }
+  }
 }
+

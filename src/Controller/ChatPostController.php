@@ -85,7 +85,7 @@ class ChatPostController extends AbstractController
         $chatPosts = $this->chatPostRepository->findByPage($page, Self::PAGE_SIZE, $trick_id);
 
         $html = $this->render("_partials/_chatposts-listing.html.twig", [
-            'chatposts' => array_reverse($chatPosts),
+            'chatposts' => $chatPosts,
             'trick' => $trick,
         ])->getContent();
 

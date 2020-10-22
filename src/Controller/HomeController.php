@@ -12,19 +12,6 @@ class HomeController extends AbstractController
     const PAGE_SIZE = 15;
 
     /**
-     * @var string
-     *
-     * Titre de la page
-     */
-    private $pageTitle = "Accueil SnowTricks";
-
-    /**
-     * @var string
-     *
-     * Use to check active link on menu
-     */
-    private $currentMenu = "home";
-    /**
      * @var TrickRepository
      */
     private $trickRepository;
@@ -53,15 +40,16 @@ class HomeController extends AbstractController
         }
 
         return $this->render("pages/home.html.twig", [
-            "current_menu" => $this->currentMenu,
-            "page" => [
-                "title" => $this->pageTitle,
+            'current_menu' => 'home',
+            'is_home_page' => true,
+            'page' => [
+                "title" => 'Accueil SnowTricks',
             ],
-            "pagination" => [
+            'pagination' => [
                 "page" => 1
             ],
-            "tricks" => $tricks,
-            "loadmoreBtn" => $loadmoreBtn
+            'tricks' => $tricks,
+            'loadmoreBtn' => $loadmoreBtn
         ]);
     }
 }

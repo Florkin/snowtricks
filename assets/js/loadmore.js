@@ -1,8 +1,6 @@
 import "../css/loadmore.scss";
 
-;
 import SmoothScroll from "smooth-scroll";
-
 let scroll = new SmoothScroll;
 
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';

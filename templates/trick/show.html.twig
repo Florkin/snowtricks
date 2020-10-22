@@ -6,85 +6,59 @@
 
 {% block body %}
     {% include "_partials/_messages.html.twig" %}
+    {% include "_partials/_trick-slider.html.twig" %}
+
+
     <div class="container">
-        <h1>{{ trick.title }}</h1>
-
-        <p class="text-muted">Ajouté par {{ trick.author.username }}
-            {% if trick.updatedBy is not null %}, Dernière mise a jour par {{ trick.updatedBy.username }}{% endif %}
-        </p>
-        {% if trick.pictures|length > 0 %}
-            <!-- Slider main container -->
-            <div class="trick-show-images js-trick-show-images-swiper overflow-hidden">
-                <!-- Additional required wrapper -->
-                <div class="swiper-wrapper">
-                    <!-- Slides -->
-                    {% for picture in trick.pictures %}
-                        <div class="swiper-slide d-flex justify-content-center">
-                            <img class="img-fluid" src="{{ asset(getImage("tricks", picture.filename)) }}">
-                        </div>
-                    {% endfor %}
-                    {% for video in trick.videos %}
-                        <div class="swiper-slide d-flex justify-content-center">
-                            <div class="codegena">
-                                <iframe width='1280' height='720'
-                                        src="https://www.youtube.com/embed/{{ video.youtubeId }}?&theme=dark&autoplay=0&autohide=2&modestbranding=1&fs=0"
-                                        frameborder="0">
-                                </iframe>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <!-- If we need pagination -->
-                <div class="d-flex justify-content-center">
-                    <button class="m-3 btn btn-outline-primary swiper-button-prev">
-                        <span class="fa fa-arrow-circle-o-left"></span>
-                    </button>
-                    <button class="m-3 btn btn-outline-primary swiper-button-next">
-                        <span class="fa fa-arrow-circle-o-right"></span>
-                    </button>
-                </div>
-
+        {% if trick.categories|length > 0 %}
+            <div class="border-top border-bottom px-0 py-2 my-4 col-md-30">
+                <span class="text-bold mr-2">Catégories liées:</span>
+                {% for category in trick.categories %}
+                    <span class="text-muted"><a
+                                href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>{% if not loop.last %} |{% endif %}</span>
+                {% endfor %}
             </div>
         {% endif %}
-
-        <div class="container">
-            <p>{{ trick.description|nl2br }}</p>
-
-            {% if trick.categories|length > 0 %}
-                <div class="border-top border-bottom py-2 col-md-12">
-                    {% for category in trick.categories %}
-                        <span class="text-muted"><a
-                                    href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>{% if not loop.last %} |{% endif %}</span>
-                    {% endfor %}
+        <h1 class="text-uppercase">{{ trick.title }}</h1>
+        <div class="py-4">
+            <div class="text-muted">
+                Ajouté par {{ trick.author.username }}
+                le {{ trick.dateadd|format_datetime('full', 'none', locale='fr') }}
+            </div>
+            {% if trick.updatedBy is not null %}
+                <div class="text-muted">
+                    Dernière mise a jour par {{ trick.updatedBy.username }}
+                    le {{ trick.dateupdate|format_datetime('full', 'none', locale='fr') }}
                 </div>
             {% endif %}
+        </div>
 
-            <div class="chat-section mt-5">
-                <div class="chat-messages">
-                    <div class="mb-3 d-flex justify-content-center">
-                        <button data-trick="{{ trick.id }}" id="js-load-more-chatposts" class="btn btn-outline-primary">
-                            Voir
-                            les précédents messages
-                        </button>
-                    </div>
-                    <div id="chat-messages-container">
-                        {% include "_partials/_chatposts-listing.html.twig" %}
-                    </div>
+        <p>{{ trick.description|nl2br }}</p>
+
+        <div class="chat-section mt-5">
+            {% if is_granted('ADD_CHATPOST', trick) %}
+                <div class="chat-form js-chat-form border-top py-3 mb-3">
+                    {{ form_start(form) }}
+                    {{ form_row(form.message) }}
+                    <input id="trick_id" type="hidden" value="{{ trick.id }}">
+                    <button class="btn btn-primary" type="submit">Envoyer</button>
+                    {{ form_end(form) }}
                 </div>
-
-                {% if is_granted('ADD_CHATPOST', trick) %}
-                    <div class="chat-form js-chat-form">
-                        {{ form_start(form) }}
-                        {{ form_row(form.message) }}
-                        <input id="trick_id" type="hidden" value="{{ trick.id }}">
-                        <button class="btn btn-primary" type="submit">Envoyer</button>
-                        {{ form_end(form) }}
-                    </div>
-                {% else %}
-                    <div class="alert alert-warning">
-                        <a href="{{ path('app_login') }}">Connectez vous</a> pour ajouter un commentaire
-                    </div>
-                {% endif %}
+            {% else %}
+                <div class="alert alert-warning">
+                    <a href="{{ path('app_login') }}">Connectez vous</a> pour ajouter un commentaire
+                </div>
+            {% endif %}
+            <div class="chat-messages">
+                <div id="chat-messages-container">
+                    {% include "_partials/_chatposts-listing.html.twig" %}
+                </div>
+                <div class="py-4 d-flex justify-content-center">
+                    <button data-trick="{{ trick.id }}" id="js-load-more-chatposts" class="btn btn-outline-primary">
+                        Voir
+                        les précédents messages
+                    </button>
+                </div>
             </div>
         </div>
     </div>

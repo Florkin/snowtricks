@@ -66,15 +66,15 @@ class PictureEventSubscriber implements EventSubscriber
         $this->imageResizer->resizeImage(
             $realpath,
             $entity->getFilename(),
-            1280,
-            720
+            1570,
+            883
         );
 
         $this->imageResizer->resizeImage(
             $realpath,
             $entity->getFilename(),
             348,
-            196,
+            261,
             true
         );
     }

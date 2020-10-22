@@ -1,14 +1,14 @@
-<div class="col-12 my-2">
+<div class="col-30 my-2">
     <div class="card p-3">
         <div class="row align-items-center">
-            <div class="col-md-9">
+            <div class="col-md-22">
                 <h5 class="card-title">
                     <span class="text-primary">{{ category.title }}</span>
                 </h5>
                 <p>{{ category.description|u.truncate(100, "...") }}</p>
             </div>
 
-            <div class="actions col-md-3 text-right">
+            <div class="actions col-md-7  text-right">
                 <a href="{{ path("manage.category.edit", {id: category.id, slug: category.slug}) }}" class="btn btn-primary">
                     <span class="fa fa-edit"></span>
                 </a>

@@ -2,6 +2,9 @@ import "../css/loadmore.scss";
 
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
+import SmoothScroll from "smooth-scroll";
+let scroll = new SmoothScroll;
+
 const routes = require('./fos_js_routes.json');
 Routing.setRoutingData(routes);
 const axios = require('axios').default;
@@ -37,13 +40,22 @@ async function addToHtml(data) {
         }
 
         // append elements to HTML
-        container.prepend(elem);
+        container.append(elem);
     })
 }
 
 // focus to first elem of new page
 async function focusAndAnimate() {
-    location.href = "#postpage-" + (page-1);
+    scroll.animateScroll(
+        document.getElementById("postpage-" + (page-1)),
+        null,
+        {
+            speed: 500,
+            easing: 'easeOutCubic',
+            offset: 100,
+            speedAsDuration: true
+        }
+    );
     let i = 0;
     let elems = document.getElementsByClassName("post-page-" + (page-1));
     elems.forEach(function (e) {
