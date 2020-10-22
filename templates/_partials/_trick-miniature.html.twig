@@ -35,6 +35,23 @@
                     {% endfor %}
                 </div>
             {% endif %}
+            <div class="actions text-right card-above-overlayer">
+                {% if is_granted("EDIT", trick) %}
+                    <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}" class="btn pb-0 text-primary">
+                        <span class="fa fa-edit"></span>
+                    </a>
+                {% endif %}
+                {% if is_granted("DELETE", trick) %}
+                    <form method="post" class="d-inline-block" action="{{ path("manage.trick.delete", {id: trick.id}) }}"
+                          onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
+                        <button type="submit" href="#" class="btn text-danger pb-0">
+                            <span class="fa fa-trash"></span>
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

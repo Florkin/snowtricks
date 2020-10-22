@@ -6,7 +6,7 @@ var imagesShowSwiperThumbs = new Swiper('.js-trick-show-images-swiper-thumbs', {
     spaceBetween: 10,
     slidesPerView: 6,
     loop: true,
-    freeMode: true,
+    freeMode: false,
     loopedSlides: 6,
     watchSlidesVisibility: true,
     watchSlidesProgress: true,
