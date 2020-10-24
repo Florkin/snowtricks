@@ -14,11 +14,6 @@ class EntityFormHandler extends AbstractFormHandler
     private $entityManager;
 
     /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
-
-    /**
      * @var string
      */
     private $formType;
@@ -26,12 +21,10 @@ class EntityFormHandler extends AbstractFormHandler
     /**
      * NewTrickFormHandler constructor.
      * @param EntityManagerInterface $entityManager
-     * @param FlashBagInterface $flashBag
      */
-    public function __construct(EntityManagerInterface $entityManager, FlashBagInterface $flashBag)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->flashBag = $flashBag;
     }
 
 
@@ -40,14 +33,13 @@ class EntityFormHandler extends AbstractFormHandler
         return $this->formType;
     }
 
-    public function process($trick): void
+    public function process($data): void
     {
-        $this->entityManager->persist($trick);
+        $this->entityManager->persist($data);
         $this->entityManager->flush();
-        $this->flashBag->add("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
     }
 
-    public function setFormType(string $formType): void
+    public function setFormType(?string $formType): void
     {
         $this->formType = $formType;
     }

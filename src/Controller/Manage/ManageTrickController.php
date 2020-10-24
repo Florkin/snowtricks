@@ -23,16 +23,22 @@ class ManageTrickController extends AbstractController
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var EntityFormHandler
+     */
+    private $formHandler;
 
     /**
      * AdminTrickController constructor.
      * @param TrickRepository $trickRepository
      * @param EntityManagerInterface $entityManager
+     * @param EntityFormHandler $formHandler
      */
-    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager)
+    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager, EntityFormHandler $formHandler)
     {
         $this->trickRepository = $trickRepository;
         $this->entityManager = $entityManager;
+        $this->formHandler = $formHandler;
     }
 
     /**
@@ -60,16 +66,16 @@ class ManageTrickController extends AbstractController
 
     /**
      * @param Request $request
-     * @param EntityFormHandler $formHandler
      * @return Response
      * @Route("/manage/trick/nouveau", name="manage.trick.new")
      */
-    public function new(Request $request, EntityFormHandler $formHandler): Response
+    public function new(Request $request): Response
     {
         $trick = new Trick();
         $trick->setAuthor($this->getUser());
 
-        if ($formHandler->handle($request, $trick, TrickType::class)) {
+        if ($this->formHandler->handle($request, $trick, TrickType::class)) {
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
             return $this->redirectToRoute("manage.trick.index");
         }
 
@@ -79,7 +85,7 @@ class ManageTrickController extends AbstractController
                 "title" => "Nouveau Trick",
             ],
             "trick" => $trick,
-            "form" => $formHandler->createView(),
+            "form" => $this->formHandler->createView(),
             "btn_label" => "Créer",
         ]);
     }
@@ -105,24 +111,20 @@ class ManageTrickController extends AbstractController
             ], 301);
         }
 
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setUpdatedBy($this->getUser());
-            // Set update date
-            $date = new \DateTime();
-            $trick->setDateUpdate($date);
+        $trick->setUpdatedBy($this->getUser());
+        $trick->setDateUpdate((new \DateTime()));
 
-            $this->entityManager->flush();
+        if ($this->formHandler->handle($request, $trick, TrickType::class)) {
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été modifié");
             return $this->redirectToRoute("manage.trick.index");
         }
+
 
         return $this->render("manage/trick/form.html.twig", [
             "page" => [
                 "title" => $trick->getTitle() . ' - Edition',
             ],
-            "form" => $form->createView(),
+            "form" => $this->formHandler->createView(),
             "trick" => $trick,
             "btn_label" => "Modifier",
         ]);

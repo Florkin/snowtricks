@@ -4,6 +4,7 @@ namespace App\Controller\Manage;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Handlers\Forms\EntityFormHandler;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -22,16 +23,22 @@ class ManageCategoryController extends AbstractController
      * @var EntityManager
      */
     private $entityManager;
+    /**
+     * @var EntityFormHandler
+     */
+    private $formHandler;
 
     /**
      * AdminTrickController constructor.
      * @param CategoryRepository $categoryRepository
      * @param EntityManagerInterface $entityManager
+     * @param EntityFormHandler $formHandler
      */
-    public function __construct(CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
+    public function __construct(CategoryRepository $categoryRepository, EntityManagerInterface $entityManager, EntityFormHandler $formHandler)
     {
         $this->categoryRepository = $categoryRepository;
         $this->entityManager = $entityManager;
+        $this->formHandler = $formHandler;
     }
 
     /**
@@ -65,12 +72,8 @@ class ManageCategoryController extends AbstractController
     public function new(Request $request): Response
     {
         $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($category);
-            $this->entityManager->flush();
+        if ($this->formHandler->handle($request, $category, CategoryType::class)) {
             $this->addFlash("success", "La catégorie ". $category->getTitle() ." a bien été ajouté");
             return $this->redirectToRoute("manage.category.index");
         }
@@ -81,7 +84,7 @@ class ManageCategoryController extends AbstractController
                 "title" => "Ajouter une catégorie",
             ],
             "category" => $category,
-            "form" => $form->createView(),
+            "form" => $this->formHandler->createView(),
             "btn_label" => "Créer"
         ]);
     }
@@ -105,10 +108,7 @@ class ManageCategoryController extends AbstractController
             ], 301);
         }
 
-        $form = $this->createForm(categoryType::class, $category);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush();
+        if ($this->formHandler->handle($request, $category, CategoryType::class)) {
             $this->addFlash("success", "La categorie ". $category->getTitle() ." a bien été modifiée");
             return $this->redirectToRoute("manage.category.index");
         }
@@ -117,7 +117,7 @@ class ManageCategoryController extends AbstractController
             "page" => [
                 "title" => $category->getTitle() . ' - Edition',
             ],
-            "form" => $form->createView(),
+            "form" => $this->formHandler->createView(),
             "category" => $category,
             "btn_label" => "Modifier"
         ]);

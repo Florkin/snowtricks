@@ -19,6 +19,7 @@ abstract class AbstractFormHandler
      */
     private $form;
 
+
     /**
      * @param mixed $formFactory
      * @required
@@ -28,11 +29,11 @@ abstract class AbstractFormHandler
         $this->formFactory = $formFactory;
     }
 
-    public function handle(Request $request, $data, $formtype) : bool
+    public function handle(Request $request, $data, $formType): bool
     {
-        $this->setFormType($formtype);
+        $this->setFormType($formType);
         $this->form = $this->formFactory->create($this->getFormType(), $data)->handleRequest($request);
-        if ($this->form->isSubmitted() && $this->form->isValid()){
+        if ($this->form->isSubmitted() && $this->form->isValid()) {
             $this->process($data);
             return true;
         }
@@ -45,10 +46,13 @@ abstract class AbstractFormHandler
         return $this->form->createView();
     }
 
-    abstract public function getFormType() : string;
+    protected function getForm(): FormInterface
+    {
+        return $this->form;
+    }
 
-    abstract public function setFormType(string $formType) : void;
-
-    abstract public function process($data) : void;
+    abstract public function getFormType(): string;
+    abstract public function setFormType(string $formType): void;
+    abstract public function process($data): void;
 
 }
