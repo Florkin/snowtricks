@@ -41,6 +41,7 @@
                     <div class="swiper-slide d-flex justify-content-center">
                         <img class="img-fluid"
                              src="{{ asset(getUploadedImage("tricks", picture.filename, true)) }}">
+                        <div class="overlayer"></div>
                     </div>
                 {% endfor %}
                 {% for video in trick.videos %}
@@ -50,6 +51,7 @@
                         <div class="youtube-thumb-logo">
                             <span class="fa fa-youtube-play"></span>
                         </div>
+                        <div class="overlayer"></div>
                     </div>
                 {% endfor %}
             </div>

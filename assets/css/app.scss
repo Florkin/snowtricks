@@ -10,6 +10,16 @@
 @import "components/trick_show";
 @import "components/chat_messages";
 
+.messages {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+
+  .alert {
+    margin-bottom: 0;
+  }
+}
+
 
 
 

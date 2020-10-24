@@ -1,1 +1,13 @@
 @import "~swiper/swiper";
+@import "components/variables";
+
+.swiper-slide-thumb-active {
+  .overlayer {
+    background: #fff;
+    opacity: 0.6;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition-duration: 200ms;
+  }
+}

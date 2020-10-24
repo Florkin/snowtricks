@@ -1,4 +1,4 @@
-<div class="card mb-2 chat-message{% if post.user.id == app.user.id %} is-mine{% endif %}">
+<div class="card mb-2 chat-message{% if app.user.id is defined and post.user.id == app.user.id %} is-mine{% endif %}">
     <div class="card-body">
         <div class="row align-items-center">
             <div class="{% if is_granted("DELETE", post) %}col-27{% else %}col-30{% endif %}">

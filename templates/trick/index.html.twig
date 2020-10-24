@@ -4,6 +4,10 @@
     {{ page.title }}
 {% endblock %}
 
+{% block messages %}
+    {% include "_partials/_messages.html.twig" %}
+{% endblock %}
+
 {% block body %}
     {% include "_partials/_listing-page-header.html.twig" %}
 
