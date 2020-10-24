@@ -2,11 +2,53 @@
 
 namespace App\Handlers\Forms;
 
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractFormHandler
 {
-    public function getFormFactory() {
-        return Forms::createFormFactoryBuilder();
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var FormInterface
+     */
+    private $form;
+
+    /**
+     * @param mixed $formFactory
+     * @required
+     */
+    public function setFormFactory(FormFactoryInterface $formFactory)
+    {
+        $this->formFactory = $formFactory;
     }
+
+    public function handle(Request $request, $data, $formtype) : bool
+    {
+        $this->setFormType($formtype);
+        $this->form = $this->formFactory->create($this->getFormType(), $data)->handleRequest($request);
+        if ($this->form->isSubmitted() && $this->form->isValid()){
+            $this->process($data);
+            return true;
+        }
+
+        return false;
+    }
+
+    public function createView()
+    {
+        return $this->form->createView();
+    }
+
+    abstract public function getFormType() : string;
+
+    abstract public function setFormType(string $formType) : void;
+
+    abstract public function process($data) : void;
+
 }
