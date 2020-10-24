@@ -12,9 +12,14 @@ import "../css/app.scss";
 import "bootstrap/dist/js/bootstrap";
 import "./components/stickyHeader";
 
-// import SmoothScroll from "smooth-scroll"
-// let scroll = new SmoothScroll('a[href*="#"]', {
-//     speed: 500
-// });
+import SmoothScroll from "smooth-scroll"
+
+let scroll = new SmoothScroll('a[href*="#"]', {
+    speed: 500
+});
+
+$(".alert").on("click", function () {
+    $(this).hide(200);
+})
 
 

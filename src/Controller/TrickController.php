@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ChatPost;
 use App\Entity\Trick;
 use App\Form\ChatType;
+use App\Handlers\Forms\EntityFormHandler;
 use App\Repository\CategoryRepository;
 use App\Repository\ChatPostRepository;
 use App\Repository\TrickRepository;
@@ -85,10 +86,11 @@ class TrickController extends AbstractController
      * @param string $slug
      * @param Trick $trick
      * @param Request $request
+     * @param EntityFormHandler $formHandler
      * @return Response
      * @Route("/tricks/{id}-{slug}", name="trick.show", requirements={"slug": "[a-z0-9\-]*", "id": "[0-9]*"})
      */
-    public function show(string $slug, Trick $trick, Request $request): Response
+    public function show(string $slug, Trick $trick, Request $request, EntityFormHandler $formHandler): Response
     {
         $trickSlug = $trick->getSlug();
 
@@ -101,11 +103,11 @@ class TrickController extends AbstractController
         }
 
         $chatPost = new ChatPost();
-        $form = $this->createForm(ChatType::class, $chatPost);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->processPostForm($chatPost, $trick);
+        $chatPost->setTrick($trick);
+        $chatPost->setUser($this->security->getUser());
+        if ($formHandler->handle($request, $chatPost, ChatType::class)) {
+            $this->addFlash("success", "Votre message a bien été ajouté");
+            return $this->redirectToRoute("trick.show", ["id" => $trick->getId(), "slug" => $trick->getSlug()]);
         }
 
         $chatPosts = $this->chatPostRepository->findByPage(1, ChatPostController::PAGE_SIZE, $trick->getId());
@@ -118,23 +120,10 @@ class TrickController extends AbstractController
                 "title" => $trick->getTitle(),
             ],
             "trick" => $trick,
-            "form" => $form->createView(),
+            "form" => $formHandler->createView(),
             "chatposts" => $chatPosts,
             "isThereMorePosts" => $isThereMorePosts
         ]);
-    }
-
-    public function processPostForm($chatPost, $trick)
-    {
-        if (null != $chatPost->getId()) {
-            $this->denyAccessUnlessGranted("EDIT", $chatPost);
-        };
-        $chatPost->setTrick($trick);
-        $chatPost->setUser($this->security->getUser());
-        $this->entityManager->persist($chatPost);
-        $this->entityManager->flush();
-        $this->addFlash("success", "Votre message a bien été ajouté");
-        return $this->redirectToRoute("trick.show", ["id" => $trick->getId(), "slug" => $trick->getSlug()]);
     }
 
     /**

@@ -9,8 +9,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    const PAGE_SIZE = 15;
-
     /**
      * @var TrickRepository
      */
@@ -32,10 +30,10 @@ class HomeController extends AbstractController
      */
     public function show() : Response
     {
-        $tricks = $this->trickRepository->findVisibleByPage(1, Self::PAGE_SIZE);
+        $tricks = $this->trickRepository->findVisibleByPage(1, TrickController::PAGE_SIZE);
         $total = $this->trickRepository->howManyTricks();
         $loadmoreBtn = false;
-        if ($total > Self::PAGE_SIZE) {
+        if ($total > TrickController::PAGE_SIZE) {
             $loadmoreBtn = true;
         }
 

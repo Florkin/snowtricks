@@ -2,8 +2,11 @@
 
 namespace App\Controller\Manage;
 
+use App\Form\Model\ChangePassword;
 use App\Form\PasswordFormType;
 use App\Form\UserFormType;
+use App\Handlers\Forms\EntityFormHandler;
+use App\Handlers\Forms\PasswordFormHandler;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,20 +35,26 @@ class ManageUserController extends AbstractController
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var EntityFormHandler
+     */
+    private $formHandler;
 
     /**
      * ManageUserController constructor.
      * @param EntityManagerInterface $entityManager
+     * @param EntityFormHandler $formHandler
      * @param UserRepository $userRepository
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
      */
-    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator)
+    public function __construct(EntityManagerInterface $entityManager, EntityFormHandler $formHandler, UserRepository $userRepository, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator)
     {
         $this->userRepository = $userRepository;
         $this->guardHandler = $guardHandler;
         $this->authenticator = $authenticator;
         $this->entityManager = $entityManager;
+        $this->formHandler = $formHandler;
     }
 
     /**
@@ -69,16 +78,8 @@ class ManageUserController extends AbstractController
             ], 301);
         }
 
-        $form = $this->createForm(UserFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-            // do anything else you need here, like send an email
-
-            $this->addFlash("success", "Votre profil a bien été modifié");
+        if ($this->formHandler->handle($request, $user, UserFormType::class)) {
+            $this->addFlash("success", "Votre compte a bien été modifié");
             return $this->guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
@@ -89,7 +90,7 @@ class ManageUserController extends AbstractController
 
         return $this->render('manage/user/form.html.twig', [
             "user" => $user,
-            "userForm" => $form->createView(),
+            "userForm" => $this->formHandler->createView(),
             "current_menu" => "app_user_modify"
         ]);
     }
@@ -99,14 +100,13 @@ class ManageUserController extends AbstractController
      * @param int $id
      * @param string $slug
      * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param PasswordFormHandler $formHandler
      * @return Response
      */
-    public function passwordUpdate(int $id, string $slug, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function passwordUpdate(int $id, string $slug, Request $request, PasswordFormHandler $formHandler)
     {
         $user = $this->userRepository->find($id);
         $this->denyAccessUnlessGranted('EDIT_PASSWORD', $user);
-
         $userSlug = $user->getSlug();
 
         if ($userSlug !== $slug) {
@@ -116,47 +116,20 @@ class ManageUserController extends AbstractController
             ], 301);
         }
 
-        $form = $this->createForm(PasswordFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $oldPwd = $form->get("old_password")->getData();
-            $newPwd = $form->get("new_password")->getData();
-            $newPwdConfirm = $form->get("new_password_confirm")->getData();
-
-            if ($passwordEncoder->isPasswordValid($user, $oldPwd) && $newPwd == $newPwdConfirm) {
-                $user->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $user,
-                        $newPwd
-                    )
-                );
-
-                $this->entityManager->persist($user);
-                $this->entityManager->flush();
-                $this->addFlash("success", "Le mot de passe a bien été modifié");
-//                return $this->redirectToRoute("user.show");
-            }
+        $changePassword = new ChangePassword();
+        $formHandler->setUser($user);
+        if ($formHandler->handle($request, $changePassword, PasswordFormType::class)) {
+            $this->addFlash("success", "Le mot de passe a bien été modifié");
             return $this->guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
                 $this->authenticator,
-                'main'
+                'main' // firewall name in security.yaml
             );
-
-            if (!$passwordEncoder->isPasswordValid($user, $oldPwd)) {
-                $this->addFlash("error", "L'ancien mot de passe n'est pas valide");
-            }
-
-            if ($newPwd != $newPwdConfirm) {
-                $this->addFlash("error", "Les mot de passe ne sont pas identiques");
-            }
-
-            return $this->redirectToRoute("manage.password.update", ["id" => $user->getId(), "slug" => $userSlug]);
         }
 
         return $this->render('manage/user/password-form.html.twig', [
-            'passwordForm' => $form->createView(),
+            'passwordForm' => $formHandler->createView(),
             'current_menu' => 'app_user_modify'
         ]);
     }

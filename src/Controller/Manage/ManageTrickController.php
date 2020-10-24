@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Handlers\Forms\EntityFormHandler;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,16 +23,22 @@ class ManageTrickController extends AbstractController
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var EntityFormHandler
+     */
+    private $formHandler;
 
     /**
      * AdminTrickController constructor.
      * @param TrickRepository $trickRepository
      * @param EntityManagerInterface $entityManager
+     * @param EntityFormHandler $formHandler
      */
-    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager)
+    public function __construct(TrickRepository $trickRepository, EntityManagerInterface $entityManager, EntityFormHandler $formHandler)
     {
         $this->trickRepository = $trickRepository;
         $this->entityManager = $entityManager;
+        $this->formHandler = $formHandler;
     }
 
     /**
@@ -65,13 +72,9 @@ class ManageTrickController extends AbstractController
     public function new(Request $request): Response
     {
         $trick = new Trick();
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
+        $trick->setAuthor($this->getUser());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setAuthor($this->getUser());
-            $this->entityManager->persist($trick);
-            $this->entityManager->flush();
+        if ($this->formHandler->handle($request, $trick, TrickType::class)) {
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
             return $this->redirectToRoute("manage.trick.index");
         }
@@ -82,7 +85,7 @@ class ManageTrickController extends AbstractController
                 "title" => "Nouveau Trick",
             ],
             "trick" => $trick,
-            "form" => $form->createView(),
+            "form" => $this->formHandler->createView(),
             "btn_label" => "Créer",
         ]);
     }
@@ -108,24 +111,20 @@ class ManageTrickController extends AbstractController
             ], 301);
         }
 
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setUpdatedBy($this->getUser());
-            // Set update date
-            $date = new \DateTime();
-            $trick->setDateUpdate($date);
+        $trick->setUpdatedBy($this->getUser());
+        $trick->setDateUpdate((new \DateTime()));
 
-            $this->entityManager->flush();
+        if ($this->formHandler->handle($request, $trick, TrickType::class)) {
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été modifié");
             return $this->redirectToRoute("manage.trick.index");
         }
+
 
         return $this->render("manage/trick/form.html.twig", [
             "page" => [
                 "title" => $trick->getTitle() . ' - Edition',
             ],
-            "form" => $form->createView(),
+            "form" => $this->formHandler->createView(),
             "trick" => $trick,
             "btn_label" => "Modifier",
         ]);
