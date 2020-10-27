@@ -64,7 +64,7 @@ class ChatPostController extends AbstractController
     }
 
     /**
-     * @Route("/chatposts/load/{page}/{trick_id}", name="ajax.chatposts.loadmore", requirements={"page" = "\d+", "trick_id" = "\d+"}, methods="GET", options = {"expose" = true})
+     * @Route("/chatposts/load/{page}/{trick_id}", name="ajax.loadmore.chatposts", requirements={"page" = "\d+", "trick_id" = "\d+"}, methods="GET", options = {"expose" = true})
      * @param int $page
      * @param int|null $trick_id
      * @return Response

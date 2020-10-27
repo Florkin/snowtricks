@@ -69,13 +69,13 @@
                 </div>
             {% endif %}
             <div class="chat-messages">
-                <div id="chat-messages-container">
+                <div id="js-chat-messages-container" class="chat-messages-container">
                     {% include "_partials/_chatposts-listing.html.twig" %}
                 </div>
 
                 {% if isThereMorePosts %}
                 <div class="py-4 d-flex justify-content-center">
-                    <button data-trick="{{ trick.id }}" id="js-load-more-chatposts" class="btn btn-outline-primary">
+                    <button data-trick="{{ trick.id }}" data-load="chatpost" id="js-load-more-btn" class="btn btn-outline-primary">
                         Voir les précédents messages
                     </button>
                 </div>
@@ -94,6 +94,6 @@
 
 {% block add_javascripts %}
     {{ encore_entry_script_tags('swipers') }}
-    {{ encore_entry_script_tags('loadmoreChatposts') }}
+    {{ encore_entry_script_tags('loadmore') }}
     {{ encore_entry_script_tags('addChatpost') }}
 {% endblock %}
