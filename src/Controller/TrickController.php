@@ -127,7 +127,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/load/{page}/{category_id}", name="ajax.loadmore", requirements={"page" = "\d+", "category_id" = "\d+"}, methods="GET", options = {"expose" = true})
+     * @Route("/tricks/load/{page}/{category_id}", name="ajax.loadmore.tricks", requirements={"page" = "\d+", "category_id" = "\d+"}, methods="GET", options = {"expose" = true})
      * @param int $page
      * @param int|null $category_id
      * @param Request $request

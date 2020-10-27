@@ -2,7 +2,7 @@
 @import "mixins";
 
 .chat-messages {
-  #chat-messages-container {
+  .chat-messages-container {
     display: flex;
     flex-direction: column;
     align-content: start;

@@ -18,7 +18,7 @@
 
         {% if loadmoreBtn is defined and loadmoreBtn == true %}
             <div class="text-center py-5">
-                <button id="js-load-more-btn" class="btn btn-outline-primary btn-lg"
+                <button id="js-load-more-btn" class="btn btn-outline-primary btn-lg" data-load="trick"
                         {% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus de tricks
                 </button>
             </div>

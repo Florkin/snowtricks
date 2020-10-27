@@ -1,6 +1,7 @@
 import "../css/loadmore.scss";
 
 import SmoothScroll from "smooth-scroll";
+
 let scroll = new SmoothScroll;
 
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
@@ -18,34 +19,21 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-async function addToHtml(data) {
-    if (data.isLast) {
-        loadMoreBtn.parentNode.removeChild(loadMoreBtn);
+async function loadMoreItems(page, loadType, categoryID) {
+    let route;
+    let container;
+    if (loadType === "chatpost") {
+        route = Routing.generate("ajax.loadmore.chatposts", {page: page, trick_id: trickID});
+        container = document.getElementById("js-chat-messages-container");
+    } else if (loadType === "trick") {
+        route = Routing.generate("ajax.loadmore.tricks", {page: page, category_id: categoryID});
+        container = document.getElementById("js-tricks-container");
     }
-    let container = document.getElementById("js-tricks-container");
-    let htmlObj = $.parseHTML(data.html)
-    let i = 0
-    htmlObj.forEach(function (elem) {
-        // Add id to new element to make anchor
-        if (elem.nodeType == 1) {
-            if (i == 0) {
-                elem.id = "page-" + (page - 1)
-                i++
-            }
-            elem.style.opacity = "0";
-            elem.classList.add("trick-page-" + (page - 1));
-        }
 
-        // append elements to HTML
-        container.append(elem);
-    })
-}
-
-async function loadMoreItems(page, categoryID) {
-    axios.get(Routing.generate("ajax.loadmore", {page: page, category_id: categoryID}))
+    axios.get(route)
         .then(function (response) {
-            addToHtml(response.data).then(function () {
-                focusAndAnimate();
+            addToHtml(response.data, container, loadType).then(function () {
+                focusAndAnimate(loadType);
             });
         })
         .catch(function (error) {
@@ -53,12 +41,34 @@ async function loadMoreItems(page, categoryID) {
         });
 }
 
+async function addToHtml(data, container, loadType) {
+    if (data.isLast) {
+        loadMoreBtn.remove();
+    }
+    let htmlObj = $.parseHTML(data.html)
+    let i = 0
+    htmlObj.forEach(function (elem) {
+        // Add id to new element to make anchor
+        if (elem.nodeType == 1) {
+            if (i == 0) {
+                elem.id = loadType + "page-" + (page - 1)
+                i++
+            }
+            elem.style.opacity = "0";
+            elem.classList.add(loadType + "-page-" + (page - 1));
+        }
+
+        // append elements to HTML
+        container.append(elem);
+    })
+}
+
 // focus to first elem of new page
-async function focusAndAnimate() {
+async function focusAndAnimate(loadType) {
     let i = 0;
-    let elems = document.getElementsByClassName("trick-page-" + (page - 1));
+    let elems = document.getElementsByClassName(loadType + "-page-" + (page - 1));
     scroll.animateScroll(
-        document.getElementById("page-" + (page - 1)),
+        document.getElementById(loadType + "page-" + (page - 1)),
         null,
         {
             speed: 500,
@@ -81,11 +91,13 @@ async function focusAndAnimate() {
 }
 
 let page = 2;
-let loadMoreBtn = document.getElementById("js-load-more-btn");
-let categoryID = loadMoreBtn.getAttribute("data-category");
+let loadMoreBtn = $("#js-load-more-btn");
+let categoryID = loadMoreBtn.data("category");
+let trickID  = loadMoreBtn.data("trick");
 
-loadMoreBtn.addEventListener("click", function () {
-    loadMoreItems(page, categoryID).then(function () {
+loadMoreBtn.on("click", function () {
+    let loadType = $(this).data("load")
+    loadMoreItems(page, loadType, categoryID).then(function () {
         page++
     });
 })
