@@ -1,0 +1,22 @@
+{% extends 'manage/manage_base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        {% include '_partials/_messages.html.twig' %}
+        <div class="row min-h-85-vh">
+            <div class="d-none d-lg-block col-lg-12 bg-form max-h-100-vh"></div>
+            <div class="col-30 col-lg-18 d-flex align-items-center">
+                <div class="p-5">
+                    <h1 class="text-uppercase">{% block formtitle %}{% endblock %}</h1>
+                    {% block form %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block add_javascripts %}
+    {{ encore_entry_script_tags('forms') }}
+{% endblock %}

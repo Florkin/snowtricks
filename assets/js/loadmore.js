@@ -1,5 +1,3 @@
-import "../css/loadmore.scss";
-
 import SmoothScroll from "smooth-scroll";
 
 let scroll = new SmoothScroll;

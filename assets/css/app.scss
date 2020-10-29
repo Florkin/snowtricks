@@ -3,12 +3,16 @@
 @import "~font-awesome/scss/font-awesome";
 @import "~typeface-poppins/index.css";
 @import "components/nav";
-@import "components/embed-videos";
+@import "components/embed_videos";
 @import "components/commons";
 @import "components/jumbotron";
 @import "components/bootstrap_overrides";
 @import "components/trick_show";
 @import "components/chat_messages";
+@import "components/forms";
+@import "components/loadmore";
+@import "components/swipers";
+@import "components/custom_checkboxes";
 
 .messages {
   position: absolute;

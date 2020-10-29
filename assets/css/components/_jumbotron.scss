@@ -1,4 +1,5 @@
 @import "~bootstrap/scss/mixins/_breakpoints";
+@import "variables";
 
 .jumbotron {
   background-size: cover;
@@ -9,9 +10,13 @@
     font-size: 2rem;
   }
 
+  .lead {
+    font-size: $font-size-base
+  }
+
   @include media-breakpoint-up(md) {
     .jumbotron-title {
-      font-size: 3.5rem;
+      font-size: 2.5rem;
     }
   }
 

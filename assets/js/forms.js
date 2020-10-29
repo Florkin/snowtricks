@@ -1,4 +1,3 @@
-import "../css/forms.scss";
 import "select2/dist/js/select2.min"
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 

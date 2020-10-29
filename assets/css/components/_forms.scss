@@ -1,6 +1,12 @@
 @import "~select2/dist/css/select2.css";
 @import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css";
 @import "~dropzone/dist/dropzone.css";
+@import "variables";
+
+.dropzone {
+  @extend .border;
+  border-radius: $border-radius;
+}
 
 .dropzone .dz-preview .dz-image {
   display: flex;
@@ -24,6 +30,10 @@
       }
     }
   }
+}
+
+textarea {
+  min-height: 150px;
 }
 
 
