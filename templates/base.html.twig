@@ -22,6 +22,8 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-{% block add_javascripts %}{% endblock %}
+{% block add_javascripts %}
+    {{ encore_entry_script_tags('forms') }}
+{% endblock %}
 </body>
 </html>

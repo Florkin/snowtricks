@@ -59,6 +59,11 @@ class User implements UserInterface
      */
     private $tricksUpdate;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatarFilename;
+
     public function __construct()
     {
         $this->chatPosts = new ArrayCollection();
@@ -245,6 +250,18 @@ class User implements UserInterface
                 $tricksUpdate->setUpdatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatarFilename(): ?string
+    {
+        return $this->avatarFilename;
+    }
+
+    public function setAvatarFilename(?string $avatarFilename): self
+    {
+        $this->avatarFilename = $avatarFilename;
 
         return $this;
     }

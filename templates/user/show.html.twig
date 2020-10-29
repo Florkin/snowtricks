@@ -1,14 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'manage/form_base.html.twig' %}
 
 {% block title %}Mon profil: {{ user.username }}{% endblock %}
+{% block formtitle %}<span class="font-weight-normal">Mon profil: </span>{{ user.username }}{% endblock %}
 
-{% block body %}
+{% block form %}
     {% include '_partials/_messages.html.twig' %}
 
-    <div class="container">
-        {{ dump(user) }}
-        {{ dump(role_display) }}
+        <p><b>Email:</b> {{ user.email }}</p>
+        <p><b>Role:</b> {{ role_display }}</p>
         <a href="{{ path("manage.user.update", {id: user.id, slug: user.slug}) }}" class="btn btn-primary">Modifier mon
             profil</a>
-    </div>
+
 {% endblock %}
