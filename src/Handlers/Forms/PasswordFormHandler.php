@@ -51,7 +51,7 @@ class PasswordFormHandler extends AbstractFormHandler
 
     public function getFormType(): string
     {
-        return PasswordFormType::class;
+        return $this->formType;
     }
 
     public function process($changePassword): void
