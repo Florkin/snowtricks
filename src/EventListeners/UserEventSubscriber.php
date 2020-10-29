@@ -56,11 +56,12 @@ class UserEventSubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
         if (!$entity instanceof User) {
             return;
         }
-        $this->resizeImage($entity);
+        if ($entity->getAvatarFilename()) {
+            $this->resizeImage($entity);
+        }
     }
 
     public function postUpdate(LifecycleEventArgs $args)
@@ -70,7 +71,9 @@ class UserEventSubscriber implements EventSubscriber
         if (!$entity instanceof User) {
             return;
         }
-        $this->resizeImage($entity);
+        if ($entity->getAvatarFilename()) {
+            $this->resizeImage($entity);
+        }
     }
 
     private function resizeImage($entity)

@@ -3,6 +3,7 @@
 namespace App\Handlers\Forms;
 
 use App\Handlers\Forms\AbstractFormHandler;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -22,16 +23,23 @@ class RegisterFormHandler extends AbstractFormHandler
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
+    /**
+     * @var FileUploader
+     */
+    private $fileUploader;
 
     /**
      * NewTrickFormHandler constructor.
      * @param EntityManagerInterface $entityManager
+     * @param FileUploader $fileUploader
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $entityManager, FileUploader $fileUploader, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->entityManager = $entityManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->fileUploader = $fileUploader;
+        $this->fileUploader->setTargetDirectory('uploads/images/avatars');
     }
 
 
@@ -42,6 +50,12 @@ class RegisterFormHandler extends AbstractFormHandler
 
     public function process($user): void
     {
+        $newAvatar = $this->getForm()->get('avatarFilename')->getData();
+        if ($newAvatar) {
+            $fileName = $this->fileUploader->upload($newAvatar);
+            $user->setAvatarFilename($fileName);
+        }
+
         $user->setPassword(
             $this->passwordEncoder->encodePassword(
                 $user,
