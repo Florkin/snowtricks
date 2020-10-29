@@ -33,7 +33,7 @@
                     {% for cat in trick.categories %}
                         <small>
                             {% if category is defined and category != null and category.id == cat.id %}
-                                {{ cat.title }}
+                                <span>{{ cat.title }}</span>
                             {% else %}
                                 <a href="{{ path('category.show', {id: cat.id, slug: cat.slug}) }}">{{ cat.title }}</a>
                             {% endif %}
