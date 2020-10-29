@@ -1,7 +1,7 @@
 let element = $(".js-sticky-header")
 
 function stick(element) {
-    element.css({"position": "fixed", "top": 0, "z-index": 1000, "width": "100%"});
+    element.css({"position": "fixed", "top": 0, "z-index": 5000, "width": "100%"});
 
     $(window).on("scroll", function () {
         if ($(window).scrollTop() > 20) {
