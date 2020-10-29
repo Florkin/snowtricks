@@ -2,6 +2,7 @@
 @import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css";
 @import "~dropzone/dist/dropzone.css";
 @import "variables";
+@import "mixins";
 
 .dropzone {
   @extend .border;
@@ -35,5 +36,19 @@
 textarea {
   min-height: 150px;
 }
+
+.avatar {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 300px;
+  max-width: 200px;
+
+  @include box-shadow-down;
+
+  &.small {
+    max-width: 75px;
+  }
+}
+
 
 

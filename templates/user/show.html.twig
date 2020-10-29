@@ -2,10 +2,22 @@
 
 {% block title %}Mon profil: {{ user.username }}{% endblock %}
 {% block formtitle %}<span class="font-weight-normal">Mon profil: </span>{{ user.username }}{% endblock %}
+{% block avatar %}
+<div class="avatar-container py-5">
+    <div class="avatar">
+        {% if user.avatarFilename %}
+            <img class="img-fluid" src="{{ asset(getUploadedImage("avatars", user.avatarFilename)) }}"
+                 alt="{{ user.username }} avatar">
+        {% else %}
+            <img class="img-fluid" src="{{ asset(getImage("no-avatar.png")) }}"
+                 alt="{{ user.username }} avatar">
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
 
 {% block form %}
     {% include '_partials/_messages.html.twig' %}
-
         <p><b>Email:</b> {{ user.email }}</p>
         <p><b>Role:</b> {{ role_display }}</p>
         <a href="{{ path("manage.user.update", {id: user.id, slug: user.slug}) }}" class="btn btn-primary">Modifier mon

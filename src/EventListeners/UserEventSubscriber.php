@@ -2,13 +2,13 @@
 
 namespace App\Listener;
 
-use App\Entity\Picture;
+use App\Entity\User;
 use App\Service\FileUploader;
 use App\Service\ImageResizer;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
-class PictureEventSubscriber implements EventSubscriber
+class UserEventSubscriber implements EventSubscriber
 {
     /**
      * @var FileUploader
@@ -34,7 +34,8 @@ class PictureEventSubscriber implements EventSubscriber
     {
         return [
             'preRemove',
-            'postPersist'
+            'postPersist',
+            'postUpdate'
         ];
     }
 
@@ -48,9 +49,7 @@ class PictureEventSubscriber implements EventSubscriber
         if (!$entity instanceof Picture) {
             return;
         }
-        $this->fileUploader->setTargetDirectory("uploads/images/tricks");
-        $this->fileUploader->delete($entity->getFilename());
-        $this->fileUploader->setTargetDirectory("uploads/images/tricks/thumbs");
+        $this->fileUploader->setTargetDirectory("uploads/images/avatars");
         $this->fileUploader->delete($entity->getFilename());
     }
 
@@ -58,24 +57,30 @@ class PictureEventSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof Picture) {
+        if (!$entity instanceof User) {
             return;
         }
+        $this->resizeImage($entity);
+    }
 
-        $realpath = realpath("public/uploads/images/tricks/") ? realpath("public/uploads/images/tricks/") : realpath("uploads/images/tricks/");
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if (!$entity instanceof User) {
+            return;
+        }
+        $this->resizeImage($entity);
+    }
+
+    private function resizeImage($entity)
+    {
+        $realpath = realpath("public/uploads/images/avatars/") ? realpath("public/uploads/images/avatars/") : realpath("uploads/images/avatars/");
         $this->imageResizer->resizeImage(
             $realpath,
-            $entity->getFilename(),
-            1570,
-            883
-        );
-
-        $this->imageResizer->resizeImage(
-            $realpath,
-            $entity->getFilename(),
-            348,
-            261,
-            true
+            $entity->getAvatarFilename(),
+            200,
+            200
         );
     }
 }

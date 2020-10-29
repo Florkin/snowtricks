@@ -9,6 +9,7 @@
             <div class="d-none d-lg-block col-lg-12 bg-form max-h-100-vh"></div>
             <div class="col-30 col-lg-18 d-flex align-items-center">
                 <div class="p-5">
+                    {% block avatar %}{% endblock %}
                     <h1 class="text-uppercase">{% block formtitle %}{% endblock %}</h1>
                     {% block form %}{% endblock %}
                 </div>

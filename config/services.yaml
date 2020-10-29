@@ -32,6 +32,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    App\Listener\UserEventSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
+
     App\Listener\VideoEventSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
