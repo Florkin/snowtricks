@@ -5,8 +5,8 @@ namespace App\Controller\Manage;
 use App\Form\Model\ChangePassword;
 use App\Form\PasswordFormType;
 use App\Form\UserFormType;
-use App\Handlers\Forms\EntityFormHandler;
 use App\Handlers\Forms\PasswordFormHandler;
+use App\Handlers\Forms\UserFormHandler;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class ManageUserController extends AbstractController
@@ -36,19 +35,19 @@ class ManageUserController extends AbstractController
      */
     private $entityManager;
     /**
-     * @var EntityFormHandler
+     * @var UserFormHandler
      */
     private $formHandler;
 
     /**
      * ManageUserController constructor.
      * @param EntityManagerInterface $entityManager
-     * @param EntityFormHandler $formHandler
+     * @param UserFormHandler $formHandler
      * @param UserRepository $userRepository
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
      */
-    public function __construct(EntityManagerInterface $entityManager, EntityFormHandler $formHandler, UserRepository $userRepository, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator)
+    public function __construct(EntityManagerInterface $entityManager, UserFormHandler $formHandler, UserRepository $userRepository, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator)
     {
         $this->userRepository = $userRepository;
         $this->guardHandler = $guardHandler;

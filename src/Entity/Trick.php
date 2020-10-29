@@ -33,10 +33,10 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=40)
      * * @Assert\Length(
      *    min = 5,
-     *    max = 100,
+     *    max = 40,
      *    minMessage = "Le titre doit contenir au moins {{ limit }} caractères",
      *    maxMessage = "Le titre doit contenir au maximum {{ limit }} caractères",
      *    allowEmptyString = false

@@ -1,32 +1,32 @@
-{% extends "base.html.twig" %}
+{% extends "manage/form_base.html.twig" %}
 
 {% block title %}
     {{ page.title }}
 {% endblock %}
 
-{% block body %}
+{% block formtitle %}Trick{% endblock %}
 
-    <div class="container">
+{% block form %}
         {{ form_start(form) }}
         <div class="row">
-{#            <div class="col-30 col-sm-25">{{ form_row(form.pictureFiles, {'attr': {'class': 'file-dropzone', 'data-upload-url': ajaxImgUploadUrl }}) }}</div>#}
-            <div class="col-30 col-sm-25">
-                <div class="dropzone file-dropzone"
-                {% if trick.id is defined and trick.id != null %}
-                     data-trick-id="{{ trick.id }}"
-                {% endif %}
+            <div class="col-30">{{ form_row(form.visible) }}</div>
+            <div class="col-30">
+                <label>Images</label>
+                <div class="dropzone file-dropzone mb-3"
+                        {% if trick.id is defined and trick.id != null %}
+                            data-trick-id="{{ trick.id }}"
+                        {% endif %}
                 ></div>
             </div>
-            <div class="col-30 col-sm-25">{{ form_row(form.title) }}</div>
-            <div class="col-30 col-sm-5">{{ form_row(form.difficulty) }}</div>
-            <div class="col-30 col-sm-12">{{ form_row(form.description) }}</div>
-            <div class="col-30 col-sm-12">{{ form_row(form.categories, {'attr': {'class': 'category-selector'}}) }}</div>
-            <div class="col-30 col-sm-20">{{ form_row(form.visible) }}</div>
+            <div class="col-30 col-sm-15">{{ form_row(form.title) }}</div>
+            <div class="col-30 col-sm-15">{{ form_row(form.difficulty) }}</div>
+            <div class="col-30">{{ form_row(form.description) }}</div>
+            <div class="col-30">{{ form_row(form.categories, {'attr': {'class': 'category-selector'}}) }}</div>
             <div class="col-30 col-sm-20">
                 <div id="videos-fields-list"
-                    data-prototype="{{ form_widget(form.videos.vars.prototype)|e }}"
-                    data-widget-tags="{{ '<div class="trick-video-field"></div>'|e }}"
-                    data-widget-counter="{{ form.videos|length }}">
+                     data-prototype="{{ form_widget(form.videos.vars.prototype)|e }}"
+                     data-widget-tags="{{ '<div class="trick-video-field"></div>'|e }}"
+                     data-widget-counter="{{ form.videos|length }}">
                     <label for="videos-fields-list">Vidéos youtube</label>
                     {% for videoField in form.videos %}
                         <div class="trick-video-field">
@@ -38,7 +38,8 @@
 
                 <button type="button"
                         class="js-add-video-btn btn btn-outline-primary"
-                        data-list-selector="#videos-fields-list">Ajouter une vidéo</button>
+                        data-list-selector="#videos-fields-list">Ajouter une vidéo
+                </button>
             </div>
             <ul class="pictures" data-prototype="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"></ul>
             <div class="col-30 col-sm-25 mt-5">
@@ -47,13 +48,4 @@
         </div>
 
         {{ form_end(form) }}
-    </div>
-{% endblock %}
-
-{% block add_stylesheets %}
-    {{ encore_entry_link_tags('forms') }}
-{% endblock %}
-
-{% block add_javascripts %}
-    {{ encore_entry_script_tags('forms') }}
 {% endblock %}

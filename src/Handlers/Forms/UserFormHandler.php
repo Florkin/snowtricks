@@ -3,9 +3,9 @@
 namespace App\Handlers\Forms;
 
 use App\Handlers\Forms\AbstractFormHandler;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFormHandler extends AbstractFormHandler
 {
@@ -19,19 +19,20 @@ class UserFormHandler extends AbstractFormHandler
      */
     private $formType;
     /**
-     * @var UserPasswordEncoderInterface
+     * @var FileUploader
      */
-    private $passwordEncoder;
+    private $fileUploader;
 
     /**
      * NewTrickFormHandler constructor.
      * @param EntityManagerInterface $entityManager
-     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param FileUploader $fileUploader
      */
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $entityManager, FileUploader $fileUploader)
     {
         $this->entityManager = $entityManager;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->fileUploader = $fileUploader;
+        $this->fileUploader->setTargetDirectory('uploads/images/avatars');
     }
 
 
@@ -40,16 +41,18 @@ class UserFormHandler extends AbstractFormHandler
         return $this->formType;
     }
 
-    public function process($user): void
+    public function process($data): void
     {
-        $user->setPassword(
-            $this->passwordEncoder->encodePassword(
-                $user,
-                $this->getForm()->get('plainPassword')->getData()
-            )
-        );
-        $user->setRoles(["ROLE_USER"]);
-        $this->entityManager->persist($user);
+        $newAvatar = $this->getForm()->get('avatarFilename')->getData();
+        if ($newAvatar) {
+            $fileName = $this->fileUploader->upload($newAvatar);
+            if ($data->getAvatarFilename() != null) {
+                $this->fileUploader->delete($data->getAvatarFilename());
+            }
+            $data->setAvatarFilename($fileName);
+        }
+
+        $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
 
@@ -57,4 +60,6 @@ class UserFormHandler extends AbstractFormHandler
     {
         $this->formType = $formType;
     }
+
+
 }

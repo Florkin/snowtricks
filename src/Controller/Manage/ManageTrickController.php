@@ -76,7 +76,7 @@ class ManageTrickController extends AbstractController
 
         if ($this->formHandler->handle($request, $trick, TrickType::class)) {
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
-            return $this->redirectToRoute("manage.trick.index");
+            return $this->redirectToRoute("trick.index");
         }
 
         return $this->render("manage/trick/form.html.twig", [
@@ -116,7 +116,7 @@ class ManageTrickController extends AbstractController
 
         if ($this->formHandler->handle($request, $trick, TrickType::class)) {
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été modifié");
-            return $this->redirectToRoute("manage.trick.index");
+            return $this->redirectToRoute("trick.index");
         }
 
 

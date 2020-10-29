@@ -15,15 +15,15 @@
     {% include "_partials/_nav.html.twig" %}
 {% endblock %}
 
-{% block messages %}{% endblock %}
-{% block body %}{% endblock %}
+<div class="js-header-offset">
+    {% block messages %}{% endblock %}
+    {% block body %}{% endblock %}
+</div>
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-{% block add_javascripts %}
-    {{ encore_entry_script_tags('forms') }}
-{% endblock %}
+{% block add_javascripts %}{% endblock %}
 </body>
 </html>

@@ -1,7 +1,18 @@
 <div class="card mb-2 chat-message{% if app.user.id is defined and post.user.id == app.user.id %} is-mine{% endif %}">
     <div class="card-body">
         <div class="row align-items-center">
-            <div class="{% if is_granted("DELETE", post) %}col-27{% else %}col-30{% endif %}">
+            <div class="col-4">
+                <div class="avatar small">
+                    {% if post.user.avatarFilename %}
+                        <img class="img-fluid" src="{{ asset(getUploadedImage("avatars", post.user.avatarFilename)) }}"
+                             alt="{{ post.user.username }} avatar">
+                    {% else %}
+                        <img class="img-fluid" src="{{ asset(getImage("no-avatar.png")) }}"
+                             alt="{{ post.user.username }} avatar">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="{% if is_granted("DELETE", post) %}col-23{% else %}col-26{% endif %}">
                 <p class="text-bold">
                     Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F Y') }}
                 </p>

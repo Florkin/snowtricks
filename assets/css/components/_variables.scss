@@ -15,12 +15,26 @@ $grid-breakpoints: (
 
 $grid-columns: 30;
 
+$border-radius: .25rem;
+$border-radius-lg: .3rem;
+$border-radius-sm: .2rem;
 
-$primary: #3784A7;
-$secondary: #F77F00;
-$success: #95C623;
-$info: #009B72;
+
+$primary: #134074;
+$secondary: #13315C;
+$success: #44AF69;
+$info: #FF9505;
 $warning: #F0C808;
-$danger: #DD1C1A;
-$light: #B3D2B2;
-$dark: #2A2D34;
+$danger: #A30000;
+$light: #8DA9C4;
+$lighter: #EEF4ED;
+$dark: #0B2545;
+$white: #FFFFFF;
+$black: #000004;
+
+$font-size-base: 1rem; // Assumes the browser default, typically `16px`
+$font-size-xl: $font-size-base * 1.75;
+$font-size-lg: $font-size-base * 1.25;
+$font-size-sm: $font-size-base * .875;
+
+$transition-duration: 300ms;

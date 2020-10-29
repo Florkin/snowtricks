@@ -8,11 +8,11 @@
         <h1 class="jumbotron-title text-center text-uppercase text-primary">Snowtricks</h1>
         <p class="lead text-center text-bold">La communauté francophone dédiée au Snowboard</p>
     {% elseif category is defined %}
-        <div class="d-flex align-items-center">
-            <div class="category-img-container w-50">
+        <div class="row">
+            <div class="category-img-container col-30 col-lg-15">
                 <img src="{{ asset(getImage("cat-img.jpg")) }}" alt="" class="img-fluid">
             </div>
-            <div class="px-5 w-50">
+            <div class="px-5 col-30 col-lg-15 d-flex flex-column justify-content-center py-5">
                 <h1 class="jumbotron-title text-uppercase text-primary">{{ category.title }}</h1>
                 <p class="lead pb-3 border-bottom">{{ category.description }}</p>
             </div>

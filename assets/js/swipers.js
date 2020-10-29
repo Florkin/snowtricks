@@ -1,5 +1,3 @@
-import "../css/swipers.scss";
-
 import Swiper from 'swiper/swiper-bundle.esm.browser'
 
 var imagesShowSwiperThumbs = new Swiper('.js-trick-show-images-swiper-thumbs', {

@@ -1,22 +1,18 @@
-{% extends "base.html.twig" %}
+{% extends "manage/form_base.html.twig" %}
 
-{% block title %}
-    {{ page.title }}
+{% block title %}{{ page.title }}{% endblock %}
+{% block formtitle %}Catégorie:<br>
+    <span class="font-weight-normal">{{ category.title }}</span>
 {% endblock %}
 
-{% block body %}
-
-    <div class="container">
-        {{ form_start(form) }}
-        <div class="row">
-            <div class="col-30 col-sm-25">{{ form_row(form.title) }}</div>
-            <div class="col-30 col-sm-25">{{ form_row(form.description) }}</div>
-            <div class="col-30 col-sm-25">
-                <button class="btn btn-success" type="submit">{{ btn_label|default("Valider") }}</button>
-            </div>
+{% block form %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-30">{{ form_row(form.title) }}</div>
+        <div class="col-30">{{ form_row(form.description) }}</div>
+        <div class="col-30">
+            <button class="btn btn-success" type="submit">{{ btn_label|default("Valider") }}</button>
         </div>
-        {{ form_end(form) }}
     </div>
-
-
+    {{ form_end(form) }}
 {% endblock %}
