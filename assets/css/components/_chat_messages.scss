@@ -5,7 +5,7 @@
   .chat-messages-container {
     display: flex;
     flex-direction: column;
-    align-content: start;
+    align-content: flex-start;
 
     .chat-message {
       width: 90%;
