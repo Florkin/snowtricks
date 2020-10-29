@@ -4,27 +4,34 @@
             <img class="card-img-top" src="{{ asset(getUploadedImage("tricks", trick.pictures|first.filename, true)) }}"
                  alt="{{ trick.title }}_cover">
         {% endif %}
-        <a class="card-overlayer" href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}"></a>
-        <div class="card-body">
-            <h5 class="card-title text-uppercase text-bold">
-                {{ trick.title }}
-            </h5>
-{#            <p>{{ trick.description|u.truncate(50, "...") }}</p>#}
-            <p class="text-muted">
-                {% if trick.updatedBy is not null %}
-                    <small class="d-block text-muted">
-                        Dernière mise a jour par {{ trick.updatedBy.username }} le {{ trick.dateupdate|format_datetime('full', 'none', locale='fr') }}
-                    </small>
-                    {% else %}
-                        <small class="d-block text-muted">
-                            Ajouté par {{ trick.author.username }} le {{ trick.dateadd|format_datetime('full', 'none', locale='fr') }}
-                        </small>
+        <div class="card-overlayer p-4">
+            <div class="actions">
+                {% if is_granted("EDIT", trick) %}
+                    <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}"
+                       class="btn pb-0 text-light">
+                        <span class="fa fa-edit"></span>
+                    </a>
                 {% endif %}
-            </p>
+                {% if is_granted("DELETE", trick) %}
+                    <form method="post" class="d-inline-block"
+                          action="{{ path("manage.trick.delete", {id: trick.id}) }}"
+                          onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
+                        <button type="submit" href="#" class="btn text-danger pb-0">
+                            <span class="fa fa-trash"></span>
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+
+            <a class="btn btn-outline-light btn-lg card-overlayer-link"
+               href="{{ path("trick.show", {id:trick.id, slug:trick.slug}) }}">Voir le trick</a>
+
             {% if trick.categories|length > 0 %}
-                <div class="border-top py-2 card-above-overlayer">
+                <div class="border-top py-1 card-above-overlayer card-categories text-center">
                     {% for cat in trick.categories %}
-                        <small class="text-muted">
+                        <small>
                             {% if category is defined and category != null and category.id == cat.id %}
                                 {{ cat.title }}
                             {% else %}
@@ -35,23 +42,27 @@
                     {% endfor %}
                 </div>
             {% endif %}
-            <div class="actions text-right card-above-overlayer">
-                {% if is_granted("EDIT", trick) %}
-                    <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}" class="btn pb-0 text-primary">
-                        <span class="fa fa-edit"></span>
-                    </a>
+        </div>
+        <div class="card-header">
+            <h5 class="card-title">
+                {{ trick.title|u.truncate(40, "...") }}
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ trick.description|u.truncate(50, "...") }}</p>
+            <p class="card-small text-muted mb-1">
+                {% if trick.updatedBy is not null %}
+                    <small class="d-block text-muted">
+                        Dernière mise a jour par {{ trick.updatedBy.username }}
+                        le {{ trick.dateupdate|format_datetime('full', 'none', locale='fr') }}
+                    </small>
+                {% else %}
+                    <small class="d-block text-muted">
+                        Ajouté par {{ trick.author.username }}
+                        le {{ trick.dateadd|format_datetime('full', 'none', locale='fr') }}
+                    </small>
                 {% endif %}
-                {% if is_granted("DELETE", trick) %}
-                    <form method="post" class="d-inline-block" action="{{ path("manage.trick.delete", {id: trick.id}) }}"
-                          onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
-                        <button type="submit" href="#" class="btn text-danger pb-0">
-                            <span class="fa fa-trash"></span>
-                        </button>
-                    </form>
-                {% endif %}
-            </div>
+            </p>
         </div>
     </div>
 </div>

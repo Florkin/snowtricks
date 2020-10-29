@@ -2,9 +2,10 @@
 
 body {
   font-family: "Poppins", Helvetica, Arial, sans-serif;
-  color: $dark
+  color: $dark;
+  font-size: $font-size-base;
 }
 
 .transition-300 {
-  transition-duration: 300ms;
+  transition-duration: $transition-duration;
 }
