@@ -1,5 +1,5 @@
-<div class="container">
-    {% if trick.pictures|length > 0 %}
+{% if trick.pictures|length > 0 %}
+    <div class="mx-auto mb-4 mb-xl-0" style="max-width: 1200px;">
         <!-- Slider main container -->
         <div class="trick-show-images js-trick-show-images-swiper overflow-hidden">
             <!-- Additional required wrapper -->
@@ -22,15 +22,14 @@
                 {% endfor %}
             </div>
             <!-- If we need pagination -->
-            <div class="slider-center-buttons">
-                <button class="m-3 btn btn-outline-primary swiper-button-prev round-btn">
-                    <span class="fa fa-angle-left"></span>
-                </button>
-                <button class="m-3 btn btn-outline-primary swiper-button-next round-btn">
-                    <span class="fa fa-angle-right"></span>
-                </button>
-            </div>
-
+            {#            <div class="slider-center-buttons">#}
+            {#                <button class="m-3 btn btn-outline-primary swiper-button-prev round-btn">#}
+            {#                    <span class="fa fa-angle-left"></span>#}
+            {#                </button>#}
+            {#                <button class="m-3 btn btn-outline-primary swiper-button-next round-btn">#}
+            {#                    <span class="fa fa-angle-right"></span>#}
+            {#                </button>#}
+            {#            </div>#}
         </div>
 
         <div class="mt-2 trick-show-images-thumbs js-trick-show-images-swiper-thumbs overflow-hidden">
@@ -56,5 +55,5 @@
                 {% endfor %}
             </div>
         </div>
-    {% endif %}
-</div>
+    </div>
+{% endif %}

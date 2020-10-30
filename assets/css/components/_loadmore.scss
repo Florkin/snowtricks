@@ -1,3 +1,5 @@
+@import "variables";
+
 .lds-roller {
   display: inline-block;
   position: relative;
@@ -111,6 +113,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition-duration: 300;
+  transition-duration: $transition-duration;
   z-index: 1000;
 }

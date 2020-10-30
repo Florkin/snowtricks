@@ -4,20 +4,20 @@ function stick(element) {
     element.css({"position": "fixed", "top": 0, "z-index": 5000, "width": "100%"});
 
     $(window).on("scroll", function () {
-        if ($(window).scrollTop() > 20) {
+        if ($(window).scrollTop() > 5) {
             element.addClass("is-sticked")
-            $(".hide-sticky").hide(300);
+            $(".hide-sticky").hide(200);
         } else {
             element.removeClass("is-sticked")
-            $(".hide-sticky").show(300);
+            $(".hide-sticky").show(200);
         }
     })
 }
 
-$(document).ready(function () {
-    stick(element)
-    // $(".js-header-offset").css({"margin-top": element.outerHeight() + "px"})
-})
+
+stick(element)
+// $(".js-header-offset").css({"margin-top": element.outerHeight() + "px"})
+
 
 
 

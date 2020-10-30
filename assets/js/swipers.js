@@ -1,34 +1,33 @@
 import Swiper from 'swiper/swiper-bundle.esm.browser'
+$(document).ready(function () {
+    let imagesShowSwiperThumbs = new Swiper('.js-trick-show-images-swiper-thumbs', {
+        spaceBetween: 10,
+        centeredSlides: true,
+        slidesPerView: 5,
+        touchRatio: 0.2,
+        slideToClickedSlide: true,
+        loop: true,
+    });
 
-var imagesShowSwiperThumbs = new Swiper('.js-trick-show-images-swiper-thumbs', {
-    spaceBetween: 10,
-    slidesPerView: 6,
-    loop: true,
-    freeMode: false,
-    loopedSlides: 6,
-    watchSlidesVisibility: true,
-    watchSlidesProgress: true,
-});
+    let imagesShowSwiper = new Swiper('.js-trick-show-images-swiper', {
+        speed: 400,
+        loop: true,
+        // pagination: {
+        //     el: '.swiper-pagination',
+        // },
 
-var imagesShowSwiper = new Swiper('.js-trick-show-images-swiper', {
-    speed: 400,
-    loop: true,
+        thumbs: {
+            swiper: imagesShowSwiperThumbs,
+        },
 
-    // If we need pagination
-    pagination: {
-        el: '.swiper-pagination',
-    },
+        // Navigation arrows
+        // navigation: {
+        //     nextEl: '.swiper-button-next',
+        //     prevEl: '.swiper-button-prev',
+        // },
+    });
+})
 
-    // Navigation arrows
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-
-    thumbs: {
-        swiper: imagesShowSwiperThumbs,
-    },
-});
 
 
 
