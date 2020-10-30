@@ -19,4 +19,10 @@
     background: $white;
     @include box-shadow-down
   }
+
+  &.text-white-until-sticky:not(.is-sticked) {
+    .nav-link {
+      color: $white;
+    }
+  }
 }
