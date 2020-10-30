@@ -61,14 +61,7 @@ class PictureEventSubscriber implements EventSubscriber
         if (!$entity instanceof Picture) {
             return;
         }
-
         $realpath = realpath("public/uploads/images/tricks/") ? realpath("public/uploads/images/tricks/") : realpath("uploads/images/tricks/");
-        $this->imageResizer->resizeImage(
-            $realpath,
-            $entity->getFilename(),
-            1570,
-            883
-        );
 
         $this->imageResizer->resizeImage(
             $realpath,
@@ -76,6 +69,13 @@ class PictureEventSubscriber implements EventSubscriber
             348,
             261,
             true
+        );
+
+        $this->imageResizer->resizeImage(
+            $realpath,
+            $entity->getFilename(),
+            1280,
+            720
         );
     }
 }

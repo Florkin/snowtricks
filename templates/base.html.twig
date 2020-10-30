@@ -12,13 +12,13 @@
 </head>
 
 <body>
-<nav class="main-navbar navbar navbar-expand-lg {% block nav_classes %}{% endblock %}">
+<nav class="main-navbar navbar navbar-expand-lg {% block nav_classes %}js-sticky-header{% endblock %}">
     {% block nav %}
         {% include "_partials/_nav.html.twig" %}
     {% endblock %}
 </nav>
 
-<div class="{% block container_classes %}{% endblock %}">
+<div class="{% block container_classes %}js-header-offset{% endblock %}">
     {% block messages %}{% endblock %}
     {% block body %}{% endblock %}
 </div>

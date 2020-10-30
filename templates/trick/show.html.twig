@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ trick.title }}
-{% endblock %}
+{% block title %}{{ trick.title }}{% endblock %}
+{% block nav_classes %}js-sticky-header{% endblock %}
+{% block container_classes %}js-header-offset{% endblock %}
 
 {% block body %}
     {% include "_partials/_messages.html.twig" %}
