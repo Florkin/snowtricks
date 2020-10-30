@@ -1,65 +1,61 @@
 {% block nav %}
-    <nav class="js-sticky-header sticky-header main-navbar navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand text-bold text-primary" href="/">S.T.</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <div class="container">
+        <a class="navbar-brand text-bold text-primary" href="/">S.T.</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item{% if current_menu is defined and current_menu == "home" %} active{% endif %}">
-                        <a class="nav-link" href="{{ path("home") }}">Home</a>
-                    </li>
-
-                    {#                Get Catégories to create dropdown selector #}
-                    {% if current_menu is defined %}
-                        {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList", {currentMenu: current_menu})) }}
-                    {% else %}
-                        {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList")) }}
-                    {% endif %}
-                </ul>
-                <ul class="navbar-nav right-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="fa fa-edit"></span>
-                        </a>
-                        <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
-{#                            <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.trick.index" %} active{% endif %}"#}
-{#                               href="{{ path("manage.trick.index") }}"><span class="fa fa-user"></span> Gérer des Tricks</a>#}
-                            <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.trick.new" %} active{% endif %}"
-                               href="{{ path("manage.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
-                            <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.category.new" %} active{% endif %}"
-                               href="{{ path("manage.category.index") }}"><span class="fa fa-object-group"></span> Gérer
-                                les
-                                catégories</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="fa fa-user"></span>
-                        </a>
-                        <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
-                            {% if app.user.username is defined %}
-                                <a class="dropdown-item" href="{{ path("user.show") }}"><span
-                                            class="fa fa-user"></span> {{ app.user.username }}
-                                </a>
-                                <a class="dropdown-item" href="{{ path("app_logout") }}"><span
-                                            class="fa fa-sign-out"></span> Logout</a>
-                            {% else %}
-                                <a class="dropdown-item{% if current_menu is defined and current_menu == "app_login" %} active{% endif %}"
-                                   href="{{ path("app_login") }}"><span class="fa fa-sign-in"></span> Se connecter</a>
-                                <a class="dropdown-item{% if current_menu is defined and current_menu == "app_register" %} active{% endif %}"
-                                   href="{{ path("app_register") }}"><span class="fa fa-user-plus"></span>
-                                    S'inscrire</a>
-                            {% endif %}
-                        </div>
-                    </li>
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item{% if current_menu is defined and current_menu == "home" %} active{% endif %}">
+                    <a class="nav-link" href="{{ path("home") }}">Home</a>
+                </li>
+                {% if current_menu is defined %}
+                    {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList", {currentMenu: current_menu})) }}
+                {% else %}
+                    {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList")) }}
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav right-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-edit"></span>
+                    </a>
+                    <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
+                        {#                            <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.trick.index" %} active{% endif %}"#}
+                        {#                               href="{{ path("manage.trick.index") }}"><span class="fa fa-user"></span> Gérer des Tricks</a>#}
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.trick.new" %} active{% endif %}"
+                           href="{{ path("manage.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
+                        <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.category.new" %} active{% endif %}"
+                           href="{{ path("manage.category.index") }}"><span class="fa fa-object-group"></span> Gérer
+                            les
+                            catégories</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-user"></span>
+                    </a>
+                    <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
+                        {% if app.user.username is defined %}
+                            <a class="dropdown-item" href="{{ path("user.show") }}"><span
+                                        class="fa fa-user"></span> {{ app.user.username }}
+                            </a>
+                            <a class="dropdown-item" href="{{ path("app_logout") }}"><span
+                                        class="fa fa-sign-out"></span> Logout</a>
+                        {% else %}
+                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_login" %} active{% endif %}"
+                               href="{{ path("app_login") }}"><span class="fa fa-sign-in"></span> Se connecter</a>
+                            <a class="dropdown-item{% if current_menu is defined and current_menu == "app_register" %} active{% endif %}"
+                               href="{{ path("app_register") }}"><span class="fa fa-user-plus"></span>
+                                S'inscrire</a>
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
 {% endblock %}

@@ -10,13 +10,18 @@
     {% endblock %}
     {% block add_stylesheets %}{% endblock %}
 </head>
-<body>
-{% block nav %}
-    {% include "_partials/_nav.html.twig" %}
-{% endblock %}
 
-{% block messages %}{% endblock %}
-{% block body %}{% endblock %}
+<body>
+<nav class="main-navbar navbar navbar-expand-lg {% block nav_classes %}{% endblock %}">
+    {% block nav %}
+        {% include "_partials/_nav.html.twig" %}
+    {% endblock %}
+</nav>
+
+<div class="{% block container_classes %}{% endblock %}">
+    {% block messages %}{% endblock %}
+    {% block body %}{% endblock %}
+</div>
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}

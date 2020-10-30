@@ -26,7 +26,7 @@
       align-items: center;
 
       .form-group:first-child {
-        width: 300px;
+        //width: 300px;
         margin-right: 10px;
       }
     }
@@ -49,6 +49,10 @@ textarea {
     max-width: 75px;
   }
 }
+
+//.select2-container {
+//  width:100% !important;
+//}
 
 
 

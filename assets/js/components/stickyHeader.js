@@ -16,7 +16,7 @@ function stick(element) {
 
 $(document).ready(function () {
     stick(element)
-    $(".js-header-offset").css({"margin-top": element.outerHeight() + "px"})
+    // $(".js-header-offset").css({"margin-top": element.outerHeight() + "px"})
 })
 
 

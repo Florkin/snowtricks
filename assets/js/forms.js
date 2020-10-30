@@ -117,7 +117,8 @@ if ($(".file-dropzone").length) {
  */
 $(document).ready(function () {
     $(".category-selector").select2({
-        theme: "bootstrap4"
+        theme: "bootstrap4",
+        width: "100%"
     });
 });
 
