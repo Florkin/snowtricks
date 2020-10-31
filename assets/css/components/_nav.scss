@@ -2,28 +2,40 @@
 @import "variables";
 
 .main-navbar {
+
+  height: $header-height;
+
   .user-dropdown {
     left: -100px;
   }
-}
 
-.nav-item {
-  text-transform: uppercase;
-}
 
-.js-sticky-header {
-  transition-duration: $transition-duration;
-  background: transparent;
-
-  &.is-sticked {
-    background: $white;
-    @include box-shadow-down
+  .nav-item {
+    text-transform: uppercase;
   }
 
-  &.left-navbar-white-until-sticky:not(.is-sticked) {
-    .navbar-nav:not(.right-nav) {
-      .nav-link {
-        color: $white;
+  &.js-sticky-header {
+    transition-duration: $transition-duration;
+    background: transparent;
+
+    &.is-sticked {
+      background: $white;
+      @include box-shadow-down
+    }
+
+    &.left-navbar-white-until-sticky:not(.is-sticked) {
+      .navbar-nav:not(.right-nav) {
+        .nav-link {
+          color: $white;
+        }
+      }
+    }
+
+    &.right-navbar-white-until-sticky:not(.is-sticked) {
+      .right-nav {
+        .nav-link {
+          color: $white;
+        }
       }
     }
   }

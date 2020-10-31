@@ -1,7 +1,7 @@
 <div class="card mb-2 chat-message{% if app.user.id is defined and post.user.id == app.user.id %} is-mine{% endif %}">
     <div class="card-body">
         <div class="row align-items-center">
-            <div class="col-4">
+            <div class="col-4 d-none d-md-block">
                 <div class="avatar small">
                     {% if post.user.avatarFilename %}
                         <img class="img-fluid" src="{{ asset(getUploadedImage("avatars", post.user.avatarFilename)) }}"
@@ -12,27 +12,29 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="{% if is_granted("DELETE", post) %}col-23{% else %}col-26{% endif %}">
-                <p class="text-bold">
-                    Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F Y') }}
-                </p>
-                <p>
-                    {{ post.message }}
-                </p>
-            </div>
-            {% if is_granted("DELETE", post) %}
-                <div class="col-3">
-                    <form method="post" class="d-inline-block"
-                          action="{{ path("chatpost.delete", {trickSlug:trick.slug, trickID: trick.id, id: post.id}) }}"
-                          onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce message?')">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ post.id) }}">
-                        <button type="submit" href="#" class="btn btn-danger">
-                            <span class="fa fa-eraser"></span>
-                        </button>
-                    </form>
+            <div class="col-30 col-md-26">
+                <div class="row">
+                    <div class="{% if is_granted("DELETE", post) %}col-23{% else %}col-30{% endif %} text-bold">
+                        Ecrit par {{ post.user.username }} le {{ post.dateadd|date('l d F Y') }}
+                    </div>
+                    {% if is_granted("DELETE", post) %}
+                        <div class="col-7">
+                            <form method="post" class="d-inline-block"
+                                  action="{{ path("chatpost.delete", {trickSlug:trick.slug, trickID: trick.id, id: post.id}) }}"
+                                  onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce message?')">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ post.id) }}">
+                                <button type="submit" href="#" class="btn btn-danger btn-sm mx-3">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
+                <div class="pr-3 font-weight-light">
+                    {{ post.message }}
+                </div>
+            </div>
         </div>
     </div>
 </div>
