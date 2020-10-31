@@ -1,9 +1,10 @@
 @import "mixins";
 @import "variables";
+@import "~bootstrap/scss/mixins/_breakpoints";
 
 .main-navbar {
 
-  height: $header-height;
+  min-height: $header-height;
 
   .user-dropdown {
     left: -100px;
@@ -23,20 +24,47 @@
       @include box-shadow-down
     }
 
-    &.left-navbar-white-until-sticky:not(.is-sticked) {
-      .navbar-nav:not(.right-nav) {
-        .nav-link {
-          color: $white;
+    @include media-breakpoint-up(lg) {
+      &.left-navbar-white-until-sticky:not(.is-sticked) {
+        .navbar-nav:not(.right-nav) {
+          .nav-link {
+            color: $white;
+          }
+        }
+      }
+
+      &.right-navbar-white-until-sticky:not(.is-sticked) {
+        .right-nav {
+          .nav-link {
+            color: $white;
+          }
         }
       }
     }
 
-    &.right-navbar-white-until-sticky:not(.is-sticked) {
-      .right-nav {
-        .nav-link {
-          color: $white;
+    &.hamburger-white-until-sticky:not(.is-sticked) {
+      @include media-breakpoint-down(lg) {
+        .navbar-brand {
+          color: $white
+        }
+
+        .hamburger:not(.is-active) {
+          .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+            background-color: $white;
+          }
         }
       }
     }
   }
+
+  .dropdown-menu {
+    border: unset;
+  }
+
+  //.hamburger {
+  //  @include media-breakpoint-down(md) {
+  //    display: flex;
+  //  }
+  //}
 }
+

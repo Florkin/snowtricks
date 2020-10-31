@@ -22,4 +22,25 @@ $(".alert").on("click", function () {
     $(this).hide(200);
 })
 
+function makeFullscreen(elem) {
+    let height = $(window).height();
+    elem.css({"height": height})
+}
+function destroyFullscreen(elem) {
+    elem.css({"height": "unset"})
+}
+
+// Hamburger menu
+$('#navbarNav').on('show.bs.collapse', function () {
+    $(".navbar-toggler").addClass("is-active");
+    $(".js-sticky-header").addClass("bg-white");
+    $(".navbar-brand").addClass("text-primary");
+});
+
+$('#navbarNav').on('hide.bs.collapse', function () {
+    $(".navbar-toggler").removeClass("is-active");
+    $(".js-sticky-header").removeClass("bg-white");
+    $(".navbar-brand").removeClass("text-primary");
+})
+
 

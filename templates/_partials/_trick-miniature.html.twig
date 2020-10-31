@@ -49,6 +49,11 @@
             </h5>
         </div>
         <div class="card-body">
+            <p class="card-very-small mb-1 text-primary">
+                {% for i in 1..trick.difficulty %}
+                    <small class="fa fa-snowflake-o"> </small>
+                {% endfor %}
+            </p>
             <p class="card-text">{{ trick.description|u.truncate(50, "...") }}</p>
             <p class="card-small text-muted mb-1">
                 {% if trick.updatedBy is not null %}

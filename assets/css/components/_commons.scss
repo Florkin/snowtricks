@@ -12,10 +12,11 @@ body {
 
 .bg-form {
   background: url('../../img/form-img.jpg');
-  background-position-y: top;
+  background-position-y: center;
   background-position-x: center;
   background-size: cover;
   position: relative;
+  min-height: 300px;
 
   &:after {
     content: '';

@@ -1,10 +1,10 @@
 {% extends "manage/form_base.html.twig" %}
 
-{% block title %}
-    {{ page.title }}
-{% endblock %}
+{% block title %}{{ page.title }}{% endblock %}
 
-{% block formtitle %}{{ trick.title }}{% endblock %}
+{% block formtitle %}
+{% if trick.id %}{{ trick.title }} {% else %} Nouveau Trick {% endif %}
+{% endblock %}
 
 {% block form %}
         {{ form_start(form) }}

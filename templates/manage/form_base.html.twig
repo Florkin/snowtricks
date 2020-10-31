@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block nav_classes %}js-sticky-header left-navbar-white-until-sticky{% endblock %}
+{% block nav_classes %}js-sticky-header left-navbar-white-until-sticky hamburger-white-until-sticky{% endblock %}
 {% block container_classes %}{% endblock %}
 
 {% block title %}{% endblock %}
@@ -8,7 +8,7 @@
     <div class="container-fluid">
         {% include '_partials/_messages.html.twig' %}
         <div class="row min-h-85-vh">
-            <div class="d-none d-lg-block col-lg-15 col-xl-12 bg-form max-h-100-vh"></div>
+            <div class="col-30 col-lg-15 col-xl-12 bg-form max-h-100-vh"></div>
             <div class="col-30 col-lg-15 col-xl-18 d-flex align-items-center">
                 <div class="p-xl-5">
                     {% block avatar %}{% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ trick.title }}{% endblock %}
-{% block nav_classes %}js-sticky-header left-navbar-white-until-sticky right-navbar-white-until-sticky{% endblock %}
+{% block nav_classes %}js-sticky-header left-navbar-white-until-sticky right-navbar-white-until-sticky hamburger-white-until-sticky{% endblock %}
 {% block container_classes %}{% endblock %}
 
 {% block body %}
@@ -14,6 +14,12 @@
             <div class="col-30 col-lg-25 col-xl-15 mx-auto px-xl-5">
                 <div>
                     <h1 class="text-uppercase pb-3 border-bottom">{{ trick.title }}</h1>
+                    <div>
+                        <span class="text-bold mr-2">Difficulté:</span>
+                        {% for i in 1..trick.difficulty %}
+                            <span class="fa fa-snowflake-o"> </span>
+                        {% endfor %}
+                    </div>
                     <div class="py-2">
                         <div class="text-light">
                             Ajouté par {{ trick.author.username }}
@@ -41,26 +47,26 @@
                             </div>
                         {% endif %}
                     </div>
+                    <div class="actions text-right">
+                        {% if is_granted("EDIT", trick) %}
+                            <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}"
+                               class="btn btn-primary">
+                                <span class="fa fa-edit"></span>
+                            </a>
+                        {% endif %}
+                        {% if is_granted("DELETE", trick) %}
+                            <form method="post" class="d-inline-block"
+                                  action="{{ path("manage.trick.delete", {id: trick.id}) }}"
+                                  onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
+                                <button type="submit" href="#" class="btn btn-danger">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-
-            <div class="actions text-right">
-                {% if is_granted("EDIT", trick) %}
-                    <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}" class="btn btn-primary">
-                        <span class="fa fa-edit"></span>
-                    </a>
-                {% endif %}
-                {% if is_granted("DELETE", trick) %}
-                    <form method="post" class="d-inline-block"
-                          action="{{ path("manage.trick.delete", {id: trick.id}) }}"
-                          onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
-                        <button type="submit" href="#" class="btn btn-danger">
-                            <span class="fa fa-trash"></span>
-                        </button>
-                    </form>
-                {% endif %}
             </div>
         </div>
     </div>
