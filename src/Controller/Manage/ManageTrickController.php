@@ -76,7 +76,10 @@ class ManageTrickController extends AbstractController
 
         if ($this->formHandler->handle($request, $trick, TrickType::class)) {
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été ajouté");
-            return $this->redirectToRoute("trick.index");
+            return $this->redirectToRoute('trick.show', [
+                "id" => $trick->getId(),
+                "slug" => $trick->getSlug()
+            ], 301);
         }
 
         return $this->render("manage/trick/form.html.twig", [
@@ -157,7 +160,7 @@ class ManageTrickController extends AbstractController
      */
     public function enable(Trick $trick, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('EDIT', $trick);
+        $this->denyAccessUnlessGranted('ENABLE', $trick);
 
         if ($this->isCsrfTokenValid("enable" . $trick->getId(), $request->get("_token"))) {
             $trick->setVisible(true);

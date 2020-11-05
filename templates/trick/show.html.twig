@@ -68,18 +68,20 @@
 			</div>
 		</div>
 		{% if not trick.visible %}
-		<div class="alert alert-warning text-center no-click-to-hide">
-			Ce trick est désactivé.
-			<form method="post" class="d-inline-block"
-				  action="{{ path("manage.trick.enable", {id: trick.id}) }}"
-				  onsubmit="return confirm('Êtes vous sur de vouloir rendre ce trick visible pour tous?')">
-				<input type="hidden" name="_method" value="ENABLE"> <input type="hidden" name="_token"
-																		   value="{{ csrf_token("enable" ~ trick.id) }}">
-				<button title="Activer" type="submit" href="#" class="ml-4 btn btn-success">
-					<span class="fa fa-toggle-on"></span> Activer
-				</button>
-			</form>
-		</div>
+			<div class="alert alert-warning text-center no-click-to-hide">
+				Ce trick est désactivé.
+				{% if is_granted("ENABLE", trick) %}
+					<form method="post" class="d-inline-block"
+						  action="{{ path("manage.trick.enable", {id: trick.id}) }}"
+						  onsubmit="return confirm('Êtes vous sur de vouloir rendre ce trick visible pour tous?')">
+						<input type="hidden" name="_method" value="ENABLE"> <input type="hidden" name="_token"
+																				   value="{{ csrf_token("enable" ~ trick.id) }}">
+						<button title="Activer" type="submit" href="#" class="ml-4 btn btn-success">
+							<span class="fa fa-toggle-on"></span> Activer
+						</button>
+					</form>
+				{% endif %}
+			</div>
 		{% endif %}
 	</div>
 	

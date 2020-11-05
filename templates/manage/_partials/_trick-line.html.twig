@@ -17,6 +17,8 @@
 				{% if is_granted("EDIT", trick) %}
 					<a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}" class="btn btn-primary">
 						<span class="fa fa-edit"></span> </a>
+				{% endif %}
+				{% if is_granted("ENABLE", trick) %}
 					<form method="post" class="d-inline-block"
 						  action="{{ path("manage.trick.enable", {id: trick.id}) }}"
 						  onsubmit="return confirm('Êtes vous sur de vouloir rendre ce trick visible pour tous?')">
