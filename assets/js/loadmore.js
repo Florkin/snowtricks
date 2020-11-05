@@ -7,6 +7,7 @@ import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/pu
 const routes = require('./fos_js_routes.json');
 Routing.setRoutingData(routes);
 const axios = require('axios').default;
+let updateListingEvent = new Event('updateListing');
 
 axios.interceptors.request.use(function (config) {
     let loader = document.getElementById("loader");
@@ -59,6 +60,7 @@ async function addToHtml(data, container, loadType) {
         // append elements to HTML
         container.append(elem);
     })
+    document.dispatchEvent(updateListingEvent);
 }
 
 // focus to first elem of new page

@@ -16,7 +16,7 @@ $grid-breakpoints: (
 $grid-columns: 30;
 
 $border-radius: .25rem;
-$border-radius-lg: .3rem;
+$border-radius-lg: 0.7rem;
 $border-radius-sm: .2rem;
 
 
@@ -39,5 +39,6 @@ $font-size-sm: $font-size-base * .875;
 $font-size-xs: $font-size-base * .625;
 
 $transition-duration: 200ms;
+$transition-duration-long: 300ms;
 
 $header-height: 60px;

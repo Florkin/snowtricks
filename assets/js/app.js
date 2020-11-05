@@ -26,6 +26,7 @@ function makeFullscreen(elem) {
     let height = $(window).height();
     elem.css({"height": height})
 }
+
 function destroyFullscreen(elem) {
     elem.css({"height": "unset"})
 }
@@ -41,6 +42,23 @@ $('#navbarNav').on('hide.bs.collapse', function () {
     $(".navbar-toggler").removeClass("is-active");
     $(".js-sticky-header").removeClass("bg-white");
     $(".navbar-brand").removeClass("text-primary");
+})
+
+function cardImgOverlayer() {
+    $(".card .img-overlayer").css({"height": $(".card .img-container").outerHeight() + "px"})
+    $(".card .card-hidden-section").css({"height": $(".card .img-container").outerHeight() * 0.9 + "px"})
+}
+
+$(document).ready(function () {
+    cardImgOverlayer()
+})
+
+$(document).on("updateListing", function () {
+    cardImgOverlayer()
+})
+
+$(window).on("resize", function () {
+    cardImgOverlayer()
 })
 
 

@@ -28,7 +28,7 @@ $(".js-chat-form").on("submit", function (e) {
                     elem.classList.add("opacity-animate");
                     elem.style.display = "none";
                     $('#js-chat-messages-container').prepend(elem)
-                    $('.opacity-animate').slideDown();
+                    $('.opacity-animate').show(300);
                     $('#chat_message').val('')
                 }
             })
