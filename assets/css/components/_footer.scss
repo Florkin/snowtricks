@@ -1,0 +1,17 @@
+@import "variables";
+footer {
+  font-size: 14px;
+
+  .custom-list, .custom-list.dynamic-bullets {
+    .custom-list-item {
+      &.active {
+        opacity: 0.5;
+        pointer-events: none;
+
+        a {
+          pointer-events: none;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@import "variables";
+@import "~bootstrap/scss/mixins/_breakpoints";
+
+$list-bullet-width: 5px;
+$list-bullet-height: 2px;
+$list-bullet-spacing: 7px;
+
+.custom-list {
+  padding-left: 0;
+
+  .fa {
+    min-width: 22px;
+  }
+
+  .custom-list-item {
+    transition-duration: $transition-duration;
+    list-style: none;
+    font-weight: 300;
+    padding: 2px 0;
+
+    &:hover {
+      padding-left: $list-bullet-width;
+
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    &.dynamic-bullets {
+      .custom-list-item {
+        padding-left: calc(#{$list-bullet-width} + #{$list-bullet-spacing});
+        position: relative;
+
+        &:before {
+          transition-duration: $transition-duration;
+          content: '';
+          position: absolute;
+          left: 0;
+          top: calc(50% - #{$list-bullet-height} / 2);
+          width: $list-bullet-width;
+          height: $list-bullet-height;
+          background: $primary;
+        }
+
+        &:hover {
+          padding-left: calc(#{$list-bullet-width} + #{$list-bullet-width} + #{$list-bullet-spacing});
+
+          &:before {
+            background: $primary;
+            width: calc(#{$list-bullet-width} + #{$list-bullet-width});
+          }
+        }
+      }
+    }
+  }
+}

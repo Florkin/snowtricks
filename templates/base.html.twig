@@ -18,10 +18,16 @@
     {% endblock %}
 </nav>
 
-<div class="{% block container_classes %}js-header-offset{% endblock %}">
+<div class="content-wrapper{% block container_classes %} js-header-offset{% endblock %}">
     {% block messages %}{% endblock %}
     {% block body %}{% endblock %}
 </div>
+
+<footer class="mt-3 py-4 border-top">
+    {% block footer %}
+        {% include "_partials/_footer.html.twig" %}
+    {% endblock %}
+</footer>
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}

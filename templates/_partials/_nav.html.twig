@@ -24,7 +24,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-edit"></span>
+                        <span class="fa fa-edit"></span><span class="d-inline d-lg-none ml-2">Dashboard</span>
                     </a>
                     <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
                         {#                            <a class="dropdown-item{% if current_menu is defined and current_menu == "manage.trick.index" %} active{% endif %}"#}
@@ -40,7 +40,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-user"></span>
+                        <span class="fa fa-user"></span><span class="d-inline d-lg-none ml-2">Utilisateur</span>
                     </a>
                     <div class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdown">
                         {% if app.user.username is defined %}

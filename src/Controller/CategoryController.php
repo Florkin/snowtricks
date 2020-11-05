@@ -88,4 +88,17 @@ class CategoryController extends AbstractController
             'current_menu' => $currentMenu
         ]);
     }
+
+    /**
+     * @param string $currentMenu
+     * @return Response
+     */
+    public function CategoryList(string $currentMenu = null) : Response
+    {
+        $categories = $this->categoryRepository->findAllNotEmpty();
+        return $this->render('_partials/_categories-list.html.twig', [
+            'categories' => $categories,
+            'current_menu' => $currentMenu
+        ]);
+    }
 }

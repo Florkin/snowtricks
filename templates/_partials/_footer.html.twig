@@ -1,0 +1,51 @@
+<div class="container">
+	<div class="row">
+		<div class="col-30 col-lg-10 mb-5 mb-lg-0 d-flex flex-column justify-content-center text-center text-lg-left">
+			<h2 class="text-uppercase">Snowtricks</h2>
+			<small>Study project for <a class="text-underline" target="_blank" href="http://openclassrooms.com">Openclassrooms</a>
+				<br>by <a class="text-underline"
+						  target="_blank" href="http://tristan-florin.fr">Tristan Florin</a></small>
+			<div class="social-networks mt-3">
+				<a target="_blank" class="btn btn-outline-light mr-2" href="#"><span class="fa fa-facebook"></span></a>
+				<a target="_blank" class="btn btn-outline-light mr-2" href="#"><span class="fa fa-linkedin"></span></a>
+			</div>
+		</div>
+		
+		<div class="col-30 col-md-15 col-lg-10 mb-5 mb-lg-0 text-center text-md-left">
+			<h5 class="text-uppercase border-bottom d-inline-block pr-md-5 pb-2">Catégories :</h5>
+			{% if current_menu is defined %}
+				{{ render(controller("App\\Controller\\CategoryController:CategoryList", {currentMenu: current_menu})) }}
+			{% else %}
+				{{ render(controller("App\\Controller\\CategoryController:CategoryList")) }}
+			{% endif %}
+		</div>
+		
+		<div class="col-30 col-md-15 col-lg-10 text-center text-md-left">
+			<h5 class="text-uppercase border-bottom d-inline-block pr-md-5 pb-2">Dashboard :</h5>
+			<ul class="custom-list">
+				<li class="custom-list-item{% if current_menu is defined and current_menu == "manage.trick.new" %} active{% endif %}">
+					<a href="{{ path("manage.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
+				</li>
+				<li class="custom-list-item{% if current_menu is defined and current_menu == "manage.category.new" %} active{% endif %}">
+					<a href="{{ path("manage.category.index") }}"><span class="fa fa-object-group"></span> Gérer les
+						catégories</a>
+				</li>
+				{% if app.user.username is defined %}
+					<li class="custom-list-item">
+						<a href="{{ path("user.show") }}"><span class="fa fa-user"></span> {{ app.user.username }}</a>
+					</li>
+					<li class="custom-list-item">
+						<a href="{{ path("app_logout") }}"><span class="fa fa-sign-out"></span> Logout</a>
+					</li>
+				{% else %}
+					<li class="custom-list-item{% if current_menu is defined and current_menu == "app_login" %} active{% endif %}">
+						<a href="{{ path("app_login") }}"><span class="fa fa-sign-in"></span> Se connecter</a>
+					</li>
+					<li class="custom-list-item{% if current_menu is defined and current_menu == "app_register" %} active{% endif %}">
+						<a href="{{ path("app_register") }}"><span class="fa fa-user-plus"></span> S'inscrire</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</div>
