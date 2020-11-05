@@ -107,4 +107,13 @@ class TrickRepository extends ServiceEntityRepository
             ->orderBy("p.date_add", "desc")
             ->where("p.visible = true");
     }
+
+    public function findAllUnvisible()
+    {
+        return $this->createQueryBuilder("p")
+            ->orderBy("p.date_add", "desc")
+            ->where("p.visible = false")
+            ->getQuery()
+            ->getResult();
+    }
 }

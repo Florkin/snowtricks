@@ -26,6 +26,10 @@
 				<li class="custom-list-item{% if current_menu is defined and current_menu == "manage.trick.new" %} active{% endif %}">
 					<a href="{{ path("manage.trick.new") }}"><span class="fa fa-plus"></span> Nouveau Trick</a>
 				</li>
+				<li class="custom-list-item{% if current_menu is defined and current_menu == "manage.trick.index" %} active{% endif %}">
+					<a href="{{ path("manage.trick.index") }}"><span class="fa fa-user"></span> Gérer des Tricks</a>
+				</li>
+				
 				<li class="custom-list-item{% if current_menu is defined and current_menu == "manage.category.new" %} active{% endif %}">
 					<a href="{{ path("manage.category.index") }}"><span class="fa fa-object-group"></span> Gérer les
 						catégories</a>

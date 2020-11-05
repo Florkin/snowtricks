@@ -36,7 +36,8 @@ class TrickType extends AbstractType
             ->add('visible', CheckboxType::class, [
                 'attr' =>  [
                     'class' => 'switch'
-                ]
+                ],
+                'required' => false
             ])
             ->add('pictures', CollectionType::class, [
                 'label' => false,

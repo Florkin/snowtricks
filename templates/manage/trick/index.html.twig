@@ -1,29 +1,32 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    {{ page.title }}
+	{{ page.title }}
 {% endblock %}
 
 {% block messages %}
-    {% include "_partials/_messages.html.twig" %}
+	{% include "_partials/_messages.html.twig" %}
 {% endblock %}
 
 {% block body %}
-
-    <div class="container py-3">
-        <a href="{{ path("manage.trick.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Créer un
-            nouveau Trick</a>
-        <a href="{{ path("manage.category.index") }}" class="btn btn-outline-primary"><span class="fa fa-object-group"></span> Gérer les catégories</a>
-
-
-        <div class="row">
-            {% for trick in tricks %}
-                {% include "manage/_partials/_trick-line.html.twig" %}
-            {% endfor %}
-        </div>
-
-        <div class="navigation">
-            {{ knp_pagination_render(tricks) }}
-        </div>
-    </div>
+	
+	<div class="container py-3">
+		<div class="actions">
+			<a href="{{ path("manage.trick.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Créer un
+				nouveau Trick</a> <a href="{{ path("manage.category.index") }}" class="btn btn-outline-primary"><span
+						class="fa fa-object-group"></span> Gérer les catégories</a>
+		</div>
+		
+		<p class="alert alert-warning mt-5">Vous pouvez trouver ici les tricks <b>désactivés</b><br>
+			Pour accéder au tricks déjà activés, rendez vous dans <a class="text-underline" href="{{ path("manage.category.index") }}"><b>le listing</b></a></p>
+		<div class="row">
+			{% for trick in tricks %}
+				{% include "manage/_partials/_trick-line.html.twig" %}
+			{% endfor %}
+		</div>
+		
+		<div class="navigation">
+			{{ knp_pagination_render(tricks) }}
+		</div>
+	</div>
 {% endblock %}

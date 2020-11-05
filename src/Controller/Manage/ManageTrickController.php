@@ -50,7 +50,7 @@ class ManageTrickController extends AbstractController
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
         $tricks = $paginator->paginate(
-            $this->trickRepository->findAll(),
+            $this->trickRepository->findAllUnvisible(),
             $request->query->getInt('page', 1),
             12
         );
@@ -147,6 +147,26 @@ class ManageTrickController extends AbstractController
         }
 
         return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @param Trick $trick
+     * @param Request $request
+     * @return Response
+     * @Route("/manage/trick/{id}", name="manage.trick.enable", requirements={"id": "[0-9]*"}, methods="ENABLE")
+     */
+    public function enable(Trick $trick, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('EDIT', $trick);
+
+        if ($this->isCsrfTokenValid("enable" . $trick->getId(), $request->get("_token"))) {
+            $trick->setVisible(true);
+            $this->entityManager->persist($trick);
+            $this->entityManager->flush();
+            $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été activé");
+        }
+
+        return $this->redirectToRoute('manage.trick.index');
     }
 
 }

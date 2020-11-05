@@ -11,7 +11,9 @@
 {% block body %}
 
     <div class="container py-3">
-        <a href="{{ path("manage.category.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Ajouter une catégorie</a>
+        <div class="actions">
+            <a href="{{ path("manage.category.new") }}" class="btn btn-primary"><span class="fa fa-plus"></span> Ajouter une catégorie</a>
+        </div>
 
         <div class="row">
             {% for category in categories %}
