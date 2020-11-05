@@ -166,7 +166,10 @@ class ManageTrickController extends AbstractController
             $this->addFlash("success", "Le trick " . $trick->getTitle() . " a bien été activé");
         }
 
-        return $this->redirectToRoute('manage.trick.index');
+        return $this->redirectToRoute('trick.show', [
+            "id" => $trick->getId(),
+            "slug" => $trick->getSlug()
+        ], 301);
     }
 
 }

@@ -18,7 +18,7 @@ let scroll = new SmoothScroll('a[href*="#"]', {
     speed: 500
 });
 
-$(".alert").on("click", function () {
+$(".alert:not(.no-click-to-hide)").on("click", function () {
     $(this).hide(200);
 })
 

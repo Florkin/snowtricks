@@ -5,115 +5,127 @@
 {% block container_classes %}{% endblock %}
 
 {% block body %}
-    {% include "_partials/_messages.html.twig" %}
-    <div class="container-fluid p-0">
-        <div class="row px-md-3 m-0 align-items-xl-center bg-dark text-white pt-header-height pb-3">
-            <div class="col-30 col-lg-25 col-xl-15 mx-auto p-xl-0">
-                {% include "_partials/_trick-slider.html.twig" %}
-            </div>
-            <div class="col-30 col-lg-25 col-xl-15 mx-auto px-xl-5">
-                <div>
-                    <h1 class="text-uppercase pb-3 border-bottom">{{ trick.title }}</h1>
-                    <div>
-                        <span class="text-bold mr-2">Difficulté:</span>
-                        {% for i in 1..trick.difficulty %}
-                            <span class="fa fa-snowflake-o"> </span>
-                        {% endfor %}
-                    </div>
-                    <div class="py-2">
-                        <div class="text-light">
-                            Ajouté par {{ trick.author.username }}
-                            le {{ trick.dateadd|format_datetime('full', 'none', locale='fr') }}
-                        </div>
-                        {% if trick.updatedBy is not null %}
-                            <div class="text-light">
-                                Dernière mise a jour par {{ trick.updatedBy.username }}
-                                le {{ trick.dateupdate|format_datetime('full', 'none', locale='fr') }}
-                            </div>
-                        {% endif %}
-
-                        <p class="py-3 font-weight-light">{{ trick.description|nl2br }}</p>
-
-                        {% if trick.categories|length > 0 %}
-                            <div class="border-top px-0 py-3 mt-3 col-md-30">
-                                <span class="text-bold mr-2">Catégories liées:</span>
-                                {% for category in trick.categories %}
-                                    <span>
+	{% include "_partials/_messages.html.twig" %}
+	<div class="container-fluid p-0">
+		<div class="row px-md-3 m-0 align-items-xl-center bg-dark text-white pt-header-height pb-3">
+			<div class="col-30 col-lg-25 col-xl-15 mx-auto p-xl-0">
+				{% include "_partials/_trick-slider.html.twig" %}
+			</div>
+			<div class="col-30 col-lg-25 col-xl-15 mx-auto px-xl-5">
+				<div>
+					<h1 class="text-uppercase pb-3 border-bottom">{{ trick.title }}</h1>
+					<div>
+						<span class="text-bold mr-2">Difficulté:</span>
+						{% for i in 1..trick.difficulty %}
+							<span class="fa fa-snowflake-o"> </span>
+						{% endfor %}
+					</div>
+					<div class="py-2">
+						<div class="text-light">
+							Ajouté par {{ trick.author.username }}
+							le {{ trick.dateadd|format_datetime('full', 'none', locale='fr') }}
+						</div>
+						{% if trick.updatedBy is not null %}
+							<div class="text-light">
+								Dernière mise a jour par {{ trick.updatedBy.username }}
+								le {{ trick.dateupdate|format_datetime('full', 'none', locale='fr') }}
+							</div>
+						{% endif %}
+						
+						<p class="py-3 font-weight-light">{{ trick.description|nl2br }}</p>
+						
+						{% if trick.categories|length > 0 %}
+							<div class="border-top px-0 py-3 mt-3 col-md-30">
+								<span class="text-bold mr-2">Catégories liées:</span>
+								{% for category in trick.categories %}
+									<span>
                                         <a class="text-light"
-                                           href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>
+										   href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">{{ category.title }}</a>
                                             {% if not loop.last %} |{% endif %}
                                     </span>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="actions text-right">
-                        {% if is_granted("EDIT", trick) %}
-                            <a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}"
-                               class="btn btn-primary">
-                                <span class="fa fa-edit"></span>
-                            </a>
-                        {% endif %}
-                        {% if is_granted("DELETE", trick) %}
-                            <form method="post" class="d-inline-block"
-                                  action="{{ path("manage.trick.delete", {id: trick.id}) }}"
-                                  onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ trick.id) }}">
-                                <button type="submit" href="#" class="btn btn-danger">
-                                    <span class="fa fa-trash"></span>
-                                </button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container max-992">
-        <div class="chat-section mt-5">
-            <h2>Espace de discussion</h2>
-            {% if is_granted('ADD_CHATPOST', trick) %}
-                <div class="chat-form js-chat-form py-3 mb-3">
-                    {{ form_start(form) }}
-                    {{ form_row(form.message) }}
-                    <input id="trick_id" type="hidden" value="{{ trick.id }}">
-                    <button class="btn btn-primary" type="submit">Envoyer</button>
-                    {{ form_end(form) }}
-                </div>
-            {% else %}
-                <div class="alert alert-warning">
-                    <a href="{{ path('app_login') }}">Connectez vous</a> pour ajouter un commentaire
-                </div>
-            {% endif %}
-            <div class="chat-messages border-left pl-1 pl-md-3">
-                <div id="js-chat-messages-container" class="chat-messages-container">
-                    {% include "_partials/_chatposts-listing.html.twig" %}
-                </div>
-
-                {% if isThereMorePosts %}
-                    <div class="py-4 d-flex justify-content-center">
-                        <button data-trick="{{ trick.id }}" data-load="chatpost" id="js-load-more-btn"
-                                class="btn btn-outline-primary">
-                            Voir les précédents messages
-                        </button>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    {% include "_partials/_ajax-loader.html.twig" %}
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+					<div class="actions text-right">
+						{% if is_granted("EDIT", trick) %}
+							<a href="{{ path("manage.trick.edit", {id: trick.id, slug: trick.slug}) }}"
+							   class="btn btn-primary"> <span class="fa fa-edit"></span> </a>
+						{% endif %}
+						{% if is_granted("DELETE", trick) %}
+							<form method="post" class="d-inline-block"
+								  action="{{ path("manage.trick.delete", {id: trick.id}) }}"
+								  onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce trick?')">
+								<input type="hidden" name="_method" value="DELETE"> <input type="hidden" name="_token"
+																						   value="{{ csrf_token("delete" ~ trick.id) }}">
+								<button type="submit" href="#" class="btn btn-danger">
+									<span class="fa fa-trash"></span>
+								</button>
+							</form>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% if not trick.visible %}
+		<div class="alert alert-warning text-center no-click-to-hide">
+			Ce trick est désactivé.
+			<form method="post" class="d-inline-block"
+				  action="{{ path("manage.trick.enable", {id: trick.id}) }}"
+				  onsubmit="return confirm('Êtes vous sur de vouloir rendre ce trick visible pour tous?')">
+				<input type="hidden" name="_method" value="ENABLE"> <input type="hidden" name="_token"
+																		   value="{{ csrf_token("enable" ~ trick.id) }}">
+				<button title="Activer" type="submit" href="#" class="ml-4 btn btn-success">
+					<span class="fa fa-toggle-on"></span> Activer
+				</button>
+			</form>
+		</div>
+		{% endif %}
+	</div>
+	
+	<div class="container max-992">
+		<div class="chat-section mt-5">
+			<h2>Espace de discussion</h2>
+			{% if is_granted('ADD_CHATPOST', trick) %}
+				<div class="chat-form js-chat-form py-3 mb-3">
+					{{ form_start(form) }}
+					{{ form_row(form.message) }}
+					<input id="trick_id" type="hidden" value="{{ trick.id }}">
+					<button class="btn btn-primary" type="submit">Envoyer</button>
+					{{ form_end(form) }}
+				</div>
+			{% else %}
+				<div class="alert alert-warning">
+					<a href="{{ path('app_login') }}">Connectez vous</a> pour ajouter un commentaire
+				</div>
+			{% endif %}
+			<div class="chat-messages border-left pl-1 pl-md-3">
+				<div id="js-chat-messages-container" class="chat-messages-container">
+					{% include "_partials/_chatposts-listing.html.twig" %}
+				</div>
+				
+				{% if isThereMorePosts %}
+					<div class="py-4 d-flex justify-content-center">
+						<button data-trick="{{ trick.id }}" data-load="chatpost" id="js-load-more-btn"
+								class="btn btn-outline-primary">
+							Voir les précédents messages
+						</button>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	
+	{% include "_partials/_ajax-loader.html.twig" %}
 
 {% endblock %}
 
 {% block add_stylesheets %}
-    {{ encore_entry_link_tags('swipers') }}
+	{{ encore_entry_link_tags('swipers') }}
 {% endblock %}
 
 {% block add_javascripts %}
-    {{ encore_entry_script_tags('swipers') }}
-    {{ encore_entry_script_tags('loadmore') }}
-    {{ encore_entry_script_tags('addChatpost') }}
+	{{ encore_entry_script_tags('swipers') }}
+	{{ encore_entry_script_tags('loadmore') }}
+	{{ encore_entry_script_tags('addChatpost') }}
 {% endblock %}
