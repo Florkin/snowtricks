@@ -116,10 +116,15 @@ if ($(".file-dropzone").length) {
  * Category selector
  */
 $(document).ready(function () {
-    $(".category-selector").select2({
-        theme: "bootstrap4",
-        width: "100%"
-    });
+    $(".js-advanced-selector").each(function () {
+        let elem = $(this);
+        elem.select2({
+            placeholder: elem.attr("placeholder"),
+            allowClear: true,
+            theme: "bootstrap4",
+            width: "100%"
+        });
+    })
 });
 
 /**

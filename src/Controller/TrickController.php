@@ -77,6 +77,7 @@ class TrickController extends AbstractController
             "pagination" => [
                 "page" => $page
             ],
+            "difficulties" => Trick::DIFFICULTIES,
             "tricks" => $tricks,
             "loadmoreBtn" => $loadmoreBtn
         ]);

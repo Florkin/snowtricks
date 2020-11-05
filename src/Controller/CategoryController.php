@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Category;
+use App\Entity\Trick;
 use App\Repository\CategoryRepository;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,6 +73,7 @@ class CategoryController extends AbstractController
             ],
             "category" => $category,
             "tricks" => $tricks,
+            "difficulties" => Trick::DIFFICULTIES,
             "loadmoreBtn" => $loadmoreBtn
         ]);
     }

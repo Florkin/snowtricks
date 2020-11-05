@@ -28,6 +28,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('forms', './assets/js/forms.js')
+    .addEntry('filters', './assets/js/filters.js')
     .addEntry('swipers', './assets/js/swipers.js')
     .addEntry('loadmore', './assets/js/loadmore.js')
     .addEntry('addChatpost', './assets/js/addChatPost.js')

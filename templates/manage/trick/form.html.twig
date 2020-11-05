@@ -21,7 +21,7 @@
             <div class="col-30 col-sm-15">{{ form_row(form.title) }}</div>
             <div class="col-30 col-sm-15">{{ form_row(form.difficulty) }}</div>
             <div class="col-30">{{ form_row(form.description) }}</div>
-            <div class="col-30">{{ form_row(form.categories, {'attr': {'class': 'category-selector'}}) }}</div>
+            <div class="col-30">{{ form_row(form.categories, {'attr': {'class': 'js-advanced-selector'}}) }}</div>
             <div class="col-30 col-sm-20">
                 <div id="videos-fields-list"
                      data-prototype="{{ form_widget(form.videos.vars.prototype)|e }}"

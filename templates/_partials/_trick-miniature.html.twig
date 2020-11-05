@@ -1,4 +1,4 @@
-<div class="col-30 col-sm-15 col-lg-25 col-xl-6 my-3 transition-200">
+<div class="col-30 col-sm-15 col-lg-10 col-xl-6 my-3 transition-200">
     <div class="card h-100">
         {% if trick.pictures|length > 0 %}
             <img class="card-img-top" src="{{ asset(getUploadedImage("tricks", trick.pictures|first.filename, true)) }}"

@@ -3,39 +3,55 @@
 {% block title %}{{ page.title }}{% endblock %}
 
 {% block messages %}
-    {% include "_partials/_messages.html.twig" %}
+	{% include "_partials/_messages.html.twig" %}
 {% endblock %}
 
 {% block nav_classes %}
-    js-sticky-header {% if category is defined %}left-navbar-white-until-sticky{% endif %}
+	js-sticky-header {% if category is defined %}left-navbar-white-until-sticky{% endif %}
 {% endblock %}
 {% block container_classes %}{% if category is not defined %}js-header-offset{% endif %}{% endblock %}
 
 {% block body %}
-    {% include "_partials/_listing-page-header.html.twig" %}
-
-    <div class="container">
-        <div id="js-tricks-container" class="row">
-            {% include "_partials/_listing.html.twig" %}
-        </div>
-
-        {% if loadmoreBtn is defined and loadmoreBtn == true %}
-            <div class="text-center py-5">
-                <button id="js-load-more-btn" class="btn btn-outline-primary btn-lg" data-load="trick"
-                        {% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus de tricks
-                </button>
-            </div>
-        {% endif %}
-    </div>
-
-    {% include "_partials/_ajax-loader.html.twig" %}
+	{% include "_partials/_listing-page-header.html.twig" %}
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-30 col-md-20 col-xl-15">
+				<div class="filters">
+					<div class="form-group">
+						<select multiple placeholder="Filter par difficulté" class="form-control js-advanced-selector"
+								id="difficulty_select_filter">
+							{% for key, difficulty in difficulties %}
+								<option value="{{ key }}">{{ difficulty }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="js-tricks-container" class="row">
+			{% include "_partials/_listing.html.twig" %}
+		</div>
+		
+		{% if loadmoreBtn is defined and loadmoreBtn == true %}
+			<div class="text-center py-5">
+				<button id="js-load-more-btn" class="btn btn-outline-primary btn-lg" data-load="trick"
+						{% if category is defined %}data-category="{{ category.id }}{% endif %}">Voir plus de tricks
+				</button>
+			</div>
+		{% endif %}
+	</div>
+	
+	{% include "_partials/_ajax-loader.html.twig" %}
 
 {% endblock %}
 
 {% block add_stylesheets %}
-    {{ encore_entry_link_tags('loadmore') }}
+	{{ encore_entry_link_tags('loadmore') }}
 {% endblock %}
 
 {% block add_javascripts %}
-    {{ encore_entry_script_tags('loadmore') }}
+	{{ encore_entry_script_tags('filters') }}
+	{{ encore_entry_script_tags('forms') }}
+	{{ encore_entry_script_tags('loadmore') }}
 {% endblock %}
