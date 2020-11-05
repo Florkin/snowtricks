@@ -72,7 +72,7 @@ class TrickFixture extends Fixture implements DependentFixtureInterface
                 ->setTitle($faker->words(3, true))
                 ->setDescription($faker->sentences(20, true))
                 ->setDifficulty($faker->numberBetween(1, 5))
-                ->setVisible(1)
+                ->setVisible($faker->boolean(85))
                 ->setDateUpdate($faker->dateTime)
                 ->setDateAdd($faker->dateTime($trick->getDateUpdate()));
 
