@@ -69,6 +69,7 @@ class PageControllerTest extends WebTestCase
         $this->assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
+    // TODO Tester la création de tricks
 }
 
 

@@ -6,9 +6,7 @@
     {% include "_partials/_messages.html.twig" %}
 {% endblock %}
 
-{% block nav_classes %}
-    {% if category is defined %}left-navbar-white-until-sticky{% endif %}
-{% endblock %}
+{% block nav_classes %}js-sticky-header{% if category is defined %} left-navbar-white-until-sticky{% endif %}{% endblock %}
 {% block container_classes %}{% if category is not defined %}js-header-offset{% endif %}{% endblock %}
 
 {% block body %}
