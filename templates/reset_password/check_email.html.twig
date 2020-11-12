@@ -1,0 +1,9 @@
+{% extends 'manage/form_base.html.twig' %}
+
+{% block title %}Email envoyé{% endblock %}
+{% block title %}Email envoyé{% endblock %}
+
+{% block form %}
+	<p>Un email contenant un lien de réinitialisation vous a été envoyé. Il expirera dans {{ tokenLifetime|date('g') }} heure(s).</p>
+	<p>Si vous ne recevez rien, vérifiez vos spams ou <a href="{{ path('app_forgot_password_request') }}">ré-essayez</a>.</p>
+{% endblock %}
