@@ -15,9 +15,9 @@
                     <a class="nav-link" href="{{ path("home") }}">Home</a>
                 </li>
                 {% if current_menu is defined %}
-                    {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList", {currentMenu: current_menu})) }}
+                    {{ render(controller("App\\Controller\\CategoryController::navbarDropdownList", {currentMenu: current_menu})) }}
                 {% else %}
-                    {{ render(controller("App\\Controller\\CategoryController:navbarDropdownList")) }}
+                    {{ render(controller("App\\Controller\\CategoryController::navbarDropdownList")) }}
                 {% endif %}
             </ul>
             <ul class="navbar-nav right-nav">
