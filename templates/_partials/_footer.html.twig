@@ -14,9 +14,9 @@
 		<div class="col-30 col-md-15 col-lg-10 mb-5 mb-lg-0 text-center text-md-left">
 			<h5 class="text-uppercase border-bottom d-inline-block pr-md-5 pb-2">Catégories :</h5>
 			{% if current_menu is defined %}
-				{{ render(controller("App\\Controller\\CategoryController:CategoryList", {currentMenu: current_menu})) }}
+				{{ render(controller("App\\Controller\\CategoryController::CategoryList", {currentMenu: current_menu})) }}
 			{% else %}
-				{{ render(controller("App\\Controller\\CategoryController:CategoryList")) }}
+				{{ render(controller("App\\Controller\\CategoryController::CategoryList")) }}
 			{% endif %}
 		</div>
 		

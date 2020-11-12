@@ -116,4 +116,15 @@ class TrickRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOneByNot($field, $value)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->where($qb->expr()->not($qb->expr()->eq('a.' . $field, '?1')))
+            ->setParameter(1, $value)
+            ->setMaxResults(1);
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }
