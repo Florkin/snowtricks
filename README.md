@@ -25,4 +25,5 @@ All others users are randomly generated
 
 ## Code quality
 Check at https://codeclimate.com/github/Florkin/snowtricks
+You can check some functional tests running: ```php bin/phpunit```
 
