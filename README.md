@@ -9,6 +9,7 @@
 - Install database: ```php bin/console doctrine:database:create```
 - Migrate database structure: ```php bin/console doctrine:migrations:migrate```
 - Install fake data: ```php bin/console doctrine:fixtures:load```
+(this can take some minutes, because of images generation)
 
 ## Front-end install
 - Get yarn: ```npm install -g yarn```
