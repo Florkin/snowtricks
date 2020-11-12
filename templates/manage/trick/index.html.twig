@@ -17,8 +17,8 @@
 						class="fa fa-object-group"></span> Gérer les catégories</a>
 		</div>
 		
-		<p class="alert alert-warning mt-5">Vous pouvez trouver ici les tricks <b>désactivés</b><br>
-			Pour accéder au tricks déjà activés, rendez vous dans <a class="text-underline" href="{{ path("manage.category.index") }}"><b>le listing</b></a></p>
+		<p class="alert alert-warning no-click-to-hide mt-5">Vous pouvez trouver ici les tricks <b>désactivés</b><br>
+			Pour accéder au tricks déjà activés, rendez vous dans <a class="text-underline" href="{{ path("trick.index") }}"><b>le listing</b></a></p>
 		<div class="row">
 			{% for trick in tricks %}
 				{% include "manage/_partials/_trick-line.html.twig" %}
