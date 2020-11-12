@@ -21,3 +21,7 @@ This will generate a JSON with necessary routes for javascript AJAX requests.
 - Logins: **admin@demo.fr**, **user@demo.fr**  
 All others users are randomly generated
 - All passwords are: **demodemo**
+
+##Code quality
+Check at https://codeclimate.com/github/Florkin/snowtricks
+
