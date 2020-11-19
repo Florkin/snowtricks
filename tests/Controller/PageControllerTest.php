@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
 
@@ -34,7 +35,7 @@ class PageControllerTest extends WebTestCase
     public function testHomePageUp()
     {
         $this->client->request('GET', $this->router->generate('home'));
-        $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     public function testTrickModificationNotloggedIn()
@@ -54,7 +55,7 @@ class PageControllerTest extends WebTestCase
         $this->client->loginUser($user);
         $route = $this->router->generate('manage.trick.delete', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
         $this->client->request('DELETE', $route);
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         $this->client->loginUser($user);
     }
 
@@ -66,10 +67,37 @@ class PageControllerTest extends WebTestCase
         $this->client->loginUser($user);
         $route = $this->router->generate('manage.trick.delete', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
         $this->client->request('DELETE', $route);
-        $this->assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
 
-    // TODO Tester la création de tricks
+    public function testTrickAdd()
+    {
+        $userId = array_rand($this->users, 1);
+        $user = $this->users[$userId];
+        $this->client->loginUser($user);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->router->generate('manage.trick.new'));
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $form = $crawler->filter("form[name=trick]")->form();
+        $csrfToken = $form->get("trick")["_token"]->getValue();
+
+        $crawler = $this->client->submitForm(
+            "new_trick_submit",
+            [
+                "trick[_token]" => $csrfToken,
+                "trick[title]" => "title test",
+                "trick[description]" => "description Test description 
+                    Test description  Test description Test description
+                    Test description Test description Test description Test description 
+                    Test description  Test description Test description
+                    Test description Test description Test",
+                "trick[difficulty]" => 3,
+                "trick[categories]" => 1,
+            ]
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
 }
 
 
