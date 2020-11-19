@@ -86,13 +86,13 @@ class PageControllerTest extends WebTestCase
             [
                 "trick[_token]" => $csrfToken,
                 "trick[title]" => "title test",
-                "trick[description]" => "description Test description 
-                    Test description  Test description Test description
-                    Test description Test description Test description Test description 
-                    Test description  Test description Test description
-                    Test description Test description Test",
+                "trick[description]" => "Lorem ipsum dolor sit amet",
                 "trick[difficulty]" => 3,
-                "trick[categories]" => 1,
+                "trick[categories]" => [
+                    0 => 3,
+                    1 => 2,
+                    2 => 5,
+                ],
             ]
         );
 
